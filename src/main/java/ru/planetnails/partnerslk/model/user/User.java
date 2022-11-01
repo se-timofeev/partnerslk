@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.model.user;
 
 import lombok.Data;
+import lombok.ToString;
 import ru.planetnails.partnerslk.model.baseClasses.BaseEntity;
 import ru.planetnails.partnerslk.model.baseClasses.Role;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name="users")
 @Data
+
 public class User extends BaseEntity {
     @Column (name = "first_name")
     private String firstName;
@@ -25,4 +27,14 @@ public class User extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
     private List<Role> roles;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }
