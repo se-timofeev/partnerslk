@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,10 +20,8 @@ import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -37,10 +32,6 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private long validityTime;
 
-
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -68,6 +59,7 @@ public class JwtTokenProvider {
                 .signWith(getSigningKey())
                 .compact();
     }
+
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
 
@@ -79,14 +71,36 @@ public class JwtTokenProvider {
     }
 
 
-    public Authentication getAuthentication(String token) throws UsernameNotFoundException {
+    public Authentication getAuthentication(Claims claims) throws UsernameNotFoundException {
+        final JwtAuthentication jwtInfoToken = new JwtAuthentication();
+        jwtInfoToken.setRoles(getRoles(claims));
+        jwtInfoToken.setUsername(claims.getSubject());
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        if (claims.getExpiration().before(new Date())) {
+            jwtInfoToken.setAuthenticated(false);
+        } else {
+            jwtInfoToken.setAuthenticated(true);
+        }
+        return jwtInfoToken;
+
     }
 
-    public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody().getSubject();
+    private Set<String> getRoles(Claims claims) {
+        final List<String> roles = claims.get("roles", List.class);
+
+        return roles.stream().collect(Collectors.toSet());
+
+
+    }
+
+    private List<String> getRoleNames(List<Role> userRoles) {
+        List<String> result = new ArrayList<>();
+
+        userRoles.forEach(role -> {
+            result.add(role.getName());
+        });
+
+        return result;
     }
 
     public String resolveToken(HttpServletRequest httpServletRequest) {
@@ -97,29 +111,11 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public Boolean validateToken(String token) {
-        try {
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            if (claimsJws.getBody().getExpiration().before(new Date())) {
-                return null;
-            }
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("Token is expired ");
-        }
-
-    }
-
-    private List<String> getRoleNames(List<Role> userRoles) {
-        List<String> result = new ArrayList<>();
-        userRoles.forEach(role ->
-                result.add(role.getName()));
-        return result;
-    }
 
     public boolean validateAccessToken(@NonNull String accessToken) {
         return validateToken(accessToken, getSigningKey());
     }
+
     private boolean validateToken(@NonNull String token, @NonNull Key secret) {
         try {
             Jwts.parserBuilder()
@@ -138,9 +134,11 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
     public Claims getAccessClaims(@NonNull String token) {
         return getClaims(token, getSigningKey());
     }
+
     private Claims getClaims(@NonNull String token, @NonNull Key secret) {
         return Jwts.parserBuilder()
                 .setSigningKey(secret)

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User register (User user);
+    User register(User user);
 
     List<User> getAll();
 
@@ -14,6 +14,6 @@ public interface UserService {
 
     User findById(Long id);
 
-    void delete (Long id);
+    void delete(Long id);
 
 }
