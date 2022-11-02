@@ -1,3 +1,4 @@
+
 package ru.planetnails.partnerslk.model.baseClasses;
 
 public enum Status {

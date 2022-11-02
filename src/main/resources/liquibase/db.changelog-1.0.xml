@@ -135,4 +135,15 @@
             <where>id='1'</where>
         </update>
     </changeSet>
+
+
+    <changeSet id="1.0.9" author="s.timofeev">
+        <addColumn tableName="users">
+            <column name="last_name" type="VARCHAR(255)">
+
+            </column>
+        </addColumn>
+
+    </changeSet>
+
 </databaseChangeLog>
