@@ -8,10 +8,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import ru.planetnails.partnerslk.logger.Logger;
+import ru.planetnails.partnerslk.service.LoggerService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Slf4j
 @Component
@@ -19,6 +24,8 @@ import java.io.IOException;
 public class JwtTokenFilter extends GenericFilterBean {
     private static final String AUTHORIZATION = "Authorization";
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final LoggerService loggerService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain fc)
@@ -33,6 +40,17 @@ public class JwtTokenFilter extends GenericFilterBean {
             }
 
         }
+        try {
+            Logger logger=new Logger();
+            logger.setRemoteAddr(request.getRemoteAddr());
+            logger.setRemotePort(request.getRemotePort());
+            logger.setRequestURI(((HttpServletRequest) request).getRequestURI());
+
+            loggerService.save(logger);
+        } catch(Exception e) {
+            log.info(e.toString());
+        }
+
         fc.doFilter(request, response);
     }
 
