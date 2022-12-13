@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -10,12 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Slf4j
 public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
@@ -24,6 +27,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        log.info(String.valueOf(http));
         return http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -34,7 +38,14 @@ public class SecurityConfig {
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterAfter(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class).build();
+                .httpBasic()
+                .and()
+                .addFilterAfter(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors().
+                and()
+                .build();
 
     }
+
+
 }

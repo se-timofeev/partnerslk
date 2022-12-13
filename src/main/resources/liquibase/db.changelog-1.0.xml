@@ -146,4 +146,27 @@
 
     </changeSet>
 
+
+    <changeSet id="1.0.10" author="s.timofeev">
+        <createTable tableName="request_logs">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="request_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="remote_addr" type="VARCHAR(100)">
+
+            </column>
+            <column name="remote_port" type="VARCHAR(255)">
+
+            </column>
+            <column name="request_uri" type="VARCHAR(255)">
+
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
 </databaseChangeLog>

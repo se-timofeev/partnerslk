@@ -1,16 +1,15 @@
 package ru.planetnails.partnerslk.rest;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.dto.AuthenticationRequestDto;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
@@ -32,7 +31,7 @@ public class AuthenticationRestControllerV1 {
 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
+    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws MismatchedInputException, HttpMessageNotReadableException {
         log.info("login {}", requestDto);
         try {
             String username = requestDto.getUsername();
