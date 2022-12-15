@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.rest;
+package ru.planetnails.partnerslk.Controllers;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.AllArgsConstructor;
