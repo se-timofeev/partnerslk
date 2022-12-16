@@ -25,11 +25,10 @@ public class ItemAddDto {
     private String guid1c;
 
     private String descriptionHtml;
-    @NotBlank
-    @NotNull
+
     private Boolean isGroup;
 
-    private String parentId;
+    private String parent_guid1c;
 
     private Integer level;
 

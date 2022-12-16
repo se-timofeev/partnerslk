@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.Controllers;
+package ru.planetnails.partnerslk.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

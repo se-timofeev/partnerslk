@@ -2,7 +2,6 @@ package ru.planetnails.partnerslk.model.item;
 
 import lombok.*;
 import ru.planetnails.partnerslk.model.baseClasses.BaseEntity;
-import ru.planetnails.partnerslk.model.baseClasses.Status;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,8 +28,8 @@ public class Item extends BaseEntity {
     @Column(name="is_group")
     private Boolean isGroup;
 
-    @Column (name="parent_id")
-    private String parentId;
+    @Column (name="parent_guid1c")
+    private String parentGuid1c;
 
     @Column (name="level")
     private Integer level;
@@ -40,7 +39,6 @@ public class Item extends BaseEntity {
 
     @Column(name="is_out_of_stock")
     private Boolean isOutOfStock;
-    @Column (name="status")
-    private Status status;
+
 
 }
