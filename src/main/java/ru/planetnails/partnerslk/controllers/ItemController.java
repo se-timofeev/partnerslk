@@ -2,14 +2,10 @@ package ru.planetnails.partnerslk.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.planetnails.partnerslk.model.item.Dto.ItemAddDto;
+import org.springframework.web.bind.annotation.*;
+import ru.planetnails.partnerslk.model.item.Dto.*;
 import ru.planetnails.partnerslk.service.ItemService;
-
-import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -17,8 +13,14 @@ import javax.validation.Valid;
 @RequestMapping (value = "/api/v1/items")
 public class ItemController {
 private ItemService itemService;
-    @PostMapping
-    public ItemAddDto add(@Valid @RequestBody ItemAddDto itemDto){
-        return itemService.add(itemDto);
+
+    @PostMapping()
+    public String add(@RequestBody List<ItemAddDto> items){
+         itemService.add(items);
+        return "Your data has been queued.";
+    }
+    @GetMapping(produces =  "application/json;charset=UTF-8")
+    public List<ItemDtoOut> getAll(){
+       return itemService.getAll();
     }
 }
