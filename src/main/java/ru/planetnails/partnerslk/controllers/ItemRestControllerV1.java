@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 @RequestMapping (value = "/api/v1/items")
-public class ItemController {
+public class ItemRestControllerV1 {
 private ItemService itemService;
 
     @PostMapping()

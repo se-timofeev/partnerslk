@@ -12,7 +12,7 @@ public interface ItemRepository extends JpaRepository<Item,Long> {
     @Override
     Optional<Item> findById(Long id);
 
-    @Query(value = "select p.id from items  as p WHERE p.guid1c = ?1",nativeQuery = true)
+    @Query(value = "select p.id from items  as p WHERE p.id = ?1",nativeQuery = true)
    Long getItemIDByGuid1c(String guid1c);
 
 

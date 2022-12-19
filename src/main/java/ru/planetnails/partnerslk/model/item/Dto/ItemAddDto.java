@@ -1,11 +1,8 @@
 package ru.planetnails.partnerslk.model.item.Dto;
 
 import lombok.*;
-import ru.planetnails.partnerslk.model.item.StatusItem;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 
 @Getter
 @Setter
