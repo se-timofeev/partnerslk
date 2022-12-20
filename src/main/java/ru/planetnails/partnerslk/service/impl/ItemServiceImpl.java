@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.planetnails.partnerslk.model.item.Dto.*;
+import ru.planetnails.partnerslk.model.item.dto.*;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.repository.ItemRepository;
 import ru.planetnails.partnerslk.service.ItemService;

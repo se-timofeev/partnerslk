@@ -1,7 +1,6 @@
 package ru.planetnails.partnerslk.model.user;
 
 import lombok.Data;
-import lombok.ToString;
 import ru.planetnails.partnerslk.model.baseClasses.BaseEntity;
 import ru.planetnails.partnerslk.model.baseClasses.Role;
 

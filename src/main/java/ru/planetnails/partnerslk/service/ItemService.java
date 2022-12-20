@@ -1,7 +1,7 @@
 package ru.planetnails.partnerslk.service;
 
-import ru.planetnails.partnerslk.model.item.Dto.ItemAddDto;
-import ru.planetnails.partnerslk.model.item.Dto.ItemDtoOut;
+import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
+import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
 
 import java.util.List;
 

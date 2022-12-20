@@ -13,9 +13,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import ru.planetnails.partnerslk.security.jwt.JwtConfigurer;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenFilter;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -27,10 +31,13 @@ public class SecurityConfig {
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
 
+    private static final String ITEMS_ENDPOINT = "/api/v1/items";
+
+
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        log.info(String.valueOf(http));
+
         return http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -39,6 +46,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers(ADMIN_ENDPOINT).permitAll()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
+                .antMatchers(ITEMS_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
@@ -49,6 +57,7 @@ public class SecurityConfig {
                 .build();
 
     }
+
 
 
 }

@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.model.item.Dto;
+package ru.planetnails.partnerslk.model.item.dto;
 
 import lombok.*;
 

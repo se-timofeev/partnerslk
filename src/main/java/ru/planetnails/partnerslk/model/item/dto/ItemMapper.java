@@ -1,7 +1,6 @@
-package ru.planetnails.partnerslk.model.item.Dto;
+package ru.planetnails.partnerslk.model.item.dto;
 
 import ru.planetnails.partnerslk.model.item.Item;
-import ru.planetnails.partnerslk.model.item.StatusItem;
 
 import java.time.LocalDateTime;
 
