@@ -1,7 +1,7 @@
 package ru.planetnails.partnerslk.model.user;
 
 import lombok.*;
-import ru.planetnails.partnerslk.model.baseClasses.Role;
+import ru.planetnails.partnerslk.model.role.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

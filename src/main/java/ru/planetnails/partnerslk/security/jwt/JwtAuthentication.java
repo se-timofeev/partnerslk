@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import ru.planetnails.partnerslk.model.baseClasses.Role;
 
 import java.util.Collection;
 import java.util.Set;

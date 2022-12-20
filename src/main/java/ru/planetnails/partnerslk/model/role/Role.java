@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.model.baseClasses;
+package ru.planetnails.partnerslk.model.role;
 
 import lombok.*;
 import ru.planetnails.partnerslk.model.user.User;

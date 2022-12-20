@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.planetnails.partnerslk.model.baseClasses.Role;
+import ru.planetnails.partnerslk.model.role.Role;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.model.user.UserStatus;
 import ru.planetnails.partnerslk.repository.RoleRepository;

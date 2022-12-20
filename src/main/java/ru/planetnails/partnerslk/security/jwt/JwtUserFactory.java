@@ -2,8 +2,8 @@ package ru.planetnails.partnerslk.security.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import ru.planetnails.partnerslk.model.baseClasses.Role;
 import ru.planetnails.partnerslk.model.baseClasses.Status;
+import ru.planetnails.partnerslk.model.role.Role;
 import ru.planetnails.partnerslk.model.user.User;
 
 import java.util.ArrayList;

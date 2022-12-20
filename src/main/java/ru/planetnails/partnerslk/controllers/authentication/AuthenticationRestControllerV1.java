@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.controllers;
+package ru.planetnails.partnerslk.controllers.authentication;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.config.CustomAuthenticationManager;
-import ru.planetnails.partnerslk.dto.AuthenticationRequestDto;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;

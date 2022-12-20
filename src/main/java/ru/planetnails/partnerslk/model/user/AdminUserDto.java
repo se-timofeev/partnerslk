@@ -1,9 +1,7 @@
-package ru.planetnails.partnerslk.dto;
+package ru.planetnails.partnerslk.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import ru.planetnails.partnerslk.model.user.User;
-import ru.planetnails.partnerslk.model.user.UserStatus;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
