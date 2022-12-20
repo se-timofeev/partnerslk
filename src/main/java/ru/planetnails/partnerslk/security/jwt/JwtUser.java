@@ -2,31 +2,30 @@ package ru.planetnails.partnerslk.security.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.planetnails.partnerslk.model.baseClasses.Status;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 public class JwtUser implements UserDetails {
-    private  final Long id;
+    private final String id;
     private final String name;
     private final String firstName;
     private final  String lastName;
     private final String password;
     private final String email;
     private final Boolean enabled;
-    private final Date lastPasswordResetDate;
+    private final LocalDateTime lastPasswordResetDate;
     private final Collection<? extends GrantedAuthority> authorities;
 
 
-    public JwtUser(Long id,
+    public JwtUser(String id,
                    String name,
                    String firstName,
                    String lastName,
                    String password,
                    String email,
                    Boolean enabled,
-                   Date lastPasswordResetDate,
+                   LocalDateTime lastPasswordResetDate,
                    Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;

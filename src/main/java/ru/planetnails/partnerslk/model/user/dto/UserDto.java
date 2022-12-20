@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.dto;
+package ru.planetnails.partnerslk.model.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -7,7 +7,7 @@ import ru.planetnails.partnerslk.model.user.User;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
-    private Long id;
+    private String id;
     private String username;
     private String firstName;
     private String lastName;

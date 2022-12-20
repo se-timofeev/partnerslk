@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.planetnails.partnerslk.dto.UserDto;
 import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.model.user.dto.UserDto;
 import ru.planetnails.partnerslk.service.UserService;
 
 @RestController

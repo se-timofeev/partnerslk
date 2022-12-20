@@ -2,13 +2,13 @@ package ru.planetnails.partnerslk.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import ru.planetnails.partnerslk.model.baseClasses.Status;
 import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.model.user.UserStatus;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AdminUserDto {
-    private Long id;
+    private String id;
     private String username;
     private String firstName;
     private String lastName;
@@ -22,7 +22,7 @@ public class AdminUserDto {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setStatus(Status.valueOf(status));
+        user.setStatus(UserStatus.valueOf(status));
         return user;
     }
 

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.planetnails.partnerslk.model.baseClasses.Role;
-import ru.planetnails.partnerslk.model.baseClasses.Status;
 import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.model.user.UserStatus;
 import ru.planetnails.partnerslk.repository.RoleRepository;
 import ru.planetnails.partnerslk.repository.UserRepository;
 import ru.planetnails.partnerslk.service.UserService;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         userRoles.add(roleUser);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(userRoles);
-        user.setStatus(Status.ACTIVE);
+        user.setStatus(UserStatus.ACTIVE);
         User registerUser = userRepository.save(user);
         log.info("register - user {} succefully reg.", registerUser);
         return null;
