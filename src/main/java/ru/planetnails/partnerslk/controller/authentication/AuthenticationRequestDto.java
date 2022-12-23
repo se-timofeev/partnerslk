@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.controllers.authentication;
+package ru.planetnails.partnerslk.controller.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

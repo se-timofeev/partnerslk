@@ -1,19 +1,25 @@
 package ru.planetnails.partnerslk.service;
 
 import ru.planetnails.partnerslk.model.user.User;
-
-import java.util.List;
+import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
+import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 
 public interface UserService {
 
-    User register(User user);
+    UserOutDto add(UserAddDto userAddDto);
 
-    List<User> getAll();
 
     User findByName(String name);
 
-    User findById(Long id);
+    User findById(String id);
 
-    void delete(Long id);
+    void delete(String id);
 
+    UserOutDto setUserActive(String userId);
+
+    UserOutDto setUserBlocked(String userId);
+
+    UserOutDto getUser(String userId);
+
+    UserOutDto setUserPending(String userId);
 }

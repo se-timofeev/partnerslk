@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.partner.Partner;
 
 @Repository
-public interface PartnerRepository extends JpaRepository<Partner,Long> {
+public interface PartnerRepository extends JpaRepository<Partner, String> {
 }

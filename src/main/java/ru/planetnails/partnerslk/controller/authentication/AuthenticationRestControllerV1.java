@@ -1,16 +1,21 @@
-package ru.planetnails.partnerslk.controllers.authentication;
+package ru.planetnails.partnerslk.controller.authentication;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import ru.planetnails.partnerslk.config.CustomAuthenticationManager;
+import ru.planetnails.partnerslk.exception.NotFoundException;
+import ru.planetnails.partnerslk.exception.UserOrPasswordAreIncorrectException;
 import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.security.config.CustomAuthenticationManager;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;
 
@@ -21,6 +26,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @Slf4j
+@Tag(name = "Authentication", description = "")
 @RequestMapping(value = "/api/v1/auth")
 public class AuthenticationRestControllerV1 {
 
@@ -37,15 +43,24 @@ public class AuthenticationRestControllerV1 {
         this.userService = userService;
     }
 
+    @Operation(summary = "Getting the token with 'username' and 'password'")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "You will get the token if the user and password are correct",
+                    content = {@Content(mediaType = "application/json"
+                    )}),
+            @ApiResponse(responseCode = "401", description = "User or password are incorrect",
+                    content = {@Content(mediaType = "application/json"
+                    )})
+    })
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws  HttpMessageNotReadableException {
+    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws HttpMessageNotReadableException {
         log.info("login {}", requestDto);
         try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
 
             if (user == null) {
-                throw new UsernameNotFoundException("User with username: " + username + " not found");
+                throw new NotFoundException("User with username: " + username + " not found");
             }
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
 
@@ -59,7 +74,7 @@ public class AuthenticationRestControllerV1 {
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username or password");
+            throw new UserOrPasswordAreIncorrectException("Invalid username or password");
         }
     }
 }

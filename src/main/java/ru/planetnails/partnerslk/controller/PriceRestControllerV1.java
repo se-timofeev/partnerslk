@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.controllers;
+package ru.planetnails.partnerslk.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.model.user;
 
 import lombok.*;
+import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.role.Role;
 
 import javax.persistence.*;
@@ -53,14 +54,20 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                "firstName='" + firstName + '\'' +
-//                ", lastName='" + lastName + '\'' +
-//                ", email='" + email + '\'' +
-//                ", password='" + password + '\'' +
-//                ", roles=" + roles +
-//                '}';
-//    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_partners",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "partner_id", referencedColumnName = "id")})
+    private Partner partner;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }
