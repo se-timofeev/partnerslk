@@ -1,25 +1,16 @@
-package ru.planetnails.partnerslk.config;
+package ru.planetnails.partnerslk.security.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import ru.planetnails.partnerslk.security.jwt.JwtConfigurer;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenFilter;
-import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -29,10 +20,12 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
+    private static final String SWAGGER_WHITELIST1 = "/v3/api-docs/**";
+    private static final String SWAGGER_WHITELIST2 = "/swagger-ui/**";
+    private static final String SWAGGER_WHITELIST3 = "/swagger-ui.html";
+
+
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-
-    private static final String ITEMS_ENDPOINT = "/api/v1/items";
-
 
 
     @Bean
@@ -44,9 +37,10 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(ADMIN_ENDPOINT).permitAll()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .antMatchers(ITEMS_ENDPOINT).permitAll()
+                .antMatchers(SWAGGER_WHITELIST1).permitAll()
+                .antMatchers(SWAGGER_WHITELIST2).permitAll()
+                .antMatchers(SWAGGER_WHITELIST3).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()

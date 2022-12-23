@@ -1,19 +1,19 @@
-package ru.planetnails.partnerslk.security;
+package ru.planetnails.partnerslk.security.jwt;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.planetnails.partnerslk.model.user.User;
-import ru.planetnails.partnerslk.security.jwt.JwtUser;
-import ru.planetnails.partnerslk.security.jwt.JwtUserFactory;
 import ru.planetnails.partnerslk.service.UserService;
 
 @Service
 @Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
 
+    @Autowired
     private UserService userService;
 
     @Override

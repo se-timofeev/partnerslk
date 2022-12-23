@@ -2,9 +2,9 @@ package ru.planetnails.partnerslk.security.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import ru.planetnails.partnerslk.model.baseClasses.Status;
 import ru.planetnails.partnerslk.model.role.Role;
 import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.model.user.UserStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public final class JwtUserFactory {
                 user.getLastName(),
                 user.getPassword(),
                 user.getEmail(),
-                user.getStatus().equals(Status.ACTIVE),
+                user.getStatus().equals(UserStatus.ACTIVE),
                 user.getUpdated(),
                 mapToGrantedAuthorities((new ArrayList<>(user.getRoles())))
         );

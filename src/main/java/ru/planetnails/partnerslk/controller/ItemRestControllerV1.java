@@ -1,10 +1,12 @@
-package ru.planetnails.partnerslk.controllers;
+package ru.planetnails.partnerslk.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.planetnails.partnerslk.model.item.dto.*;
+import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
+import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
 import ru.planetnails.partnerslk.service.ItemService;
+
 import java.util.List;
 
 @RestController

@@ -4,50 +4,80 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.planetnails.partnerslk.exception.NotFoundException;
+import ru.planetnails.partnerslk.exception.PartnerNotFoundException;
+import ru.planetnails.partnerslk.exception.UsersNameIsAlreadyTaken;
+import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.role.Role;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.model.user.UserStatus;
+import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
+import ru.planetnails.partnerslk.model.user.dto.UserMapper;
+import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
+import ru.planetnails.partnerslk.repository.PartnerRepository;
 import ru.planetnails.partnerslk.repository.RoleRepository;
 import ru.planetnails.partnerslk.repository.UserRepository;
 import ru.planetnails.partnerslk.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
+    private final PartnerRepository partnerRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
+                           BCryptPasswordEncoder passwordEncoder,
+                           PartnerRepository partnerRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.partnerRepository = partnerRepository;
     }
 
     @Override
-    public User register(User user) {
-        Role roleUser = roleRepository.findByName("ROLE_USER");
+    public UserOutDto add(UserAddDto userAddDto) {
+        Role roleUser = roleRepository.findByName("USER");
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        User user;
+        user = userRepository.findById(userAddDto.getId()).orElse(null);
+
+        User user1 = userRepository.findByName(userAddDto.getName());
+        if (user == null & user1 == null) {
+            user = UserMapper.fromUserAddDtoToUser(userAddDto);
+            user.setCreated(LocalDateTime.now());
+        } else if (user == null & user1 != null) {
+            throw new UsersNameIsAlreadyTaken("Users  name is already taken");
+        } else {
+            user = UserMapper.fromUserAddDtoToUser(userAddDto, user);
+
+        }
+
+        if (userAddDto.getPartnerId() != null) {
+            Partner partner = partnerRepository.findById(userAddDto.getPartnerId())
+                    .orElseThrow(() -> new PartnerNotFoundException("Partner id not found"));
+            user.setPartner(partner);
+        }
+
+
+        user.setPassword(passwordEncoder.encode(userAddDto.getPassword()));
         user.setRoles(userRoles);
-        user.setStatus(UserStatus.ACTIVE);
+
+        user.setStatus(UserStatus.PENDING);
         User registerUser = userRepository.save(user);
         log.info("register - user {} succefully reg.", registerUser);
-        return null;
+        return UserMapper.fromUserToUserOutDto(user);
     }
 
-    @Override
-    public List<User> getAll() {
-        List<User> users = userRepository.findAll();
-        log.info("Get all {}", users.size());
-        return users;
-    }
 
     @Override
     public User findByName(String name) {
@@ -57,16 +87,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        log.info("user with name {} found", id);
+    public User findById(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        log.info("user with name {} found", userId);
         return user;
     }
 
     @Override
-    public void delete(Long id) {
-        userRepository.deleteById(id);
-        log.info("delete user by id {}", id);
+    @Transactional
+    public void delete(String userId) {
+        userRepository.deleteById(userId);
+        log.info("delete user by id {}", userId);
+    }
+
+    @Override
+    @Transactional
+    public UserOutDto setUserActive(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        user.setStatus(UserStatus.ACTIVE);
+        userRepository.save(user);
+        return UserMapper.fromUserToUserOutDto(user);
+
+    }
+
+    @Override
+    @Transactional
+    public UserOutDto setUserBlocked(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        user.setStatus(UserStatus.BLOCKED);
+        userRepository.save(user);
+        return UserMapper.fromUserToUserOutDto(user);
+
+    }
+
+    @Override
+    @Transactional
+    public UserOutDto setUserPending(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        user.setStatus(UserStatus.PENDING);
+        userRepository.save(user);
+        return UserMapper.fromUserToUserOutDto(user);
+
+    }
+
+    @Override
+    @Transactional
+    public UserOutDto getUser(String userId) {
+        return UserMapper.fromUserToUserOutDto(userRepository.findByName(userId));
     }
 }
 
