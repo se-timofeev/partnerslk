@@ -31,9 +31,9 @@ private ItemService itemService;
     }
 
     @GetMapping("/groups")
-    public List<ItemDtoOutGroups> getFilteredItems(@RequestParam(required = false) Integer level,
-                                                   @RequestParam(required = false) String parentId) {
+    public List<ItemDtoOutGroups> getFilteredGroupItems(@RequestParam(required = false) Integer level,
+                                                        @RequestParam(required = false) String parentId) {
         log.info(String.format("Получен эндпоинт GET /api/v1/items/groups; level = %d, parentId = %s", level, parentId));
-        return itemService.getFilteredItems(level, parentId);
+        return itemService.getFilteredGroupItems(level, parentId);
     }
 }

@@ -13,5 +13,5 @@ public interface ItemService {
 
     List<ItemDtoOut> getAll();
 
-    List<ItemDtoOutGroups> getFilteredItems(Integer level, String parentId);
+    List<ItemDtoOutGroups> getFilteredGroupItems(Integer level, String parentId);
 }

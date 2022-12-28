@@ -5,8 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.planetnails.partnerslk.model.item.dto.*;
 import ru.planetnails.partnerslk.model.item.Item;
+import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
+import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
+import ru.planetnails.partnerslk.model.item.dto.ItemDtoOutGroups;
+import ru.planetnails.partnerslk.model.item.dto.ItemMapper;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.ItemService;
 
@@ -58,7 +61,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoOutGroups> getFilteredItems(Integer level, String parentId) {
+    public List<ItemDtoOutGroups> getFilteredGroupItems(Integer level, String parentId) {
         List<Item> items = itemRepository.getFilteredItems(level, parentId);
         return items.stream().map(ItemMapper::toItemDtoOutShort).collect(Collectors.toList());
     }
