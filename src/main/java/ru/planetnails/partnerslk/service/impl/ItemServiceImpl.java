@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.model.item.dto.*;
 import ru.planetnails.partnerslk.model.item.Item;
-import ru.planetnails.partnerslk.repository.ItemRepository;
+import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.ItemService;
 
 import java.util.List;
@@ -55,5 +55,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDtoOut> getAll() {
         return itemRepository.findAll().stream().map(ItemMapper::toDtoOut).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemDtoOutGroups> getFilteredItems(Integer level, String parentId) {
+        List<Item> items = itemRepository.getFilteredItems(level, parentId);
+        return items.stream().map(ItemMapper::toItemDtoOutShort).collect(Collectors.toList());
     }
 }

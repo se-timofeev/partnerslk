@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.repository;
+package ru.planetnails.partnerslk.repository.itemRepository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,7 +8,7 @@ import ru.planetnails.partnerslk.model.item.Item;
 import java.util.Optional;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item,Long> {
+public interface ItemRepository extends JpaRepository<Item,Long>, CustomItemRepository {
     @Override
     Optional<Item> findById(Long id);
 
