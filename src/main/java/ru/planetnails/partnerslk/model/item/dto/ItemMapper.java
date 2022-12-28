@@ -44,4 +44,8 @@ public class ItemMapper {
                 .id(item.getId()).build();
 
     }
+
+    public static ItemDtoOutShort toItemDtoOutShort(Item item) {
+        return new ItemDtoOutShort(item.getId(), item.getName(), item.getParentId(), item.getLevel());
+    }
 }
