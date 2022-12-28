@@ -5,7 +5,7 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
-public class ItemDtoOutShort {
+public class ItemDtoOutGroups {
 
     private String id;
     private String name;

@@ -45,7 +45,7 @@ public class ItemMapper {
 
     }
 
-    public static ItemDtoOutShort toItemDtoOutShort(Item item) {
-        return new ItemDtoOutShort(item.getId(), item.getName(), item.getParentId(), item.getLevel());
+    public static ItemDtoOutGroups toItemDtoOutShort(Item item) {
+        return new ItemDtoOutGroups(item.getId(), item.getName(), item.getParentId(), item.getLevel());
     }
 }

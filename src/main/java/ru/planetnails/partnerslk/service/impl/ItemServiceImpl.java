@@ -58,7 +58,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoOutShort> getFilteredItems(Integer level, String parentId) {
+    public List<ItemDtoOutGroups> getFilteredItems(Integer level, String parentId) {
         List<Item> items = itemRepository.getFilteredItems(level, parentId);
         return items.stream().map(ItemMapper::toItemDtoOutShort).collect(Collectors.toList());
     }
