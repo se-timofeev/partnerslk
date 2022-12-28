@@ -11,18 +11,19 @@ public class ItemMapper {
                 item.setDescription(itemAddDto.getDescription());
                 item.setDescriptionHtml(itemAddDto.getDescriptionHtml());
                 item.setIsGroup(itemAddDto.getIsGroup());
-                item.setId(itemAddDto.getId());
-                item.setLevel(itemAddDto.getLevel());
-                item.setVendorCode(itemAddDto.getVendorCode());
-                item.setParentId(itemAddDto.getParent_id());
-                item.setIsOutOfStock(itemAddDto.getIsOutOfStock());
-                item.setUpdated(LocalDateTime.now());
-                item.setCountryOfOrigin(itemAddDto.getCountryOfOrigin());
+        item.setId(itemAddDto.getId());
+        item.setLevel(itemAddDto.getLevel());
+        item.setVendorCode(itemAddDto.getVendorCode());
+        item.setParentId(itemAddDto.getParent_id());
+        item.setIsOutOfStock(itemAddDto.getIsOutOfStock());
+        item.setUpdated(LocalDateTime.now());
+        item.setCountryOfOrigin(itemAddDto.getCountryOfOrigin());
 
         return item;
     }
-    public static ItemDtoOut toDtoOut(Item item){
-        ItemDtoOut itemDtoOut=new ItemDtoOut ();
+
+    public static ItemDtoOut toItemDtoOut(Item item) {
+        ItemDtoOut itemDtoOut = new ItemDtoOut();
         itemDtoOut.setName(item.getName());
         itemDtoOut.setDescription(item.getDescription());
         itemDtoOut.setIsGroup(item.getIsGroup());
