@@ -13,7 +13,7 @@ create table items
         primary key,
     updated          datetime2
 )
-go
+    go
 
 create table partners
 (
@@ -23,7 +23,7 @@ create table partners
     discount int         not null,
     account  nvarchar(100)
 )
-go
+    go
 
 create table prices
 (
@@ -35,7 +35,7 @@ create table prices
     sale    float       not null,
     updated datetime2
 )
-go
+    go
 
 create table roles
 (
@@ -43,7 +43,7 @@ create table roles
         primary key,
     name varchar(255) collate SQL_Latin1_General_CP1_CI_AS
 )
-go
+    go
 
 create table users
 (
@@ -62,7 +62,7 @@ create table users
     created    datetime2,
     updated    datetime2
 )
-go
+    go
 
 create table user_partners
 (
@@ -73,7 +73,7 @@ create table user_partners
         constraint partner_id_fk
             references partners
 )
-go
+    go
 
 create table user_roles
 (
@@ -84,5 +84,5 @@ create table user_roles
         constraint FKh8ciramu9cc9q3qcqiv4ue8a6
             references roles
 )
-go
+    go
 

@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.repository.itemRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.item.Item;
 
@@ -35,7 +36,7 @@ public class CustomItemRepositoryImpl implements CustomItemRepository{
     }
 
     @Override
-    public List<Item> getFilteredItems(String groupId) {
+    public List<Item> getFilteredItems(String groupId, PageRequest pageRequest) {
         var cb = em.getCriteriaBuilder();
         var query = cb.createQuery(Item.class);
         Root<Item> eventRoot = query.from(Item.class);

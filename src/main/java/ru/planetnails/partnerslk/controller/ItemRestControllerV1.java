@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
 import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
@@ -34,8 +36,13 @@ private ItemService itemService;
     }
 
     @GetMapping(produces = "application/json;charset=UTF-8")
-    public List<ItemDtoOut> getFilteredItems(@RequestParam(required = false, name = "group_id") String groupId) {
-        return itemService.getFilteredItems(groupId);
+    public List<ItemDtoOut> getFilteredItems(@RequestParam(required = false, name = "group_id") String groupId,
+                                             @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        log.info("Get all requests from={}, size={}", from, size);
+        int page = from / size;
+        final PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id").ascending());
+        return itemService.getFilteredItems(groupId, pageRequest);
     }
 
 

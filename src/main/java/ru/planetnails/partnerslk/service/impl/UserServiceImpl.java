@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
             user.setPartner(partner);
         }
 
-
         user.setPassword(passwordEncoder.encode(userAddDto.getPassword()));
         user.setRoles(userRoles);
 

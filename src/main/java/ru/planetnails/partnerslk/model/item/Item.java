@@ -27,7 +27,6 @@ public class Item  {
     @Column(name = "vendor_code")
     private String vendorCode;
 
-
     @Column(name="description_html")
     private String descriptionHtml;
 
@@ -48,6 +47,4 @@ public class Item  {
 
     @Column(name="updated")
     private LocalDateTime updated;
-
-
 }

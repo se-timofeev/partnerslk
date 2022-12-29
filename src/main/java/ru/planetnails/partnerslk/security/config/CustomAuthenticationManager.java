@@ -18,7 +18,6 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     @Autowired
     private UserService userService;
 
-
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

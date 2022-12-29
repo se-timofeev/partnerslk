@@ -7,6 +7,4 @@ import ru.planetnails.partnerslk.model.user.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     User findByName(String name);
-
-
 }

@@ -2,6 +2,7 @@ package ru.planetnails.partnerslk.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,6 @@ import ru.planetnails.partnerslk.service.ItemService;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 @Slf4j
@@ -45,7 +45,9 @@ public class ItemServiceImpl implements ItemService {
     @Async
     public void add(List<ItemAddDto> itemsAddDto) {
         log.info("Add items as List ");
-        List<Item> items =itemsAddDto.stream().map(x->ItemMapper.fromItemAddDtoToItem(x)).collect(Collectors.toList());
+        List<Item> items =itemsAddDto.stream()
+                .map(x->ItemMapper.fromItemAddDtoToItem(x))
+                .collect(Collectors.toList());
         try {
             itemRepository.saveAll(items);
 
@@ -56,17 +58,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoOut> getFilteredItems(String groupId) {
-        List<Item> items = itemRepository.getFilteredItems(groupId);
-        return items.stream().map(ItemMapper::toItemDtoOut).collect(Collectors.toList());
+    public List<ItemDtoOut> getFilteredItems(String groupId, PageRequest pageRequest) {
+        List<Item> items = itemRepository.getFilteredItems(groupId, pageRequest);
+        return items.stream()
+                .map(ItemMapper::toItemDtoOut)
+                .collect(Collectors.toList());
 
     }
 
     @Override
     public List<ItemDtoOutGroups> getFilteredGroups(Integer level, String parentId) {
         List<Item> items = itemRepository.getFilteredGroups(level, parentId);
-        return items.stream().map(ItemMapper::toItemDtoOutShort).collect(Collectors.toList());
+        return items.stream()
+                .map(ItemMapper::toItemDtoOutShort)
+                .collect(Collectors.toList());
     }
-
-
 }

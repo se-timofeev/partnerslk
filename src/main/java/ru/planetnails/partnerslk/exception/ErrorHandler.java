@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class ErrorHandler {
 
-
     @ExceptionHandler({NotFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<String> NotFoundException(NotFoundException e) {
@@ -39,6 +38,4 @@ public class ErrorHandler {
         log.error(e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
-
-
 }
