@@ -1,8 +1,7 @@
 package ru.planetnails.partnerslk.model.item;
 
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import ru.planetnails.partnerslk.model.price.Price;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -49,5 +48,7 @@ public class Item  {
     @Column(name="updated")
     private LocalDateTime updated;
 
-
+    @OneToOne
+    @JoinColumn(name = "price")
+    private Price price;
 }

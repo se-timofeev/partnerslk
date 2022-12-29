@@ -11,7 +11,9 @@ create table items
     vendor_code      varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
     id               varchar(50) not null
         primary key,
-    updated          datetime2
+    updated          datetime2,
+    price varchar(50) constraint items_prices_fk
+        references prices
 )
 go
 
