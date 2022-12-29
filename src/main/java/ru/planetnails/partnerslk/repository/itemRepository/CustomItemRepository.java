@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface CustomItemRepository {
 
-    List<Item> getFilteredItems(Integer level, String parentId);
+    List<Item> getFilteredGroups(Integer level, String parentId);
+
+    List<Item> getFilteredItems(String groupId);
 }

@@ -25,15 +25,16 @@ private ItemService itemService;
         return "Your data has been queued.";
     }
 
-    @GetMapping(produces =  "application/json;charset=UTF-8")
-    public List<ItemDtoOut> getAll(){
-       return itemService.getAll();
+    @GetMapping(produces = "application/json;charset=UTF-8")
+    public List<ItemDtoOut> getFilteredItems(@RequestParam(required = false, name = "group_id") String groupId) {
+        return itemService.getFilteredItems(groupId);
     }
+
 
     @GetMapping("/groups")
     public List<ItemDtoOutGroups> getFilteredGroupItems(@RequestParam(required = false) Integer level,
                                                         @RequestParam(required = false) String parentId) {
         log.info(String.format("Получен эндпоинт GET /api/v1/items/groups; level = %d, parentId = %s", level, parentId));
-        return itemService.getFilteredGroupItems(level, parentId);
+        return itemService.getFilteredGroups(level, parentId);
     }
 }

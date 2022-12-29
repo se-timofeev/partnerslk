@@ -18,7 +18,7 @@ public class CustomItemRepositoryImpl implements CustomItemRepository{
     @PersistenceContext
     private final EntityManager em;
     @Override
-    public List<Item> getFilteredItems(Integer level, String parentId) {
+    public List<Item> getFilteredGroups(Integer level, String parentId) {
         var cb = em.getCriteriaBuilder();
         var query = cb.createQuery(Item.class);
         Root<Item> eventRoot = query.from(Item.class);
@@ -30,6 +30,19 @@ public class CustomItemRepositoryImpl implements CustomItemRepository{
             predicates.add(cb.equal(eventRoot.get("parentId"), parentId));
         }
         predicates.add(cb.equal(eventRoot.get("isGroup"), true));
+        query.where(predicates.toArray(new Predicate[0]));
+        return em.createQuery(query).getResultList();
+    }
+
+    @Override
+    public List<Item> getFilteredItems(String groupId) {
+        var cb = em.getCriteriaBuilder();
+        var query = cb.createQuery(Item.class);
+        Root<Item> eventRoot = query.from(Item.class);
+        List<Predicate> predicates = new ArrayList<>();
+        if (groupId != null) {
+            predicates.add(cb.equal(eventRoot.get("parentId"), groupId));
+        }
         query.where(predicates.toArray(new Predicate[0]));
         return em.createQuery(query).getResultList();
     }

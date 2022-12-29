@@ -11,7 +11,9 @@ public interface ItemService {
 
     void add(List<ItemAddDto> items);
 
-    List<ItemDtoOut> getAll();
+    List<ItemDtoOut> getFilteredItems(String groupId);
 
-    List<ItemDtoOutGroups> getFilteredGroupItems(Integer level, String parentId);
+    List<ItemDtoOutGroups> getFilteredGroups(Integer level, String parentId);
+
+
 }
