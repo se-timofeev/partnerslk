@@ -1,5 +1,12 @@
 package ru.planetnails.partnerslk.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +22,7 @@ import java.util.List;
 @CrossOrigin
 @Slf4j
 @RequestMapping (value = "/api/v1/items")
+@Tag(name = "Items", description = "Вы можете создать, обновить, получить данные о товарах")
 public class ItemRestControllerV1 {
 private ItemService itemService;
 
@@ -31,6 +39,14 @@ private ItemService itemService;
     }
 
 
+    @Operation(summary = "Получить список товаров отфильтрованных по полям \"level\" и  \"parentId\"; " +
+            "Поля \"level\" и  \"parentId\" опционально.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Возвращает список товаров. В случае отсутствия товаров," +
+                    " удовлетворяющих параметром, возвращает пустой список",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ItemDtoOutGroups.class)))}),
+    })
     @GetMapping("/groups")
     public List<ItemDtoOutGroups> getFilteredGroupItems(@RequestParam(required = false) Integer level,
                                                         @RequestParam(required = false) String parentId) {
