@@ -44,7 +44,7 @@ public class Contractor {
     private LocalDateTime updated;
 
     @Column(name="status")
-    private StatusContractor statusContractor ;
+    private StatusContractor status ;
 
 
 }

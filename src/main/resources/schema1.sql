@@ -86,3 +86,20 @@ create table user_roles
 )
 go
 
+create table contractors
+(
+    id             varchar(50) not null
+        primary key,
+    name           nvarchar(100),
+    description    nvarchar(255),
+    inn            varchar(12),
+    kpp            varchar(9),
+    legal_address  nvarchar(255),
+    actual_address nvarchar(255),
+    partner_id     varchar(50)
+        constraint contractors_partners_id_fk
+            references partners,
+    status         varchar(50),
+    updated        datetime2
+)
+
