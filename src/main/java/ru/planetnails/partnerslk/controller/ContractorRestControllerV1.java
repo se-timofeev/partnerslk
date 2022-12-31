@@ -52,7 +52,7 @@ public class ContractorRestControllerV1 {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Your data has been queued (данные получены и добавлены в очередь",
+                    description = "Your data has been queued (данные получены и добавлены в очередь)",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = List.class))}),
@@ -90,7 +90,7 @@ public class ContractorRestControllerV1 {
             @ApiResponse(responseCode = "404", description = "Контрагент yt найден",
                     content = @Content)
     })
-    @PatchMapping("/{contractorId}/active")
+    @PatchMapping("/{contractorId}/blocked")
     public ContractorOutDto setContractorBlocked(@PathVariable String id) {
         return contractorService.setBlocked(id);
 

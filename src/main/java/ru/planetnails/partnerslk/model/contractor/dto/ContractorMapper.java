@@ -14,7 +14,8 @@ public class ContractorMapper {
                 .inn(contractor.getInn())
                 .kpp(contractor.getKpp())
                 .legalAddress(contractor.getLegalAddress())
-                .actualAddress(contractor.getActualAddress()).build();
+                .actualAddress(contractor.getActualAddress())
+                .status(contractor.getStatus()).build();
 
 
     }

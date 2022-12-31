@@ -41,9 +41,10 @@ public class ContractorAddDto {
     @Size(max = 255)
     private String actualAddress;
 
-    @Schema(description = "ID партнера")
+    @Schema(description = "ID партнера (обязательный)")
     @Size(max = 50)
     @NotBlank
+    @NonNull
     private String partnerId;
 
     @Schema(description = "Статус ACTIVE or BLOCKED")
