@@ -2,7 +2,6 @@ package ru.planetnails.partnerslk.model.contractor.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import ru.planetnails.partnerslk.model.contractor.StatusContractor;
 
 
 @Getter
@@ -33,9 +32,5 @@ public class ContractorOutDto {
 
     @Schema(description = "Факт. адрес")
     private String actualAddress;
-
-    @Schema(description = "Статус")
-    private StatusContractor status;
-
 
 }

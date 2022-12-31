@@ -1,9 +1,9 @@
 package ru.planetnails.partnerslk.model.contractor;
 
 import lombok.*;
-import ru.planetnails.partnerslk.model.partner.Partner;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,15 +36,12 @@ public class Contractor {
     @Column(name = "actual_address")
     private String actualAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partner_id")
-    private Partner partner;
+    @NotBlank
+    private String partnerId;
 
     @Column(name="updated")
     private LocalDateTime updated;
-
-    @Column(name="status")
-    private StatusContractor status ;
 
 
 }

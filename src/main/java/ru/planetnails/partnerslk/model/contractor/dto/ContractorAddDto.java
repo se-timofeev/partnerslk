@@ -2,7 +2,6 @@ package ru.planetnails.partnerslk.model.contractor.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import ru.planetnails.partnerslk.model.contractor.StatusContractor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -47,8 +46,5 @@ public class ContractorAddDto {
     @NonNull
     private String partnerId;
 
-    @Schema(description = "Статус ACTIVE or BLOCKED")
-    @Size(max = 50)
-    private StatusContractor status;
 
 }

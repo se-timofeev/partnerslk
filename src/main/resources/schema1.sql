@@ -99,7 +99,6 @@ create table contractors
     partner_id     varchar(50)
         constraint contractors_partners_id_fk
             references partners,
-    status         varchar(50),
     updated        datetime2
 )
 

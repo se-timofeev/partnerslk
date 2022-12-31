@@ -1,7 +1,6 @@
 package ru.planetnails.partnerslk.model.contractor.dto;
 
 import ru.planetnails.partnerslk.model.contractor.Contractor;
-import ru.planetnails.partnerslk.model.contractor.StatusContractor;
 
 import java.time.LocalDateTime;
 
@@ -14,8 +13,7 @@ public class ContractorMapper {
                 .inn(contractor.getInn())
                 .kpp(contractor.getKpp())
                 .legalAddress(contractor.getLegalAddress())
-                .actualAddress(contractor.getActualAddress())
-                .status(contractor.getStatus()).build();
+                .actualAddress(contractor.getActualAddress()).build();
 
 
     }
@@ -29,9 +27,7 @@ public class ContractorMapper {
                 .kpp(contractorAddDto.getKpp())
                 .legalAddress(contractorAddDto.getLegalAddress())
                 .actualAddress(contractorAddDto.getActualAddress())
-                .status(contractorAddDto.getStatus() == null ?
-                        StatusContractor.BLOCKED :
-                        contractorAddDto.getStatus())
+                .partnerId(contractorAddDto.getPartnerId())
                 .updated(LocalDateTime.now()).build();
     }
 }

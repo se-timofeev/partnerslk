@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
-import ru.planetnails.partnerslk.model.contractor.dto.*;
+import ru.planetnails.partnerslk.model.contractor.dto.ContractorAddDto;
+import ru.planetnails.partnerslk.model.contractor.dto.ContractorMapper;
+import ru.planetnails.partnerslk.model.contractor.dto.ContractorOutDto;
 import ru.planetnails.partnerslk.service.ContractorService;
 
 import java.util.List;
@@ -68,31 +70,4 @@ public class ContractorRestControllerV1 {
         return "Your data has been queued.";
     }
 
-    @Operation(summary = "Установить статус контрагента как ACTIVE (действующий) ")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Контрагент найден",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContractorOutDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Контрагент yt найден",
-                    content = @Content)
-    })
-    @PatchMapping("/{contractorId}/active")
-    public ContractorOutDto setContractorActive(@PathVariable String id) {
-        return contractorService.setActive(id);
-
-    }
-
-    @Operation(summary = "Установить статус контрагента BLOCKED (заблокированный) ")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Контрагент найден",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ContractorOutDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Контрагент yt найден",
-                    content = @Content)
-    })
-    @PatchMapping("/{contractorId}/blocked")
-    public ContractorOutDto setContractorBlocked(@PathVariable String id) {
-        return contractorService.setBlocked(id);
-
-    }
 }
