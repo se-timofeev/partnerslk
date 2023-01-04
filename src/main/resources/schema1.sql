@@ -100,6 +100,7 @@ create table dbo.contractors
         constraint contractors_partners_id_fk
             references dbo.partners,
     updated        datetime2     not null
+
 )
 
 
