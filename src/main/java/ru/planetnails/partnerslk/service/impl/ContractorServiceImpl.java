@@ -22,10 +22,6 @@ public class ContractorServiceImpl implements ContractorService {
     private ContractorRepository contractorRepository;
     private PartnerRepository partnerRepository;
 
-    @Override
-    public Contractor findById(String id) {
-        return null;
-    }
 
     @Override
     // @Transactional

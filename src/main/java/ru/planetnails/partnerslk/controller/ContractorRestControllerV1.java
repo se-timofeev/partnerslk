@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.contractor.dto.ContractorAddDto;
@@ -17,11 +16,11 @@ import ru.planetnails.partnerslk.model.contractor.dto.ContractorMapper;
 import ru.planetnails.partnerslk.model.contractor.dto.ContractorOutDto;
 import ru.planetnails.partnerslk.service.ContractorService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@Validated
 @Tag(name = "Contrators", description = "Сервис для создания/изменения, а также получения данных по контрагентам")
 @RequestMapping(value = "/api/v1/contractors")
 public class ContractorRestControllerV1 {
@@ -65,7 +64,7 @@ public class ContractorRestControllerV1 {
     })
     @PostMapping()
     @PutMapping
-    public String add(@RequestBody List<ContractorAddDto> contractors){
+    public String add(@Valid @RequestBody List<ContractorAddDto> contractors) {
         contractorService.add(contractors);
         return "Your data has been queued.";
     }
