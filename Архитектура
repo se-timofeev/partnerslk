@@ -1,0 +1,52 @@
+<mxfile host="app.diagrams.net" modified="2023-01-08T13:03:49.173Z" agent="5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="ohOPr-_Q4_g7BODg39A7" version="20.8.3" type="github">
+  <diagram name="Page-1" id="e7e014a7-5840-1c2e-5031-d8a46d1fe8dd">
+    <mxGraphModel dx="833" dy="436" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2kPc_GwSq0Jav-3234U8-2" value="Заказы" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="383" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="oIJhgTE5x4Cg85z2LbNb-41" value="Управление партнёрами" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="30" y="203" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="oIJhgTE5x4Cg85z2LbNb-42" value="Управление контрагентами" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="30" y="263" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="oIJhgTE5x4Cg85z2LbNb-43" value="Управление пользователями ЛК&lt;br&gt;" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="30" y="323" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-4" value="Управление товарами" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="83" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-5" value="Управление ценами&amp;nbsp;" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="143" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-7" value="Мастер система" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry x="25" y="40" width="220" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-8" value="" style="swimlane;html=1;startSize=457;fontStyle=0;collapsible=0;horizontal=1;swimlaneLine=0;fillColor=#ffe6cc;whiteSpace=wrap;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="290" y="80" width="10" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-9" value="ЛК" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+          <mxGeometry x="365" y="40" width="220" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-18" value="БД" style="shape=datastore;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="630" y="203" width="130" height="127" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-24" value="item" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="365" y="287" width="160" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-25" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="2kPc_GwSq0Jav-3234U8-24">
+          <mxGeometry y="26" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-26" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="2kPc_GwSq0Jav-3234U8-24">
+          <mxGeometry y="52" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="2kPc_GwSq0Jav-3234U8-27" value="+ method(type): type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="2kPc_GwSq0Jav-3234U8-24">
+          <mxGeometry y="60" width="160" height="26" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
