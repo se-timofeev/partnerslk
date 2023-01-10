@@ -86,3 +86,21 @@ create table user_roles
 )
 go
 
+create table dbo.contractors
+(
+    id             varchar(50)   not null
+        primary key,
+    name           nvarchar(100) not null,
+    description    nvarchar(255) not null,
+    inn            varchar(12)   not null,
+    kpp            varchar(9)    not null,
+    legal_address  nvarchar(255) not null,
+    actual_address nvarchar(255) not null,
+    partner_id     varchar(50)   not null
+        constraint contractors_partners_id_fk
+            references dbo.partners,
+    updated        datetime2     not null
+
+)
+
+
