@@ -21,21 +21,23 @@ import java.util.List;
 @AllArgsConstructor
 @CrossOrigin
 @Slf4j
-@RequestMapping (value = "/api/v1/items")
+@RequestMapping(value = "/api/v1/items")
 @Tag(name = "Items", description = "Вы можете создать, обновить, получить данные о товарах")
 public class ItemRestControllerV1 {
-private ItemService itemService;
+    private ItemService itemService;
 
     @PostMapping()
     @PutMapping
-    public String add(@RequestBody List<ItemAddDto> items){
-         itemService.add(items);
+    public String add(@RequestBody List<ItemAddDto> items) {
+        itemService.add(items);
         return "Your data has been queued.";
     }
 
     @GetMapping(produces = "application/json;charset=UTF-8")
-    public List<ItemDtoOut> getFilteredItems(@RequestParam(required = false, name = "group_id") String groupId) {
-        return itemService.getFilteredItems(groupId);
+    public List<ItemDtoOut> getFilteredItems(@RequestParam(name = "from", defaultValue = "0") Integer from,
+                                             @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                             @RequestParam(required = false, name = "group_id") String groupId) {
+        return itemService.getFilteredItems(groupId, from, size);
     }
 
 

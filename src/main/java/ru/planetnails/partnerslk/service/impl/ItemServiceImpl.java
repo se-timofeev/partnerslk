@@ -31,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = ItemMapper.fromItemAddDtoToItem(itemAddDto);
 
         try {
-             itemRepository.save(item);
+            itemRepository.save(item);
 
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -45,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
     @Async
     public void add(List<ItemAddDto> itemsAddDto) {
         log.info("Add items as List ");
-        List<Item> items =itemsAddDto.stream().map(x->ItemMapper.fromItemAddDtoToItem(x)).collect(Collectors.toList());
+        List<Item> items = itemsAddDto.stream().map(x -> ItemMapper.fromItemAddDtoToItem(x)).collect(Collectors.toList());
         try {
             itemRepository.saveAll(items);
 
@@ -56,8 +56,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoOut> getFilteredItems(String groupId) {
-        List<Item> items = itemRepository.getFilteredItems(groupId);
+    public List<ItemDtoOut> getFilteredItems(String groupId, Integer from, Integer size) {
+        List<Item> items = itemRepository.getFilteredItems(groupId, from, size);
         return items.stream().map(ItemMapper::toItemDtoOut).collect(Collectors.toList());
 
     }

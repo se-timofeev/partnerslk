@@ -1,4 +1,4 @@
-create table items
+ create table items
 (
     description      nvarchar(255),
     name             nvarchar(255),
