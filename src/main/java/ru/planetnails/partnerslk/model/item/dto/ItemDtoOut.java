@@ -33,6 +33,10 @@ public class ItemDtoOut {
 
     private Boolean isOutOfStock;
 
+    private Double salePrice;
+
+    private Double retailPrice;
+
     @Override
     public String toString() {
         return "ItemAddDto{" +

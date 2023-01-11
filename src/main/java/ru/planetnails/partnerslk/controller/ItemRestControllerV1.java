@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.planetnails.partnerslk.model.item.ItemQueryParams;
 import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
 import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.ItemDtoOutGroups;
@@ -21,15 +22,15 @@ import java.util.List;
 @AllArgsConstructor
 @CrossOrigin
 @Slf4j
-@RequestMapping (value = "/api/v1/items")
+@RequestMapping(value = "/api/v1/items")
 @Tag(name = "Items", description = "Вы можете создать, обновить, получить данные о товарах")
 public class ItemRestControllerV1 {
-private ItemService itemService;
+    private ItemService itemService;
 
     @PostMapping()
     @PutMapping
-    public String add(@RequestBody List<ItemAddDto> items){
-         itemService.add(items);
+    public String add(@RequestBody List<ItemAddDto> items) {
+        itemService.add(items);
         return "Your data has been queued.";
     }
 
@@ -52,5 +53,35 @@ private ItemService itemService;
                                                         @RequestParam(required = false) String parentId) {
         log.info(String.format("Получен эндпоинт GET /api/v1/items/groups; level = %d, parentId = %s", level, parentId));
         return itemService.getFilteredGroups(level, parentId);
+    }
+
+    @Operation(summary = "Получить список товаров отфильтрованных по полям \"name\", \"description\", " +
+            "\"countryOfOrigin\", \"vendorCode\", \"minPrice\", \"maxPrice\". Все поля опционално ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Возвращает список товаров. В случае отсутствия товаров," +
+                    " удовлетворяющих параметром, возвращает пустой список",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ItemDtoOut.class)))}),
+    })
+    @GetMapping("/param/{partnerId}")
+    public List<ItemDtoOut> getItemByParams(@PathVariable String partnerId,
+                                            @RequestParam(required = false) String name,
+                                            @RequestParam(required = false) String description,
+                                            @RequestParam(required = false) List<String> countries,
+                                            @RequestParam(required = false) String vendorCode,
+                                            @RequestParam(required = false) Double minPrice,
+                                            @RequestParam(required = false) Double maxPrice) {
+        log.info(String.format("Получен эндпоинт GET /api/v1/items/param; partnerId = %s, name = %s, " +
+                        "description = %s, countries = %s, vendorCode = %s, minPrice = %f, maxPrice = %f",
+                partnerId, name, description, countries, vendorCode, minPrice, maxPrice));
+        ItemQueryParams params = ItemQueryParams.builder()
+                .name(name)
+                .description(description)
+                .countries(countries)
+                .vendorCode(vendorCode)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
+                .build();
+        return itemService.getItemByParams(partnerId, params);
     }
 }
