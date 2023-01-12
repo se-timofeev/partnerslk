@@ -18,6 +18,7 @@ public class ItemMapper {
         item.setIsOutOfStock(itemAddDto.getIsOutOfStock());
         item.setUpdated(LocalDateTime.now());
         item.setCountryOfOrigin(itemAddDto.getCountryOfOrigin());
+        item.setIsNovelty(itemAddDto.getIsNovelty());
 
         return item;
     }
@@ -37,6 +38,7 @@ public class ItemMapper {
             itemDtoOut.setSalePrice(item.getPrice().getSale());
             itemDtoOut.setRetailPrice(item.getPrice().getRetail());
         }
+        itemDtoOut.setIsNovelty(item.getIsNovelty());
 
         return itemDtoOut;
     }

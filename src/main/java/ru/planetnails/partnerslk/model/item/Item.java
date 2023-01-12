@@ -51,4 +51,7 @@ public class Item  {
     @OneToOne
     @JoinColumn(name = "price")
     private Price price;
+
+    @Column(name = "is_novelty")
+    private Boolean isNovelty;
 }
