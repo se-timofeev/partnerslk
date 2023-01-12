@@ -33,6 +33,10 @@ public class ItemMapper {
         itemDtoOut.setParent_id(item.getParentId());
         itemDtoOut.setIsOutOfStock(item.getIsOutOfStock());
         itemDtoOut.setCountryOfOrigin(item.getCountryOfOrigin());
+        if(item.getPrice() != null) {
+            itemDtoOut.setSalePrice(item.getPrice().getSale());
+            itemDtoOut.setRetailPrice(item.getPrice().getRetail());
+        }
 
         return itemDtoOut;
     }
