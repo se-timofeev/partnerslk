@@ -60,8 +60,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoOut> getFilteredItems(String groupId) {
-        List<Item> items = itemRepository.getFilteredItems(groupId);
+    public List<ItemDtoOut> getFilteredItems(String groupId, Integer from, Integer size) {
+        List<Item> items = itemRepository.getFilteredItems(groupId, from, size);
         return items.stream().map(ItemMapper::toItemDtoOut).collect(Collectors.toList());
 
     }

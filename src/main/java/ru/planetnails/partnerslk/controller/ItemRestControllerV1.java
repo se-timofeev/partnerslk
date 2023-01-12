@@ -35,8 +35,10 @@ public class ItemRestControllerV1 {
     }
 
     @GetMapping(produces = "application/json;charset=UTF-8")
-    public List<ItemDtoOut> getFilteredItems(@RequestParam(required = false, name = "group_id") String groupId) {
-        return itemService.getFilteredItems(groupId);
+    public List<ItemDtoOut> getFilteredItems(@RequestParam(name = "from", defaultValue = "0") Integer from,
+                                             @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                             @RequestParam(required = false, name = "group_id") String groupId) {
+        return itemService.getFilteredItems(groupId, from, size);
     }
 
 

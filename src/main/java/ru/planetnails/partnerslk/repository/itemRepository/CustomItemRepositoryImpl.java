@@ -7,6 +7,7 @@ import ru.planetnails.partnerslk.model.item.ItemQueryParams;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
@@ -37,16 +38,22 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
     }
 
     @Override
-    public List<Item> getFilteredItems(String groupId) {
+    public List<Item> getFilteredItems(String groupId, Integer from, Integer size) {
         var cb = em.getCriteriaBuilder();
-        var query = cb.createQuery(Item.class);
-        Root<Item> eventRoot = query.from(Item.class);
+        var criteriaQuery  = cb.createQuery(Item.class);
+        Root<Item> eventRoot = criteriaQuery.from(Item.class);
         List<Predicate> predicates = new ArrayList<>();
         if (groupId != null) {
             predicates.add(cb.equal(eventRoot.get("parentId"), groupId));
         }
-        query.where(predicates.toArray(new Predicate[0]));
-        return em.createQuery(query).getResultList();
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+
+        final TypedQuery<Item> query = em.createQuery(criteriaQuery);
+
+        query.setFirstResult(from);
+        query.setMaxResults(size);
+
+        return query.getResultList();
     }
 
     @Override

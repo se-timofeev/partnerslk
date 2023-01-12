@@ -12,10 +12,10 @@ public interface ItemService {
 
     void add(List<ItemAddDto> items);
 
-    List<ItemDtoOut> getFilteredItems(String groupId);
-
     List<ItemDtoOutGroups> getFilteredGroups(Integer level, String parentId);
 
+    List<ItemDtoOut> getFilteredItems(String groupId, Integer from, Integer size);
 
     List<ItemDtoOut> getItemByParams(String partnerId, ItemQueryParams params);
+
 }
