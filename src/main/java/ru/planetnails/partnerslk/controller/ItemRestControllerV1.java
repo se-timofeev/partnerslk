@@ -92,6 +92,14 @@ public class ItemRestControllerV1 {
         return itemService.getItemByParams(partnerId, params, from, size);
     }
 
+    @Operation(summary = "Получить список товаров с фильтрацией по полю \"parentId\", Параметр parentId опционально, " +
+            "параметр partnerId обязателен.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Возвращает список товаров. В случае отсутствия товаров," +
+                    " удовлетворяющих параметром, возвращает пустой список",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ItemDtoOut.class)))}),
+    })
     @GetMapping("/{userId}")
     public List<ItemDtoOut> getItemsPrices(@PathVariable String userId,
                                            @RequestParam (required = false) String parentId,
