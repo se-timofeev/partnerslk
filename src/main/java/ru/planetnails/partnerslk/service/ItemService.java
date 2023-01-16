@@ -14,8 +14,9 @@ public interface ItemService {
 
     List<ItemDtoOutGroups> getFilteredGroups(Integer level, String parentId);
 
-    List<ItemDtoOut> getFilteredItems(String groupId, Integer from, Integer size);
+    List<ItemDtoOut> getFilteredItems(String groupId, Integer from, Integer size, String partnerId);
 
     List<ItemDtoOut> getItemByParams(String partnerId, ItemQueryParams params);
 
+    List<ItemDtoOut> getItemsPrices(String userId, String parentId, String partnerId, Integer from, Integer size);
 }

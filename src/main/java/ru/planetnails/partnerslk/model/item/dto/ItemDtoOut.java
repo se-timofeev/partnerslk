@@ -33,6 +33,12 @@ public class ItemDtoOut {
 
     private Boolean isOutOfStock;
 
+    private Integer discount;
+
+    private Double salePriceBeforeDiscount;
+
+    private Double retailPriceBeforeDiscount;
+
     private Double salePrice;
 
     private Double retailPrice;

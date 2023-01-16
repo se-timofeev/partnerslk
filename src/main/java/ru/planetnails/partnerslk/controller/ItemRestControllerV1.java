@@ -37,8 +37,9 @@ public class ItemRestControllerV1 {
     @GetMapping(produces = "application/json;charset=UTF-8")
     public List<ItemDtoOut> getFilteredItems(@RequestParam(name = "from", defaultValue = "0") Integer from,
                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                             @RequestParam String partnerId,
                                              @RequestParam(required = false, name = "group_id") String groupId) {
-        return itemService.getFilteredItems(groupId, from, size);
+        return itemService.getFilteredItems(groupId, from, size, partnerId);
     }
 
 
@@ -85,5 +86,16 @@ public class ItemRestControllerV1 {
                 .maxPrice(maxPrice)
                 .build();
         return itemService.getItemByParams(partnerId, params);
+    }
+
+    @GetMapping("/{userId}")
+    public List<ItemDtoOut> getItemsPrices(@PathVariable String userId,
+                                           @RequestParam (required = false) String parentId,
+                                           @RequestParam String partnerId,
+                                           @RequestParam (name = "from", defaultValue = "0") Integer from,
+                                           @RequestParam (name = "size", defaultValue = "10") Integer size) {
+        log.info(String.format("Получен эндпоинт GET /api/v1/items/{userId}; userId = %s, parentId = %s",
+                userId, parentId));
+        return itemService.getItemsPrices(userId, parentId, partnerId, from, size);
     }
 }

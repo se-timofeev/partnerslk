@@ -2,6 +2,8 @@ package ru.planetnails.partnerslk.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.ItemService;
 import ru.planetnails.partnerslk.service.PartnerService;
+import ru.planetnails.partnerslk.service.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
     private PartnerService partnerService;
+    private UserService userService;
 
     @Override
     public ItemAddDto add(ItemAddDto itemAddDto) {
@@ -60,10 +64,10 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoOut> getFilteredItems(String groupId, Integer from, Integer size) {
+    public List<ItemDtoOut> getFilteredItems(String groupId, Integer from, Integer size, String partnerId) {
+        Partner partner = partnerService.findPartnerById(partnerId);
         List<Item> items = itemRepository.getFilteredItems(groupId, from, size);
-        return items.stream().map(ItemMapper::toItemDtoOut).collect(Collectors.toList());
-
+        return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
     }
 
     @Override
@@ -76,18 +80,17 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDtoOut> getItemByParams(String partnerId, ItemQueryParams params) {
         Partner partner = partnerService.findPartnerById(partnerId);
         List<Item> items = itemRepository.getItemByParams(params);
-        items = getDiscount(items, partner.getDiscount());
-        return items.stream().map(ItemMapper::toItemDtoOut).collect(Collectors.toList());
+        return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
     }
 
-    private List<Item> getDiscount(List<Item> items, Integer discount) {
-        if (discount != 0)
-            for (Item item : items) {
-                if(item.getPrice() != null) {
-                    item.getPrice().setSale(item.getPrice().getSale() * (100 - discount) / 100);
-                    item.getPrice().setRetail(item.getPrice().getRetail() * (100 - discount) / 100);
-                }
-            }
-        return items;
+    @Override
+    public List<ItemDtoOut> getItemsPrices(String userId, String parentId, String partnerId, Integer from, Integer size) {
+        PageRequest pageRequest = PageRequest.of(from / size, size);
+        userService.findById(userId);
+        Partner partner = partnerService.findPartnerById(partnerId);
+        Page<Item> items;
+        if(parentId == null) items = itemRepository.findItems(pageRequest);
+        else items = itemRepository.findItemsByParentId(parentId, pageRequest);
+        return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
     }
 }
