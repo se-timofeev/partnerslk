@@ -21,7 +21,7 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
     private final EntityManager em;
 
     @Override
-    public List<Item> getFilteredGroups(Integer level, String parentId) {
+    public List<Item> getFilteredGroups(Integer level, String parentId, Integer from, Integer size) {
         var cb = em.getCriteriaBuilder();
         var query = cb.createQuery(Item.class);
         Root<Item> eventRoot = query.from(Item.class);
@@ -34,7 +34,12 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
         }
         predicates.add(cb.equal(eventRoot.get("isGroup"), true));
         query.where(predicates.toArray(new Predicate[0]));
-        return em.createQuery(query).getResultList();
+        final TypedQuery<Item> typedQuery = em.createQuery(query);
+
+        typedQuery.setFirstResult(from);
+        typedQuery.setMaxResults(size);
+
+        return typedQuery.getResultList();
     }
 
     @Override
@@ -57,7 +62,7 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
     }
 
     @Override
-    public List<Item> getItemByParams(ItemQueryParams params) {
+    public List<Item> getItemByParams(ItemQueryParams params, Integer from, Integer size) {
         var cb = em.getCriteriaBuilder();
         var query = cb.createQuery(Item.class);
         Root<Item> eventRoot = query.from(Item.class);
@@ -78,6 +83,11 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
         else if (params.getMaxPrice() != null)
             predicates.add(cb.lessThanOrEqualTo(eventRoot.get("price").get("sale"), params.getMaxPrice()));
         query.where(predicates.toArray(new Predicate[0]));
-        return em.createQuery(query).getResultList();
+        final TypedQuery<Item> typedQuery = em.createQuery(query);
+
+        typedQuery.setFirstResult(from);
+        typedQuery.setMaxResults(size);
+
+        return typedQuery.getResultList();
     }
 }

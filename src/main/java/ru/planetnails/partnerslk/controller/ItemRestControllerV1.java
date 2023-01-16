@@ -52,10 +52,12 @@ public class ItemRestControllerV1 {
                             array = @ArraySchema(schema = @Schema(implementation = ItemDtoOutGroups.class)))}),
     })
     @GetMapping("/groups")
-    public List<ItemDtoOutGroups> getFilteredGroupItems(@RequestParam(required = false) Integer level,
+    public List<ItemDtoOutGroups> getFilteredGroupItems(@RequestParam(name = "from", defaultValue = "0") Integer from,
+                                                        @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                        @RequestParam(required = false) Integer level,
                                                         @RequestParam(required = false) String parentId) {
         log.info(String.format("Получен эндпоинт GET /api/v1/items/groups; level = %d, parentId = %s", level, parentId));
-        return itemService.getFilteredGroups(level, parentId);
+        return itemService.getFilteredGroups(level, parentId, from, size);
     }
 
     @Operation(summary = "Получить список товаров отфильтрованных по полям \"name\", \"description\", " +
@@ -68,6 +70,8 @@ public class ItemRestControllerV1 {
     })
     @GetMapping("/param/{partnerId}")
     public List<ItemDtoOut> getItemByParams(@PathVariable String partnerId,
+                                            @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                            @RequestParam(name = "size", defaultValue = "10") Integer size,
                                             @RequestParam(required = false) String name,
                                             @RequestParam(required = false) String description,
                                             @RequestParam(required = false) List<String> countries,
@@ -85,7 +89,7 @@ public class ItemRestControllerV1 {
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
                 .build();
-        return itemService.getItemByParams(partnerId, params);
+        return itemService.getItemByParams(partnerId, params, from, size);
     }
 
     @GetMapping("/{userId}")
