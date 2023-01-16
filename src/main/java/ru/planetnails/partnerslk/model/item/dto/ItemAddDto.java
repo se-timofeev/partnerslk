@@ -32,6 +32,8 @@ public class ItemAddDto {
 
     private Boolean isOutOfStock;
 
+    private Boolean isNovelty;
+
     @Override
     public String toString() {
         return "ItemAddDto{" +

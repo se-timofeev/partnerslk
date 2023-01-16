@@ -43,6 +43,8 @@ public class ItemDtoOut {
 
     private Double retailPrice;
 
+    private Boolean isNovelty;
+
     @Override
     public String toString() {
         return "ItemAddDto{" +
