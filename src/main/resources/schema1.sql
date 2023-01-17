@@ -13,7 +13,8 @@
         primary key,
     updated          datetime2,
     price varchar(50) constraint items_prices_fk
-        references prices
+        references prices,
+    is_novelty         bit
 )
 go
 

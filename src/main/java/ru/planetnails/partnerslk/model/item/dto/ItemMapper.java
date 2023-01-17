@@ -18,11 +18,12 @@ public class ItemMapper {
         item.setIsOutOfStock(itemAddDto.getIsOutOfStock());
         item.setUpdated(LocalDateTime.now());
         item.setCountryOfOrigin(itemAddDto.getCountryOfOrigin());
+        item.setIsNovelty(itemAddDto.getIsNovelty());
 
         return item;
     }
 
-    public static ItemDtoOut toItemDtoOut(Item item) {
+    public static ItemDtoOut toItemDtoOut(Item item, Integer discount) {
         ItemDtoOut itemDtoOut = new ItemDtoOut();
         itemDtoOut.setName(item.getName());
         itemDtoOut.setDescription(item.getDescription());
@@ -34,10 +35,13 @@ public class ItemMapper {
         itemDtoOut.setIsOutOfStock(item.getIsOutOfStock());
         itemDtoOut.setCountryOfOrigin(item.getCountryOfOrigin());
         if(item.getPrice() != null) {
-            itemDtoOut.setSalePrice(item.getPrice().getSale());
-            itemDtoOut.setRetailPrice(item.getPrice().getRetail());
+            itemDtoOut.setDiscount(discount);
+            itemDtoOut.setSalePriceBeforeDiscount(item.getPrice().getSale());
+            itemDtoOut.setRetailPriceBeforeDiscount(item.getPrice().getRetail());
+            itemDtoOut.setSalePrice(item.getPrice().getSale() * (100 - discount) / 100);
+            itemDtoOut.setRetailPrice(item.getPrice().getRetail() * (100 - discount) / 100);
         }
-
+        itemDtoOut.setIsNovelty(item.getIsNovelty());
         return itemDtoOut;
     }
 
