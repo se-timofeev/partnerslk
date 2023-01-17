@@ -38,8 +38,8 @@ public class ItemRestControllerV1 {
     public List<ItemDtoOut> getFilteredItems(@RequestParam(name = "from", defaultValue = "0") Integer from,
                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
                                              @RequestParam String partnerId,
-                                             @RequestParam(required = false, name = "group_id") String groupId) {
-        return itemService.getFilteredItems(groupId, from, size, partnerId);
+                                             @RequestParam(required = false, name = "group_id") String parentId) {
+        return itemService.getFilteredItems(parentId, from, size, partnerId);
     }
 
 

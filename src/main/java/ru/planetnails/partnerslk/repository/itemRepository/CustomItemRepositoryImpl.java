@@ -43,13 +43,13 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
     }
 
     @Override
-    public List<Item> getFilteredItems(String groupId, Integer from, Integer size) {
+    public List<Item> getFilteredItems(String parentId, Integer from, Integer size) {
         var cb = em.getCriteriaBuilder();
         var criteriaQuery  = cb.createQuery(Item.class);
         Root<Item> eventRoot = criteriaQuery.from(Item.class);
         List<Predicate> predicates = new ArrayList<>();
-        if (groupId != null) {
-            predicates.add(cb.equal(eventRoot.get("parentId"), groupId));
+        if (parentId != null) {
+            predicates.add(cb.equal(eventRoot.get("parentId"), parentId));
         }
         criteriaQuery.where(predicates.toArray(new Predicate[0]));
 

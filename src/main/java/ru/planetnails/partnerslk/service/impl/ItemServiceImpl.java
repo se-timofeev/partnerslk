@@ -64,9 +64,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoOut> getFilteredItems(String groupId, Integer from, Integer size, String partnerId) {
+    public List<ItemDtoOut> getFilteredItems(String parentId, Integer from, Integer size, String partnerId) {
         Partner partner = partnerService.findPartnerById(partnerId);
-        List<Item> items = itemRepository.getFilteredItems(groupId, from, size);
+        List<Item> items = itemRepository.getFilteredItems(parentId, from, size);
         return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
     }
 
