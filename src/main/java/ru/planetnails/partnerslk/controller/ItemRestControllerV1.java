@@ -37,8 +37,9 @@ public class ItemRestControllerV1 {
     @GetMapping(produces = "application/json;charset=UTF-8")
     public List<ItemDtoOut> getFilteredItems(@RequestParam(name = "from", defaultValue = "0") Integer from,
                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                             @RequestParam(required = false, name = "group_id") String groupId) {
-        return itemService.getFilteredItems(groupId, from, size);
+                                             @RequestParam String partnerId,
+                                             @RequestParam(required = false, name = "group_id") String parentId) {
+        return itemService.getFilteredItems(parentId, from, size, partnerId);
     }
 
 
@@ -51,10 +52,12 @@ public class ItemRestControllerV1 {
                             array = @ArraySchema(schema = @Schema(implementation = ItemDtoOutGroups.class)))}),
     })
     @GetMapping("/groups")
-    public List<ItemDtoOutGroups> getFilteredGroupItems(@RequestParam(required = false) Integer level,
+    public List<ItemDtoOutGroups> getFilteredGroupItems(@RequestParam(name = "from", defaultValue = "0") Integer from,
+                                                        @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                        @RequestParam(required = false) Integer level,
                                                         @RequestParam(required = false) String parentId) {
         log.info(String.format("Получен эндпоинт GET /api/v1/items/groups; level = %d, parentId = %s", level, parentId));
-        return itemService.getFilteredGroups(level, parentId);
+        return itemService.getFilteredGroups(level, parentId, from, size);
     }
 
     @Operation(summary = "Получить список товаров отфильтрованных по полям \"name\", \"description\", " +
@@ -67,6 +70,8 @@ public class ItemRestControllerV1 {
     })
     @GetMapping("/param/{partnerId}")
     public List<ItemDtoOut> getItemByParams(@PathVariable String partnerId,
+                                            @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                            @RequestParam(name = "size", defaultValue = "10") Integer size,
                                             @RequestParam(required = false) String name,
                                             @RequestParam(required = false) String description,
                                             @RequestParam(required = false) List<String> countries,
@@ -84,6 +89,25 @@ public class ItemRestControllerV1 {
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
                 .build();
-        return itemService.getItemByParams(partnerId, params);
+        return itemService.getItemByParams(partnerId, params, from, size);
+    }
+
+    @Operation(summary = "Получить список товаров с фильтрацией по полю \"parentId\", Параметр parentId опционально, " +
+            "параметр partnerId обязателен.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Возвращает список товаров. В случае отсутствия товаров," +
+                    " удовлетворяющих параметром, возвращает пустой список",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ItemDtoOut.class)))}),
+    })
+    @GetMapping("/{userId}")
+    public List<ItemDtoOut> getItemsPrices(@PathVariable String userId,
+                                           @RequestParam (required = false) String parentId,
+                                           @RequestParam String partnerId,
+                                           @RequestParam (name = "from", defaultValue = "0") Integer from,
+                                           @RequestParam (name = "size", defaultValue = "10") Integer size) {
+        log.info(String.format("Получен эндпоинт GET /api/v1/items/{userId}; userId = %s, parentId = %s",
+                userId, parentId));
+        return itemService.getItemsPrices(userId, parentId, partnerId, from, size);
     }
 }
