@@ -14,8 +14,6 @@ public class ContractorMapper {
                 .kpp(contractor.getKpp())
                 .legalAddress(contractor.getLegalAddress())
                 .actualAddress(contractor.getActualAddress()).build();
-
-
     }
 
     public static Contractor fromContractorAddDtoToContractor(ContractorAddDto contractorAddDto) {

@@ -23,7 +23,9 @@ public class PriceServiceImpl implements PriceService {
     @Async
     public void add(List<PriceAddDto> priceAddDto) {
         log.info("Add prices as List ");
-        List<Price> prices =priceAddDto.stream().map(x-> PriceMapper.fromPriceAddDtoToPrice(x)).collect(Collectors.toList());
+        List<Price> prices =priceAddDto.stream()
+                .map(x-> PriceMapper.fromPriceAddDtoToPrice(x))
+                .collect(Collectors.toList());
         try {
             priceRepository.saveAll(prices);
         } catch (Exception e) {

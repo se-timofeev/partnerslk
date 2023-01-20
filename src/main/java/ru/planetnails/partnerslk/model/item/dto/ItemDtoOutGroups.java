@@ -11,5 +11,4 @@ public class ItemDtoOutGroups {
     private String name;
     private String parent_id;
     private Integer level;
-
 }

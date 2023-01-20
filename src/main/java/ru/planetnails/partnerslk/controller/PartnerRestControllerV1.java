@@ -11,13 +11,14 @@ import ru.planetnails.partnerslk.service.PartnerService;
 @Validated
 @AllArgsConstructor
 @Slf4j
-@RequestMapping(value="/api/v1/partners")
+@RequestMapping(value = "/api/v1/partners")
 public class PartnerRestControllerV1 {
     PartnerService partnerService;
+
     @PostMapping
     @PutMapping
-   public String add(@RequestBody PartnerAddDto partnerAddDto){
-       partnerService.add(partnerAddDto);
-       return "Your data has been queued.";
-   }
+    public String add(@RequestBody PartnerAddDto partnerAddDto) {
+        partnerService.add(partnerAddDto);
+        return "Your data has been queued.";
+    }
 }

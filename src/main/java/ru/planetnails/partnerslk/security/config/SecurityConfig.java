@@ -23,10 +23,7 @@ public class SecurityConfig {
     private static final String SWAGGER_WHITELIST1 = "/v3/api-docs/**";
     private static final String SWAGGER_WHITELIST2 = "/swagger-ui/**";
     private static final String SWAGGER_WHITELIST3 = "/swagger-ui.html";
-
-
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -49,9 +46,5 @@ public class SecurityConfig {
                 .cors().
                 and()
                 .build();
-
     }
-
-
-
 }

@@ -21,6 +21,4 @@ public class PartnerAddDto {
     private int discount;
 
     private String account;
-
-
 }

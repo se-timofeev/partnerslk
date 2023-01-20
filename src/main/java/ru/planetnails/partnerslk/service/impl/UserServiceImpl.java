@@ -47,10 +47,8 @@ public class UserServiceImpl implements UserService {
         Role roleUser = roleRepository.findByName("USER");
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
-
         User user;
         user = userRepository.findById(userAddDto.getId()).orElse(null);
-
         User user1 = userRepository.findByName(userAddDto.getName());
         if (user == null & user1 == null) {
             user = UserMapper.fromUserAddDtoToUser(userAddDto);
@@ -59,25 +57,19 @@ public class UserServiceImpl implements UserService {
             throw new UsersNameIsAlreadyTaken("Users  name is already taken");
         } else {
             user = UserMapper.fromUserAddDtoToUser(userAddDto, user);
-
         }
-
         if (userAddDto.getPartnerId() != null) {
             Partner partner = partnerRepository.findById(userAddDto.getPartnerId())
                     .orElseThrow(() -> new PartnerNotFoundException("Partner id not found"));
             user.setPartner(partner);
         }
-
-
         user.setPassword(passwordEncoder.encode(userAddDto.getPassword()));
         user.setRoles(userRoles);
-
         user.setStatus(UserStatus.PENDING);
         User registerUser = userRepository.save(user);
         log.info("register - user {} succefully reg.", registerUser);
         return UserMapper.fromUserToUserOutDto(user);
     }
-
 
     @Override
     public User findByName(String name) {
@@ -120,7 +112,6 @@ public class UserServiceImpl implements UserService {
         user.setStatus(UserStatus.BLOCKED);
         userRepository.save(user);
         return UserMapper.fromUserToUserOutDto(user);
-
     }
 
     @Override
@@ -131,7 +122,6 @@ public class UserServiceImpl implements UserService {
         user.setStatus(UserStatus.PENDING);
         userRepository.save(user);
         return UserMapper.fromUserToUserOutDto(user);
-
     }
 
     @Override

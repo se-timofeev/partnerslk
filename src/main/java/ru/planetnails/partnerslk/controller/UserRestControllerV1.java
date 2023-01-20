@@ -36,13 +36,10 @@ public class UserRestControllerV1 {
     @GetMapping(value = "{id}")
     public ResponseEntity<UserOutDto> getUserById(@PathVariable(name = "id") String userId) {
         User user = userService.findById(userId);
-
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         UserOutDto result = UserMapper.fromUserToUserOutDto(user);
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -59,7 +56,6 @@ public class UserRestControllerV1 {
     @PutMapping
     public UserOutDto add(@RequestBody UserAddDto userAddDDto) {
         return userService.add(userAddDDto);
-
     }
 
     @Operation(summary = "Set the users status as ACTIVE  ")
@@ -73,7 +69,6 @@ public class UserRestControllerV1 {
     @PatchMapping("/{userId}/active")
     public UserOutDto setUserActive(@PathVariable String userId) {
         return userService.setUserActive(userId);
-
     }
 
     @Operation(summary = "Set the users status as PENDING  ")
@@ -87,7 +82,6 @@ public class UserRestControllerV1 {
     @PatchMapping("/{userId}/pending")
     public UserOutDto setUserPending(@PathVariable String userId) {
         return userService.setUserPending(userId);
-
     }
 
     @Operation(summary = "Set the users status as BLOCKED  ")
@@ -101,7 +95,6 @@ public class UserRestControllerV1 {
     @PatchMapping("/{userId}/block")
     public UserOutDto setUserBlocked(@PathVariable String userId) {
         return userService.setUserBlocked(userId);
-
     }
 
 }

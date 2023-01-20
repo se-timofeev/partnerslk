@@ -12,8 +12,6 @@ import ru.planetnails.partnerslk.model.user.UserStatus;
 
 public class UserOutDto {
 
-
     private String name;
     private UserStatus status;
-
 }
