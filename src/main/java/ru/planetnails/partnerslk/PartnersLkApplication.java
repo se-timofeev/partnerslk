@@ -14,8 +14,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
         description = "Partners account API description"))
 public class PartnersLkApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PartnersLkApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PartnersLkApplication.class, args);
+    }
 
 }

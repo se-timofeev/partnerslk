@@ -21,12 +21,9 @@ public class JwtTokenFilter extends GenericFilterBean {
     private static final String AUTHORIZATION = "Authorization";
     private final JwtTokenProvider jwtTokenProvider;
 
-
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain fc)
             throws IOException, ServletException {
-
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         if (token != null && jwtTokenProvider.validateAccessToken(token)) {
             final Claims claims = jwtTokenProvider.getAccessClaims(token);
@@ -36,7 +33,6 @@ public class JwtTokenFilter extends GenericFilterBean {
             }
 
         }
-
         fc.doFilter(request, response);
     }
 

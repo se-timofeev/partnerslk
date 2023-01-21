@@ -9,7 +9,5 @@ public class PartnerMapper {
                 .name(partnerAddDto.getName())
                 .discount(partnerAddDto.getDiscount())
                 .account(partnerAddDto.getAccount()).build();
-
-
     }
 }

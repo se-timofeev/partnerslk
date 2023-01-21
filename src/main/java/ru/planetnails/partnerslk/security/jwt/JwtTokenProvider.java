@@ -30,7 +30,6 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private long validityTime;
 
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -45,11 +44,8 @@ public class JwtTokenProvider {
     public String createToken(String username, List<Role> rolesList) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", getRoleNames(rolesList));
-
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityTime);
-
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -60,7 +56,6 @@ public class JwtTokenProvider {
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
-
         SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         String secretString = Encoders.BASE64.encode(key.getEncoded());
         log.info("Secret key: " + secretString);
@@ -68,36 +63,28 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-
     public Authentication getAuthentication(Claims claims) throws UsernameNotFoundException {
         final JwtAuthentication jwtInfoToken = new JwtAuthentication();
         jwtInfoToken.setRoles(getRoles(claims));
         jwtInfoToken.setUsername(claims.getSubject());
-
         if (claims.getExpiration().before(new Date())) {
             jwtInfoToken.setAuthenticated(false);
         } else {
             jwtInfoToken.setAuthenticated(true);
         }
         return jwtInfoToken;
-
     }
 
     private Set<String> getRoles(Claims claims) {
         final List<String> roles = claims.get("roles", List.class);
-
         return roles.stream().collect(Collectors.toSet());
-
-
     }
 
     private List<String> getRoleNames(List<Role> userRoles) {
         List<String> result = new ArrayList<>();
-
         userRoles.forEach(role -> {
             result.add(role.getName());
         });
-
         return result;
     }
 

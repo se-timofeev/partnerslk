@@ -14,9 +14,10 @@ import java.util.List;
 @RequestMapping(value = "/api/v1/prices")
 public class PriceRestControllerV1 {
     PriceService priceService;
+
     @PostMapping
     @PutMapping
-     public String add(@RequestBody List<PriceAddDto> prices){
+    public String add(@RequestBody List<PriceAddDto> prices) {
         priceService.add(prices);
         return "Your data has been queued.";
     }

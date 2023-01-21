@@ -22,22 +22,16 @@ public class ContractorServiceImpl implements ContractorService {
     private ContractorRepository contractorRepository;
 
     @Override
-    // @Transactional
     @Async
     public void add(List<ContractorAddDto> contractorsList) {
         log.info("Add contractors as List of elements ");
-
-
         List<Contractor> contractors = contractorsList.stream()
                 .map(y -> ContractorMapper.fromContractorAddDtoToContractor(y)).collect(Collectors.toList());
-
         try {
             contractorRepository.saveAll(contractors);
-
         } catch (Exception e) {
             log.info(e.getMessage());
         }
-
     }
 
     @Override
@@ -46,6 +40,4 @@ public class ContractorServiceImpl implements ContractorService {
                 .orElseThrow(() -> new NotFoundException("Contrator_id not found"));
         return contractor;
     }
-
-
 }

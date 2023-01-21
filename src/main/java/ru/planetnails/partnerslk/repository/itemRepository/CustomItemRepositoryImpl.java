@@ -35,10 +35,8 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
         predicates.add(cb.equal(eventRoot.get("isGroup"), true));
         query.where(predicates.toArray(new Predicate[0]));
         final TypedQuery<Item> typedQuery = em.createQuery(query);
-
         typedQuery.setFirstResult(from);
         typedQuery.setMaxResults(size);
-
         return typedQuery.getResultList();
     }
 
@@ -52,12 +50,9 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
             predicates.add(cb.equal(eventRoot.get("parentId"), parentId));
         }
         criteriaQuery.where(predicates.toArray(new Predicate[0]));
-
         final TypedQuery<Item> query = em.createQuery(criteriaQuery);
-
         query.setFirstResult(from);
         query.setMaxResults(size);
-
         return query.getResultList();
     }
 
@@ -84,10 +79,8 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
             predicates.add(cb.lessThanOrEqualTo(eventRoot.get("price").get("sale"), params.getMaxPrice()));
         query.where(predicates.toArray(new Predicate[0]));
         final TypedQuery<Item> typedQuery = em.createQuery(query);
-
         typedQuery.setFirstResult(from);
         typedQuery.setMaxResults(size);
-
         return typedQuery.getResultList();
     }
 }

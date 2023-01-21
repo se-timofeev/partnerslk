@@ -26,7 +26,6 @@ public class Item  {
     @Column(name = "vendor_code")
     private String vendorCode;
 
-
     @Column(name="description_html")
     private String descriptionHtml;
 

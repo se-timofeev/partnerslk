@@ -13,10 +13,9 @@ import javax.validation.constraints.Size;
 @ToString
 
 public class UserAddDto {
+
     @NotBlank
     private String id;
-
-
     private String partnerId;
     @NotBlank
     private String fullName;
@@ -29,6 +28,4 @@ public class UserAddDto {
     private String name;
     @Size(min = 6, max = 20)
     private String password;
-
-
 }

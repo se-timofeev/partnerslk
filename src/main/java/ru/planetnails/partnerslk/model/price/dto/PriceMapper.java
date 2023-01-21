@@ -12,6 +12,5 @@ public class PriceMapper {
                 .sale(priceAddDto.getSale())
                 .updated(LocalDateTime.now())
                 .build();
-
     }
 }

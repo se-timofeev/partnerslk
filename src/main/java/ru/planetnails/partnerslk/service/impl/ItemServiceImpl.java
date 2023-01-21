@@ -35,16 +35,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemAddDto add(ItemAddDto itemAddDto) {
         log.info("Add item {}", itemAddDto);
-
         Item item = ItemMapper.fromItemAddDtoToItem(itemAddDto);
-
         try {
             itemRepository.save(item);
-
         } catch (Exception e) {
             log.info(e.getMessage());
         }
-
         return ItemMapper.toItemAddDto(item);
     }
 
@@ -56,7 +52,6 @@ public class ItemServiceImpl implements ItemService {
         List<Item> items = itemsAddDto.stream().map(x -> ItemMapper.fromItemAddDtoToItem(x)).collect(Collectors.toList());
         try {
             itemRepository.saveAll(items);
-
         } catch (Exception e) {
             log.info(e.getMessage());
         }
@@ -89,7 +84,7 @@ public class ItemServiceImpl implements ItemService {
         userService.findById(userId);
         Partner partner = partnerService.findPartnerById(partnerId);
         Page<Item> items;
-        if(parentId == null) items = itemRepository.findItems(pageRequest);
+        if (parentId == null) items = itemRepository.findItems(pageRequest);
         else items = itemRepository.findItemsByParentId(parentId, pageRequest);
         return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
     }

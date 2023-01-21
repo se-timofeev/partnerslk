@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 
 public class ItemMapper {
     public static Item fromItemAddDtoToItem(ItemAddDto itemAddDto) {
-         Item item=new Item ();
-         item.setName(itemAddDto.getName());
-                item.setDescription(itemAddDto.getDescription());
-                item.setDescriptionHtml(itemAddDto.getDescriptionHtml());
-                item.setIsGroup(itemAddDto.getIsGroup());
+        Item item = new Item();
+        item.setName(itemAddDto.getName());
+        item.setDescription(itemAddDto.getDescription());
+        item.setDescriptionHtml(itemAddDto.getDescriptionHtml());
+        item.setIsGroup(itemAddDto.getIsGroup());
         item.setId(itemAddDto.getId());
         item.setLevel(itemAddDto.getLevel());
         item.setVendorCode(itemAddDto.getVendorCode());
@@ -19,7 +19,6 @@ public class ItemMapper {
         item.setUpdated(LocalDateTime.now());
         item.setCountryOfOrigin(itemAddDto.getCountryOfOrigin());
         item.setIsNovelty(itemAddDto.getIsNovelty());
-
         return item;
     }
 
@@ -34,7 +33,7 @@ public class ItemMapper {
         itemDtoOut.setParent_id(item.getParentId());
         itemDtoOut.setIsOutOfStock(item.getIsOutOfStock());
         itemDtoOut.setCountryOfOrigin(item.getCountryOfOrigin());
-        if(item.getPrice() != null) {
+        if (item.getPrice() != null) {
             itemDtoOut.setDiscount(discount);
             itemDtoOut.setSalePriceBeforeDiscount(item.getPrice().getSale());
             itemDtoOut.setRetailPriceBeforeDiscount(item.getPrice().getRetail());
@@ -46,12 +45,11 @@ public class ItemMapper {
     }
 
     public static ItemAddDto toItemAddDto(Item item) {
-        return  ItemAddDto.builder()
+        return ItemAddDto.builder()
                 .name(item.getName())
                 .description(item.getDescription())
                 .vendorCode(item.getVendorCode())
                 .id(item.getId()).build();
-
     }
 
     public static ItemDtoOutGroups toItemDtoOutShort(Item item) {
