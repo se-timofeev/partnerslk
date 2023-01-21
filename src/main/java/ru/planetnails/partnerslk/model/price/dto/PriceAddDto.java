@@ -11,12 +11,11 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PriceAddDto {
+
     @NotBlank
     private String id;
     @NotBlank
     private double retail;
     @NotBlank
     private double sale;
-
-
 }

@@ -18,7 +18,6 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     @Autowired
     private UserService userService;
 
-
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -26,7 +25,6 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         final User user = userService.findByName(authentication.getName());
-
         if (!passwordEncoder().matches(authentication.getCredentials().toString(), user.getPassword())) {
             throw new BadCredentialsException("Wrong password");
         }

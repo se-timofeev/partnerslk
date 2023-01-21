@@ -14,7 +14,6 @@ public class UserMapper {
                 .sale(priceAddDto.getSale())
                 .updated(LocalDateTime.now())
                 .build();
-
     }
 
     public static User fromUserAddDtoToUser(UserAddDto userAddDto) {
@@ -27,7 +26,6 @@ public class UserMapper {
                 .email(userAddDto.getEmail())
                 .name(userAddDto.getName())
                 .updated(LocalDateTime.now()).build();
-
     }
 
     public static User fromUserAddDtoToUser(UserAddDto userAddDto, User user) {
@@ -37,7 +35,6 @@ public class UserMapper {
         user.setMobile(userAddDto.getMobile());
         user.setEmail(userAddDto.getEmail());
         user.setUpdated(LocalDateTime.now());
-
         return user;
 
     }
@@ -46,6 +43,5 @@ public class UserMapper {
         return UserOutDto.builder()
                 .name(user.getName())
                 .status(user.getStatus()).build();
-
     }
 }

@@ -24,7 +24,6 @@ public class User {
     @NotBlank
     @Column(name = "full_name")
     private String fullName;
-
     @NotBlank
     @Column(name = "first_name")
     private String firstName;
@@ -38,16 +37,13 @@ public class User {
     private String name;
     @Column(name = "password")
     private String password;
-
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private UserStatus status;
     @Column(name = "created")
     private LocalDateTime created;
-
     @Column(name = "updated")
     private LocalDateTime updated;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

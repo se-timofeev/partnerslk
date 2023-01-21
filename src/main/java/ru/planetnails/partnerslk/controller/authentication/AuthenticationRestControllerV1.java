@@ -31,13 +31,13 @@ import java.util.Map;
 public class AuthenticationRestControllerV1 {
 
     private final CustomAuthenticationManager authenticationManager;
-
     private final JwtTokenProvider jwtTokenProvider;
-
     private final UserService userService;
 
     @Autowired
-    public AuthenticationRestControllerV1(CustomAuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
+    public AuthenticationRestControllerV1(CustomAuthenticationManager authenticationManager,
+                                          JwtTokenProvider jwtTokenProvider,
+                                          UserService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
@@ -45,7 +45,8 @@ public class AuthenticationRestControllerV1 {
 
     @Operation(summary = "Getting the token with 'username' and 'password'")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "You will get the token if the user and password are correct",
+            @ApiResponse(responseCode = "200", description = "You will get the token if the user and password are " +
+                    "correct",
                     content = {@Content(mediaType = "application/json"
                     )}),
             @ApiResponse(responseCode = "401", description = "User or password are incorrect",
@@ -58,20 +59,16 @@ public class AuthenticationRestControllerV1 {
         try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
-
             if (user == null) {
                 throw new NotFoundException("User with username: " + username + " not found");
             }
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
-
-
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
+                    requestDto.getPassword()));
             String token = jwtTokenProvider.createToken(username, user.getRoles());
             log.info("token has been granted to user {}", username);
-
             Map<Object, Object> response = new HashMap<>();
             response.put("username", username);
             response.put("token", token);
-
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             throw new UserOrPasswordAreIncorrectException("Invalid username or password");

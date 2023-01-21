@@ -10,13 +10,12 @@ public class JwtUser implements UserDetails {
     private final String id;
     private final String name;
     private final String firstName;
-    private final  String lastName;
+    private final String lastName;
     private final String password;
     private final String email;
     private final Boolean enabled;
     private final LocalDateTime lastPasswordResetDate;
     private final Collection<? extends GrantedAuthority> authorities;
-
 
     public JwtUser(String id,
                    String name,

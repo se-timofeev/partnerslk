@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class Price {
+
     @Id
     private String id;
+
     @Column(name = "retail")
     private double retail;
 
@@ -24,6 +26,4 @@ public class Price {
 
     @Column (name="updated")
     private LocalDateTime updated;
-
-
 }

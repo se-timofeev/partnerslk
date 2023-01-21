@@ -32,5 +32,4 @@ public class ContractorOutDto {
 
     @Schema(description = "Факт. адрес")
     private String actualAddress;
-
 }

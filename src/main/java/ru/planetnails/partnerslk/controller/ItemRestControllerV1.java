@@ -102,10 +102,10 @@ public class ItemRestControllerV1 {
     })
     @GetMapping("/{userId}")
     public List<ItemDtoOut> getItemsPrices(@PathVariable String userId,
-                                           @RequestParam (required = false) String parentId,
+                                           @RequestParam(required = false) String parentId,
                                            @RequestParam String partnerId,
-                                           @RequestParam (name = "from", defaultValue = "0") Integer from,
-                                           @RequestParam (name = "size", defaultValue = "10") Integer size) {
+                                           @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                           @RequestParam(name = "size", defaultValue = "10") Integer size) {
         log.info(String.format("Получен эндпоинт GET /api/v1/items/{userId}; userId = %s, parentId = %s",
                 userId, parentId));
         return itemService.getItemsPrices(userId, parentId, partnerId, from, size);

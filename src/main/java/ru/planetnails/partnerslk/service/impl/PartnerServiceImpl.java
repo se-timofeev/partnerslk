@@ -26,7 +26,6 @@ public class PartnerServiceImpl implements PartnerService {
         log.info("Add partner ");
         try {
             partnerRepository.save(PartnerMapper.fromPartnerAddDtoToPartner(partnerAddDto));
-
         } catch (Exception e) {
             log.info(e.getMessage());
         }
