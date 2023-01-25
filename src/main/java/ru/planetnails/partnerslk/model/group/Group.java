@@ -19,8 +19,8 @@ public class Group {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "parent_id")
-    private String parentId;
+    @Column(name = "groupId")
+    private String groupId;
 
     @Column(name = "level")
     private Integer level;

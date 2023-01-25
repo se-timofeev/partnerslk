@@ -13,10 +13,9 @@ create table items
     name             nvarchar(255),
     country          nvarchar(255),
     description_html nvarchar(max),
-    is_group         bit,
     is_out_of_stock  bit,
     level            int,
-    parent_id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS constraint items_groups_fk
+    group_id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS constraint items_groups_fk
         references groups,
     vendor_code      varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
     id               varchar(50) not null
