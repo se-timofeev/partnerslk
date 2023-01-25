@@ -2,6 +2,7 @@ package ru.planetnails.partnerslk.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,8 @@ public class ItemServiceImpl implements ItemService {
         log.info("Add items as List ");
         List<Item> items = new ArrayList<>();
         List<Group> groups = new ArrayList<>();
-        for(ItemAddDto itemAddDto : itemsAddDto) {
-            if(itemAddDto.getLevel() == 3) {
+        for (ItemAddDto itemAddDto : itemsAddDto) {
+            if (itemAddDto.getLevel() == 3) {
                 items.add(ItemMapper.fromItemAddDtoToItem(itemAddDto));
             } else groups.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
         }
@@ -51,11 +52,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDtoOut> getItemsByGroupId(String groupId, Integer from, Integer size, String partnerId) {
+    public Page<ItemDtoOut> getItemsByGroupId(String groupId, Integer from, Integer size, String partnerId) {
         Partner partner = partnerService.findPartnerById(partnerId);
         PageRequest pageRequest = PageRequest.of(from / size, size);
-        List<Item> items = itemRepository.findItemsByGroupId(groupId, pageRequest);
-        return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
+        Page<Item> items = itemRepository.findItemsByGroupId(groupId, pageRequest);
+        return items.map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount()));
     }
 
     @Override

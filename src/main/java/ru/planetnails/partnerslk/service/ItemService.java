@@ -1,5 +1,6 @@
 package ru.planetnails.partnerslk.service;
 
+import org.springframework.data.domain.Page;
 import ru.planetnails.partnerslk.model.item.ItemQueryParams;
 import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
 import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
@@ -13,7 +14,7 @@ public interface ItemService {
 
     List<GroupDtoOut> getFilteredGroups(Integer level, String groupId, Integer from, Integer size);
 
-    List<ItemDtoOut> getItemsByGroupId(String groupId, Integer from, Integer size, String partnerId);
+    Page<ItemDtoOut> getItemsByGroupId(String groupId, Integer from, Integer size, String partnerId);
 
     List<ItemDtoOut> getItemByParams(String partnerId, ItemQueryParams params, Integer from, Integer size);
 

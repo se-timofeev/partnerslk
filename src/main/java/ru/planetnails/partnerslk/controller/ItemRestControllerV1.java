@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.item.ItemQueryParams;
 import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
@@ -35,7 +36,7 @@ public class ItemRestControllerV1 {
     }
 
     @GetMapping(produces = "application/json;charset=UTF-8")
-    public List<ItemDtoOut> getItemsByGroupId(@RequestParam(name = "from", defaultValue = "0") Integer from,
+    public Page<ItemDtoOut> getItemsByGroupId(@RequestParam(name = "from", defaultValue = "0") Integer from,
                                               @RequestParam(name = "size", defaultValue = "10") Integer size,
                                               @RequestParam String partnerId,
                                               @RequestParam String groupId) {
