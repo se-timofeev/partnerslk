@@ -1,5 +1,6 @@
 package ru.planetnails.partnerslk.model.item.dto;
 
+import ru.planetnails.partnerslk.model.group.Group;
 import ru.planetnails.partnerslk.model.item.Item;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,15 @@ public class ItemMapper {
         item.setCountryOfOrigin(itemAddDto.getCountryOfOrigin());
         item.setIsNovelty(itemAddDto.getIsNovelty());
         return item;
+    }
+
+    public static Group fromItemAddDtoToGroup(ItemAddDto itemAddDto) {
+        Group group = new Group();
+        group.setId(itemAddDto.getId());
+        group.setName(itemAddDto.getName());
+        group.setParentId(itemAddDto.getParent_id());
+        group.setLevel(itemAddDto.getLevel());
+        return group;
     }
 
     public static ItemDtoOut toItemDtoOut(Item item, Integer discount) {

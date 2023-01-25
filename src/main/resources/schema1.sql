@@ -1,4 +1,13 @@
- create table items
+create table groups
+(
+    id               varchar(50) not null primary key,
+    name             nvarchar(255) not null,
+    parent_id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    level            int not null
+)
+go
+
+create table items
 (
     description      nvarchar(255),
     name             nvarchar(255),
@@ -7,7 +16,8 @@
     is_group         bit,
     is_out_of_stock  bit,
     level            int,
-    parent_id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    parent_id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS constraint items_groups_fk
+        references groups,
     vendor_code      varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
     id               varchar(50) not null
         primary key,
