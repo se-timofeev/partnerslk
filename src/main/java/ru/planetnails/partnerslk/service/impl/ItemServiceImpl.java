@@ -15,10 +15,12 @@ import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.GroupDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.ItemMapper;
 import ru.planetnails.partnerslk.model.partner.Partner;
+import ru.planetnails.partnerslk.model.price.dto.PriceAddDto;
 import ru.planetnails.partnerslk.repository.groupRepository.GroupRepository;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.ItemService;
 import ru.planetnails.partnerslk.service.PartnerService;
+import ru.planetnails.partnerslk.service.PriceService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ public class ItemServiceImpl implements ItemService {
 
     private GroupRepository groupRepository;
     private PartnerService partnerService;
+    private PriceService priceService;
 
     @Override
     @Transactional
@@ -41,14 +44,23 @@ public class ItemServiceImpl implements ItemService {
     public void add(List<ItemAddDto> itemsAddDto) {
         log.info("Add items as List ");
         List<Item> items = new ArrayList<>();
-        List<Group> groups = new ArrayList<>();
+        List<Group> groupsFirstLevel = new ArrayList<>();
+        List<Group> groupsSecondLevel = new ArrayList<>();
+        List<PriceAddDto> prices = new ArrayList<>();
         for (ItemAddDto itemAddDto : itemsAddDto) {
             if (itemAddDto.getLevel() == 3) {
                 items.add(ItemMapper.fromItemAddDtoToItem(itemAddDto));
-            } else groups.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
+            } else if (itemAddDto.getLevel() == 2) {
+                groupsSecondLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
+            } else if (itemAddDto.getLevel() == 1) {
+                groupsFirstLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
+            }
+            prices.add(new PriceAddDto(itemAddDto.getId(), 0, 0));
         }
+        priceService.add(prices);
+        groupRepository.saveAll(groupsFirstLevel);
+        groupRepository.saveAll(groupsSecondLevel);
         itemRepository.saveAll(items);
-        groupRepository.saveAll(groups);
     }
 
     @Override

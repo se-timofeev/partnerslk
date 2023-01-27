@@ -2,7 +2,7 @@ create table groups
 (
     id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS not null primary key,
     name      nvarchar(255)                                     not null,
-    parent_id varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    group_id varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
     level     int                                               not null
 )
 go

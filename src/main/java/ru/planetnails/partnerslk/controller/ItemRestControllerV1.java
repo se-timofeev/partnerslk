@@ -28,7 +28,7 @@ import java.util.List;
 public class ItemRestControllerV1 {
     private ItemService itemService;
 
-    @PostMapping()
+    @PostMapping
     @PutMapping
     public String add(@RequestBody List<ItemAddDto> items) {
         itemService.add(items);

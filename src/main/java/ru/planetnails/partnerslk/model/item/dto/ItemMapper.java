@@ -2,12 +2,19 @@ package ru.planetnails.partnerslk.model.item.dto;
 
 import ru.planetnails.partnerslk.model.group.Group;
 import ru.planetnails.partnerslk.model.item.Item;
+import ru.planetnails.partnerslk.model.price.Price;
 
 import java.time.LocalDateTime;
 
 public class ItemMapper {
     public static Item fromItemAddDtoToItem(ItemAddDto itemAddDto) {
         Item item = new Item();
+        Price price = Price.builder()
+                .id(itemAddDto.getId())
+                .sale(0)
+                .retail(0)
+                .updated(LocalDateTime.now())
+                .build();
         item.setName(itemAddDto.getName());
         item.setDescription(itemAddDto.getDescription());
         item.setDescriptionHtml(itemAddDto.getDescriptionHtml());
@@ -19,6 +26,7 @@ public class ItemMapper {
         item.setUpdated(LocalDateTime.now());
         item.setCountryOfOrigin(itemAddDto.getCountryOfOrigin());
         item.setIsNovelty(itemAddDto.getIsNovelty());
+        item.setPrice(price);
         return item;
     }
 
