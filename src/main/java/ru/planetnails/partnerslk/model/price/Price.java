@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.model.price;
 
 import lombok.*;
+import ru.planetnails.partnerslk.model.item.Item;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,4 +27,8 @@ public class Price {
 
     @Column (name="updated")
     private LocalDateTime updated;
+
+    @OneToOne
+    @JoinColumn (name = "item_id")
+    private Item item;
 }

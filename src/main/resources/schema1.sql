@@ -7,15 +7,6 @@ create table groups
 )
 go
 
-create table prices
-(
-    id      varchar(50) not null primary key,
-    retail  float       not null,
-    sale    float       not null,
-    updated datetime2
-)
-go
-
 create table items
 (
     description      nvarchar(255),
@@ -31,10 +22,18 @@ create table items
     id               varchar(50) not null
         primary key,
     updated          datetime2,
-    price            varchar(50)
-        constraint items_prices_fk
-            references prices,
     is_novelty       bit
+)
+go
+
+create table prices
+(
+    id     varchar(50)
+        primary key ,
+    retail  float       not null,
+    sale    float       not null,
+    updated datetime2,
+    item_id varchar(50) not null unique
 )
 go
 

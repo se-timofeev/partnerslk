@@ -15,7 +15,6 @@ import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.GroupDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.ItemMapper;
 import ru.planetnails.partnerslk.model.partner.Partner;
-import ru.planetnails.partnerslk.model.price.dto.PriceAddDto;
 import ru.planetnails.partnerslk.repository.groupRepository.GroupRepository;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.ItemService;
@@ -46,7 +45,6 @@ public class ItemServiceImpl implements ItemService {
         List<Item> items = new ArrayList<>();
         List<Group> groupsFirstLevel = new ArrayList<>();
         List<Group> groupsSecondLevel = new ArrayList<>();
-        List<PriceAddDto> prices = new ArrayList<>();
         for (ItemAddDto itemAddDto : itemsAddDto) {
             if (itemAddDto.getLevel() == 3) {
                 items.add(ItemMapper.fromItemAddDtoToItem(itemAddDto));
@@ -55,9 +53,7 @@ public class ItemServiceImpl implements ItemService {
             } else if (itemAddDto.getLevel() == 1) {
                 groupsFirstLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
             }
-            prices.add(new PriceAddDto(itemAddDto.getId(), 0, 0));
         }
-        priceService.add(prices);
         groupRepository.saveAll(groupsFirstLevel);
         groupRepository.saveAll(groupsSecondLevel);
         itemRepository.saveAll(items);

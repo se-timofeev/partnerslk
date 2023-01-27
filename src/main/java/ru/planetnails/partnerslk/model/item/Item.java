@@ -44,10 +44,13 @@ public class Item  {
     @Column(name="updated")
     private LocalDateTime updated;
 
-    @OneToOne
-    @JoinColumn(name = "price")
+    @OneToOne (mappedBy="item")
     private Price price;
 
     @Column(name = "is_novelty")
     private Boolean isNovelty;
+
+    public Item(String id) {
+        this.id = id;
+    }
 }
