@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.planetnails.partnerslk.exception.LoadingError;
 import ru.planetnails.partnerslk.model.group.Group;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.item.ItemQueryParams;
@@ -19,7 +20,6 @@ import ru.planetnails.partnerslk.repository.groupRepository.GroupRepository;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.ItemService;
 import ru.planetnails.partnerslk.service.PartnerService;
-import ru.planetnails.partnerslk.service.PriceService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,6 @@ public class ItemServiceImpl implements ItemService {
 
     private GroupRepository groupRepository;
     private PartnerService partnerService;
-    private PriceService priceService;
 
     @Override
     @Transactional
@@ -54,9 +53,13 @@ public class ItemServiceImpl implements ItemService {
                 groupsFirstLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
             }
         }
-        groupRepository.saveAll(groupsFirstLevel);
-        groupRepository.saveAll(groupsSecondLevel);
-        itemRepository.saveAll(items);
+        try {
+            groupRepository.saveAll(groupsFirstLevel);
+            groupRepository.saveAll(groupsSecondLevel);
+            itemRepository.saveAll(items);
+        } catch (Exception e) {
+            throw new LoadingError("Ошибка загрузки данных");
+        }
     }
 
     @Override

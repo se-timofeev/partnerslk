@@ -35,6 +35,13 @@ public class ItemRestControllerV1 {
         return "Your data has been queued.";
     }
 
+    @Operation(summary = "Получить список товаров определенного раздела - groupId")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Возвращает список групп. В случае отсутствия групп," +
+                    " удовлетворяющих параметром, возвращает пустой список",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ItemDtoOut.class)))}),
+    })
     @GetMapping(produces = "application/json;charset=UTF-8")
     public Page<ItemDtoOut> getItemsByGroupId(@RequestParam(name = "from", defaultValue = "0") Integer from,
                                               @RequestParam(name = "size", defaultValue = "10") Integer size,
