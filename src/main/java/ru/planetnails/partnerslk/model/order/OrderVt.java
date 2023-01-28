@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Table(name = "orders_vt")
 public class OrderVt {
-
+//
     @ManyToOne(mappedBy = "orders", fetch = FetchType.LAZY)
     @Column(name = "orderId")
     @Column(name = "n_row")
