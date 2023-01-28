@@ -5,10 +5,10 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
-public class ItemDtoOutGroups {
+public class GroupDtoOut {
 
     private String id;
     private String name;
-    private String parent_id;
+    private String groupId;
     private Integer level;
 }

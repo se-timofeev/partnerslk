@@ -40,5 +40,10 @@ public class ErrorHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-
+    @ExceptionHandler({LoadingError.class})
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Ошибка загрузки данных")
+    public ResponseEntity<String> LoadingError(LoadingError e) {
+        log.error(e.getMessage());
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
