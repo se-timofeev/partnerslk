@@ -1,4 +1,4 @@
- create table items
+create table items
 (
     description      nvarchar(255),
     name             nvarchar(255),
@@ -12,9 +12,10 @@
     id               varchar(50) not null
         primary key,
     updated          datetime2,
-    price varchar(50) constraint items_prices_fk
-        references prices,
-    is_novelty         bit
+    price            varchar(50)
+        constraint items_prices_fk
+            references prices,
+    is_novelty       bit
 )
 go
 
@@ -105,5 +106,54 @@ create table dbo.contractors
     updated        datetime2     not null
 
 )
+go
+
+create table statuses
+(
+    status_id  bigint identity
+        primary key,
+    state      varchar(255),
+    creat_date datetime2,
+    user_id    varchar(255)
+        constraint users_id_fk
+            references users
+)
+go
+
+create table orders_vt
+(
+    n_row    bigint identity
+        primary key,
+    amount   bigint,
+    discount int,
+    price    float,
+    sale     float,
+    total    float,
+    item_id  varchar(255)
+        constraint items_id_fk
+            references items
+)
+go
+
+create table orders
+(
+    id_guid              bigint identity
+        primary key,
+    num                  bigint,
+    date                 datetime2,
+    sum_without_discount float,
+    sum_of_discount      float,
+    sum_with_discount    float,
+    contractor_id        varchar(255)
+        constraint contractors_id_fk
+            references contractors,
+    status_id            bigint
+        constraint statuses_id_fk
+            references statuses,
+    n_row                bigint
+        constraint orders_vt_id_fk
+            references orders_vt
+)
+go
 
 

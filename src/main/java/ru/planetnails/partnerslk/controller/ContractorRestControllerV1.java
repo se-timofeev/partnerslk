@@ -23,7 +23,8 @@ import java.util.List;
 @AllArgsConstructor
 @Tag(name = "Contrators", description = "Сервис для создания/изменения, а также получения данных по контрагентам")
 @RequestMapping(value = "/api/v1/contractors")
-public class ContractorRestControllerV1 {
+public class
+ContractorRestControllerV1 {
     private final ContractorService contractorService;
 
     @Operation(summary = "Получение контрагента по id")
