@@ -66,7 +66,9 @@ public class ItemServiceImpl implements ItemService {
     public Page<ItemDtoOut> getItemsByGroupId(String groupId, Integer from, Integer size, String partnerId) {
         Partner partner = partnerService.findPartnerById(partnerId);
         PageRequest pageRequest = PageRequest.of(from / size, size);
-        Page<Item> items = itemRepository.findItemsByGroupId(groupId, pageRequest);
+        Page<Item> items;
+        if (groupId == null) items = itemRepository.findAll(pageRequest);
+        else items = itemRepository.findItemsByGroupId(groupId, pageRequest);
         return items.map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount()));
     }
 
