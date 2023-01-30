@@ -108,13 +108,13 @@ create table dbo.contractors
 )
 go
 
-create table statuses
+create table vt_orderStatuses
 (
-    status_id  bigint identity
+    status_id   bigint identity
         primary key,
-    state      varchar(255),
-    creat_date datetime2,
-    user_id    varchar(255)
+    orderStatus varchar(255),
+    updated     datetime2,
+    user_id     varchar(255)
         constraint users_id_fk
             references users
 )
@@ -140,20 +140,24 @@ create table orders
     id_guid              bigint identity
         primary key,
     num                  bigint,
-    date                 datetime2,
+    orderDate            datetime2,
     sum_without_discount float,
     sum_of_discount      float,
     sum_with_discount    float,
+    orderStatus          varchar(255),
     contractor_id        varchar(255)
         constraint contractors_id_fk
             references contractors,
-    status_id            bigint
-        constraint statuses_id_fk
-            references statuses,
     n_row                bigint
         constraint orders_vt_id_fk
-            references orders_vt
+            references orders_vt,
+    status_id            bigint
+        constraint status_id_fk
+            references vt_orderStatuses
 )
 go
+
+
+
 
 

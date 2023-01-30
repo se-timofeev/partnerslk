@@ -6,19 +6,21 @@ import ru.planetnails.partnerslk.model.contractor.Contractor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Order {
+@Embeddable
+public class Order{
+
     @Id
-    @Column(name = "id_guid")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id_guid;
     private Long num;
     private LocalDateTime orderDate;
     private Double sumWithoutDiscount;
@@ -29,7 +31,10 @@ public class Order {
     private Contractor contractor;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    @JoinColumn
-    @OneToMany(mappedBy = "orders_vt", fetch = FetchType.LAZY)
+    @JoinColumn(name = "n_row")
+    @OneToMany(fetch = FetchType.LAZY)
     private List<OrderVt> orderVts;
+    @JoinColumn(name = "status_id")
+    @OneToMany
+    private List<vtOrderStatuses> vtOrderStatuses;
 }

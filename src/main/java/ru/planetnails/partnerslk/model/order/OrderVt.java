@@ -14,11 +14,10 @@ import javax.persistence.*;
 @Builder
 @Table(name = "orders_vt")
 public class OrderVt {
-//fgjfgj
-    @ManyToOne(mappedBy = "orders", fetch = FetchType.LAZY)
-    @Column(name = "orderId")
-    @Column(name = "n_row")
-    private Long nRow;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long n_row;
     @OneToOne
     @JoinColumn(name = "item_id")
     private Item item;

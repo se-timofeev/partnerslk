@@ -17,14 +17,13 @@ import java.time.LocalDateTime;
 @Table(name = "vt_orderStatuses")
 public class vtOrderStatuses {
 
-    @ManyToOne(mappedBy = "orders", fetch = FetchType.LAZY)
-    @Column(name = "orderId")
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long status_id;
     private LocalDateTime updated;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
 }
