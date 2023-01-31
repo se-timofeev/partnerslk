@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.exception.UserOrPasswordAreIncorrectException;
 import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.model.user.UserStatus;
 import ru.planetnails.partnerslk.security.config.CustomAuthenticationManager;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;
@@ -59,7 +60,7 @@ public class AuthenticationRestControllerV1 {
         try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
-            if (user == null) {
+            if (user == null || user.getStatus() != UserStatus.ACTIVE) {
                 throw new NotFoundException("User with username: " + username + " not found");
             }
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
