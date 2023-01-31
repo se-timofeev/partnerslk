@@ -14,7 +14,7 @@ public interface ItemService {
 
     List<GroupDtoOut> getFilteredGroups(Integer level, String groupId, Integer from, Integer size);
 
-    Page<ItemDtoOut> getItemsByGroupId(String groupId, Integer from, Integer size, String partnerId);
+    Page<ItemDtoOut> getItems(String groupId, Integer from, Integer size, String partnerId, Integer level);
 
     List<ItemDtoOut> getItemByParams(String partnerId, ItemQueryParams params, Integer from, Integer size);
 

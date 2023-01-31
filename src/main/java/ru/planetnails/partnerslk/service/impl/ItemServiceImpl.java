@@ -63,11 +63,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<ItemDtoOut> getItemsByGroupId(String groupId, Integer from, Integer size, String partnerId) {
+    public Page<ItemDtoOut> getItems(String groupId, Integer from, Integer size, String partnerId, Integer level) {
         Partner partner = partnerService.findPartnerById(partnerId);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         Page<Item> items;
-        if (groupId == null) items = itemRepository.findAll(pageRequest);
+        if (level != null && level == 1) {
+            List<String> groupIds = groupRepository.findIdListGroupId(groupId);
+            items = itemRepository.findItemsFirstLevelGroup(groupIds, pageRequest);
+        } else if (groupId == null) items = itemRepository.findAll(pageRequest);
         else items = itemRepository.findItemsByGroupId(groupId, pageRequest);
         return items.map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount()));
     }
