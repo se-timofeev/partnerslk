@@ -45,13 +45,9 @@ public class ItemServiceImpl implements ItemService {
         List<Group> groupsFirstLevel = new ArrayList<>();
         List<Group> groupsSecondLevel = new ArrayList<>();
         for (ItemAddDto itemAddDto : itemsAddDto) {
-            if (itemAddDto.getLevel() == 3) {
-                items.add(ItemMapper.fromItemAddDtoToItem(itemAddDto));
-            } else if (itemAddDto.getLevel() == 2) {
-                groupsSecondLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
-            } else if (itemAddDto.getLevel() == 1) {
-                groupsFirstLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
-            }
+            if (itemAddDto.getLevel() == 3) items.add(ItemMapper.fromItemAddDtoToItem(itemAddDto));
+            else if (itemAddDto.getLevel() == 2) groupsSecondLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
+            else if (itemAddDto.getLevel() == 1) groupsFirstLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
         }
         try {
             groupRepository.saveAll(groupsFirstLevel);
