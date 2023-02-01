@@ -21,42 +21,6 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
     private final EntityManager em;
 
     @Override
-    public List<Item> getFilteredGroups(Integer level, String parentId, Integer from, Integer size) {
-        var cb = em.getCriteriaBuilder();
-        var query = cb.createQuery(Item.class);
-        Root<Item> eventRoot = query.from(Item.class);
-        List<Predicate> predicates = new ArrayList<>();
-        if (level != null) {
-            predicates.add(cb.equal(eventRoot.get("level"), level));
-        }
-        if (parentId != null) {
-            predicates.add(cb.equal(eventRoot.get("parentId"), parentId));
-        }
-        predicates.add(cb.equal(eventRoot.get("isGroup"), true));
-        query.where(predicates.toArray(new Predicate[0]));
-        final TypedQuery<Item> typedQuery = em.createQuery(query);
-        typedQuery.setFirstResult(from);
-        typedQuery.setMaxResults(size);
-        return typedQuery.getResultList();
-    }
-
-    @Override
-    public List<Item> getFilteredItems(String parentId, Integer from, Integer size) {
-        var cb = em.getCriteriaBuilder();
-        var criteriaQuery  = cb.createQuery(Item.class);
-        Root<Item> eventRoot = criteriaQuery.from(Item.class);
-        List<Predicate> predicates = new ArrayList<>();
-        if (parentId != null) {
-            predicates.add(cb.equal(eventRoot.get("parentId"), parentId));
-        }
-        criteriaQuery.where(predicates.toArray(new Predicate[0]));
-        final TypedQuery<Item> query = em.createQuery(criteriaQuery);
-        query.setFirstResult(from);
-        query.setMaxResults(size);
-        return query.getResultList();
-    }
-
-    @Override
     public List<Item> getItemByParams(ItemQueryParams params, Integer from, Integer size) {
         var cb = em.getCriteriaBuilder();
         var query = cb.createQuery(Item.class);

@@ -1,21 +1,44 @@
+
+create table groups
+(
+    id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS not null primary key,
+    name      nvarchar(255)                                     not null,
+    group_id varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    level     int                                               not null
+)
+go
+
 create table items
 (
     description      nvarchar(255),
     name             nvarchar(255),
     country          nvarchar(255),
     description_html nvarchar(max),
-    is_group         bit,
     is_out_of_stock  bit,
     level            int,
-    parent_id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    group_id         varchar(255) collate SQL_Latin1_General_CP1_CI_AS
+        constraint items_groups_fk
+            references groups,
     vendor_code      varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
     id               varchar(50) not null
         primary key,
     updated          datetime2,
+
     price            varchar(50)
         constraint items_prices_fk
             references prices,
-    is_novelty       bit
+    is_novelty       bit   
+)
+go
+
+create table prices
+(
+    id     varchar(50)
+        primary key ,
+    retail  float       not null,
+    sale    float       not null,
+    updated datetime2,
+    item_id varchar(50) not null unique
 )
 go
 
@@ -29,17 +52,6 @@ create table partners
 )
 go
 
-create table prices
-(
-    id      varchar(50) not null
-        primary key
-        constraint prices_items_id_fk
-            references items,
-    retail  float       not null,
-    sale    float       not null,
-    updated datetime2
-)
-go
 
 create table roles
 (

@@ -40,7 +40,7 @@ public class ItemAddDto {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", isGroup=" + isGroup +
-                ", parent_id='" + parent_id + '\'' +
+                ", groupId='" + parent_id + '\'' +
                 '}';
     }
 }
