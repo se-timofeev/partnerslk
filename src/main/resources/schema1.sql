@@ -1,3 +1,4 @@
+
 create table groups
 (
     id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS not null primary key,
@@ -22,7 +23,11 @@ create table items
     id               varchar(50) not null
         primary key,
     updated          datetime2,
-    is_novelty       bit
+
+    price            varchar(50)
+        constraint items_prices_fk
+            references prices,
+    is_novelty       bit   
 )
 go
 
@@ -113,5 +118,58 @@ create table dbo.contractors
     updated        datetime2     not null
 
 )
+go
+
+create table vt_orderStatuses
+(
+    status_id   bigint identity
+        primary key,
+    orderStatus varchar(255),
+    updated     datetime2,
+    user_id     varchar(255)
+        constraint users_id_fk
+            references users
+)
+go
+
+create table orders_vt
+(
+    n_row    bigint identity
+        primary key,
+    amount   bigint,
+    discount int,
+    price    float,
+    sale     float,
+    total    float,
+    item_id  varchar(255)
+        constraint items_id_fk
+            references items
+)
+go
+
+create table orders
+(
+    id_guid              bigint identity
+        primary key,
+    num                  bigint,
+    orderDate            datetime2,
+    sum_without_discount float,
+    sum_of_discount      float,
+    sum_with_discount    float,
+    orderStatus          varchar(255),
+    contractor_id        varchar(255)
+        constraint contractors_id_fk
+            references contractors,
+    n_row                bigint
+        constraint orders_vt_id_fk
+            references orders_vt,
+    status_id            bigint
+        constraint status_id_fk
+            references vt_orderStatuses
+)
+go
+
+
+
 
 
