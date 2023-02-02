@@ -20,9 +20,7 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(name = "id", unique = true)
+    @GeneratedValue
     private UUID id;
 
     private Long num;
