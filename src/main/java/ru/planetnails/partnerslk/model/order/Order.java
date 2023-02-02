@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.model.order;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 
 import javax.persistence.*;
@@ -16,25 +17,30 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Embeddable
-public class Order{
+public class Order {
 
     @Id
     @GeneratedValue
-    private UUID id_guid;
+    private UUID id;
+
     private Long num;
     private LocalDateTime orderDate;
     private Double sumWithoutDiscount;
     private Double sumOfDiscount;
     private Double sumWithDiscount;
-    @OneToOne
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contractor_id")
     private Contractor contractor;
+
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
-    @JoinColumn(name = "n_row")
-    @OneToMany(fetch = FetchType.LAZY)
+    private OrderStatus Status;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
     private List<OrderVt> orderVts;
-    @JoinColumn(name = "status_id")
-    @OneToMany
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
     private List<vtOrderStatuses> vtOrderStatuses;
 }

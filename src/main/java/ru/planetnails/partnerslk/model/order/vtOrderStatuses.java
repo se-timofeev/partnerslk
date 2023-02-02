@@ -18,12 +18,18 @@ import java.time.LocalDateTime;
 public class vtOrderStatuses {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long status_id;
-    private LocalDateTime updated;
+    @GeneratedValue
+    private Long id;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    @OneToOne
+
+    private LocalDateTime updated;
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }
