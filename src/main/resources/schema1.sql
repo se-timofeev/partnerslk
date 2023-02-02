@@ -1,21 +1,39 @@
+create table groups
+(
+    id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS not null primary key,
+    name      nvarchar(255)                                     not null,
+    group_id varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    level     int                                               not null
+)
+go
+
 create table items
 (
     description      nvarchar(255),
     name             nvarchar(255),
     country          nvarchar(255),
     description_html nvarchar(max),
-    is_group         bit,
     is_out_of_stock  bit,
     level            int,
-    parent_id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    group_id         varchar(255) collate SQL_Latin1_General_CP1_CI_AS
+        constraint items_groups_fk
+            references groups,
     vendor_code      varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
     id               varchar(50) not null
         primary key,
     updated          datetime2,
-    price            varchar(50)
-        constraint items_prices_fk
-            references prices,
     is_novelty       bit
+)
+go
+
+create table prices
+(
+    id     varchar(50)
+        primary key ,
+    retail  float       not null,
+    sale    float       not null,
+    updated datetime2,
+    item_id varchar(50) not null unique
 )
 go
 
@@ -29,17 +47,6 @@ create table partners
 )
 go
 
-create table prices
-(
-    id      varchar(50) not null
-        primary key
-        constraint prices_items_id_fk
-            references items,
-    retail  float       not null,
-    sale    float       not null,
-    updated datetime2
-)
-go
 
 create table roles
 (
@@ -106,58 +113,51 @@ create table dbo.contractors
     updated        datetime2     not null
 
 )
-go
 
-create table vt_orderStatuses
+create table vt_order_statuses
 (
-    status_id   bigint identity
+    id           bigint not null
         primary key,
-    orderStatus varchar(255),
-    updated     datetime2,
-    user_id     varchar(255)
-        constraint users_id_fk
+    order_status varchar(255),
+    updated      datetime2,
+    order_id     binary(255)
+        constraint FKqermtixnbf4936ayg8jix2ob5
+            references orders,
+    user_id      varchar(50)
+        constraint FKc3xsmsn6pw140rxpjlr0w67l2
             references users
 )
 go
-
 create table orders_vt
 (
-    n_row    bigint identity
+    id       bigint not null
         primary key,
     amount   bigint,
     discount int,
+    n_row    bigint,
     price    float,
     sale     float,
     total    float,
-    item_id  varchar(255)
-        constraint items_id_fk
-            references items
+    item_id  varchar(50)
+        constraint FKe2vvenpsuht663ti5jauhrx1n
+            references items,
+    order_id binary(255)
+        constraint FKq93kspsb17sd43yprlki3cs1s
+            references orders
 )
 go
-
 create table orders
 (
-    id_guid              bigint identity
+    id                   binary(255) not null
         primary key,
+    status               varchar(255),
     num                  bigint,
-    orderDate            datetime2,
-    sum_without_discount float,
+    order_date           datetime2,
     sum_of_discount      float,
     sum_with_discount    float,
-    orderStatus          varchar(255),
-    contractor_id        varchar(255)
-        constraint contractors_id_fk
-            references contractors,
-    n_row                bigint
-        constraint orders_vt_id_fk
-            references orders_vt,
-    status_id            bigint
-        constraint status_id_fk
-            references vt_orderStatuses
+    sum_without_discount float,
+    contractor_id        varchar(50)
+        constraint FK3xvcmuk6a7ktrx3awo4ye55fs
+            references contractors
 )
 go
-
-
-
-
-

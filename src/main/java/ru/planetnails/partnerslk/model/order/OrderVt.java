@@ -16,9 +16,14 @@ import javax.persistence.*;
 public class OrderVt {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    private Long id;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "order_id")
+    private Order order;
     private Long n_row;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "item_id")
     private Item item;
     private Long amount;
