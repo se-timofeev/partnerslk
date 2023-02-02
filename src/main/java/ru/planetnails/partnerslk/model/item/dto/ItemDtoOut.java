@@ -22,10 +22,7 @@ public class ItemDtoOut {
     private String vendorCode;
 
     private String descriptionHtml;
-
-    private Boolean isGroup;
-
-    private String parent_id;
+    private String groupId;
 
     private Integer level;
 
@@ -50,8 +47,7 @@ public class ItemDtoOut {
         return "ItemAddDto{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", isGroup=" + isGroup +
-                ", parent_id='" + parent_id + '\'' +
+                ", groupId='" + groupId + '\'' +
                 '}';
     }
 }

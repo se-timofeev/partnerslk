@@ -7,18 +7,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.planetnails.partnerslk.exception.LoadingError;
+import ru.planetnails.partnerslk.model.group.Group;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.item.ItemQueryParams;
 import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
 import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
-import ru.planetnails.partnerslk.model.item.dto.ItemDtoOutGroups;
+import ru.planetnails.partnerslk.model.item.dto.GroupDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.ItemMapper;
 import ru.planetnails.partnerslk.model.partner.Partner;
+import ru.planetnails.partnerslk.repository.groupRepository.GroupRepository;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.ItemService;
 import ru.planetnails.partnerslk.service.PartnerService;
-import ru.planetnails.partnerslk.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,63 +32,54 @@ import java.util.stream.Collectors;
 
 public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
-    private PartnerService partnerService;
-    private UserService userService;
 
-    @Override
-    public ItemAddDto add(ItemAddDto itemAddDto) {
-        log.info("Add item {}", itemAddDto);
-        Item item = ItemMapper.fromItemAddDtoToItem(itemAddDto);
-        try {
-            itemRepository.save(item);
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
-        return ItemMapper.toItemAddDto(item);
-    }
+    private GroupRepository groupRepository;
+    private PartnerService partnerService;
 
     @Override
     @Transactional
     @Async
     public void add(List<ItemAddDto> itemsAddDto) {
         log.info("Add items as List ");
-        List<Item> items = itemsAddDto.stream().map(x -> ItemMapper.fromItemAddDtoToItem(x)).collect(Collectors.toList());
+        List<Item> items = new ArrayList<>();
+        List<Group> groupsFirstLevel = new ArrayList<>();
+        List<Group> groupsSecondLevel = new ArrayList<>();
+        for (ItemAddDto itemAddDto : itemsAddDto) {
+            if (itemAddDto.getLevel() == 3) {
+                items.add(ItemMapper.fromItemAddDtoToItem(itemAddDto));
+            } else if (itemAddDto.getLevel() == 2) {
+                groupsSecondLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
+            } else if (itemAddDto.getLevel() == 1) {
+                groupsFirstLevel.add(ItemMapper.fromItemAddDtoToGroup(itemAddDto));
+            }
+        }
         try {
+            groupRepository.saveAll(groupsFirstLevel);
+            groupRepository.saveAll(groupsSecondLevel);
             itemRepository.saveAll(items);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            throw new LoadingError("Ошибка загрузки данных");
         }
-
     }
 
     @Override
-    public List<ItemDtoOut> getFilteredItems(String parentId, Integer from, Integer size, String partnerId) {
+    public Page<ItemDtoOut> getItemsByGroupId(String groupId, Integer from, Integer size, String partnerId) {
         Partner partner = partnerService.findPartnerById(partnerId);
-        List<Item> items = itemRepository.getFilteredItems(parentId, from, size);
-        return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(from / size, size);
+        Page<Item> items = itemRepository.findItemsByGroupId(groupId, pageRequest);
+        return items.map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount()));
     }
 
     @Override
-    public List<ItemDtoOutGroups> getFilteredGroups(Integer level, String parentId, Integer from, Integer size) {
-        List<Item> items = itemRepository.getFilteredGroups(level, parentId, from, size);
-        return items.stream().map(ItemMapper::toItemDtoOutShort).collect(Collectors.toList());
+    public List<GroupDtoOut> getFilteredGroups(Integer level, String groupId, Integer from, Integer size) {
+        List<Group> groups = groupRepository.getFilteredGroups(level, groupId, from, size);
+        return groups.stream().map(ItemMapper::toGroupDtoOut).collect(Collectors.toList());
     }
 
     @Override
     public List<ItemDtoOut> getItemByParams(String partnerId, ItemQueryParams params, Integer from, Integer size) {
         Partner partner = partnerService.findPartnerById(partnerId);
         List<Item> items = itemRepository.getItemByParams(params, from, size);
-        return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ItemDtoOut> getItemsPrices(String userId, String parentId, String partnerId, Integer from, Integer size) {
-        PageRequest pageRequest = PageRequest.of(from / size, size);
-        userService.findById(userId);
-        Partner partner = partnerService.findPartnerById(partnerId);
-        Page<Item> items;
-        if (parentId == null) items = itemRepository.findItems(pageRequest);
-        else items = itemRepository.findItemsByParentId(parentId, pageRequest);
         return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
     }
 }

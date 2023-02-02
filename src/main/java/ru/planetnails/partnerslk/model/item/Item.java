@@ -29,11 +29,8 @@ public class Item  {
     @Column(name="description_html")
     private String descriptionHtml;
 
-    @Column(name="is_group")
-    private Boolean isGroup;
-
-    @Column (name="parent_id")
-    private String parentId;
+    @Column (name="group_id")
+    private String groupId;
 
     @Column (name="level")
     private Integer level;
@@ -47,10 +44,13 @@ public class Item  {
     @Column(name="updated")
     private LocalDateTime updated;
 
-    @OneToOne
-    @JoinColumn(name = "price")
+    @OneToOne (mappedBy="item")
     private Price price;
 
     @Column(name = "is_novelty")
     private Boolean isNovelty;
+
+    public Item(String id) {
+        this.id = id;
+    }
 }
