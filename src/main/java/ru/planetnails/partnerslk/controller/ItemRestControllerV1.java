@@ -35,7 +35,8 @@ public class ItemRestControllerV1 {
         return "Your data has been queued.";
     }
 
-    @Operation(summary = "Получить список товаров определенного раздела - groupId")
+    @Operation(summary = "Получить список товаров определенного раздела - groupId, либо все товары в базе" +
+            "groupId - опционально, level - опционально")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Возвращает список групп. В случае отсутствия групп," +
                     " удовлетворяющих параметром, возвращает пустой список",
@@ -43,12 +44,14 @@ public class ItemRestControllerV1 {
                             array = @ArraySchema(schema = @Schema(implementation = ItemDtoOut.class)))}),
     })
     @GetMapping(produces = "application/json;charset=UTF-8")
-    public Page<ItemDtoOut> getItemsByGroupId(@RequestParam(name = "from", defaultValue = "0") Integer from,
-                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                              @RequestParam String partnerId,
-                                              @RequestParam String groupId) {
-        log.info(String.format("Получен эндпоинт GET /api/v1/items/; partnerId = %s, groupId = %s", partnerId, groupId));
-        return itemService.getItemsByGroupId(groupId, from, size, partnerId);
+    public Page<ItemDtoOut> getItems(@RequestParam(name = "from", defaultValue = "0") Integer from,
+                                     @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                     @RequestParam String partnerId,
+                                     @RequestParam(required = false) String groupId,
+                                     @RequestParam(required = false) Integer level) {
+        log.info(String.format("Получен эндпоинт GET /api/v1/items/; partnerId = %s, groupId = %s, level =%d",
+                partnerId, groupId, level));
+        return itemService.getItems(groupId, from, size, partnerId, level);
     }
 
 
