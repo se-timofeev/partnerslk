@@ -103,4 +103,10 @@ public class ItemRestControllerV1 {
                 .build();
         return itemService.getItemByParams(partnerId, params, from, size);
     }
+
+    @DeleteMapping
+    public void deleteItems(@RequestParam List<String> itemsId) {
+        log.info("Получен эндпоинт DELETE /api/v1/items, передан список id для удаления item: " + itemsId);
+        itemService.deleteItems(itemsId);
+    }
 }

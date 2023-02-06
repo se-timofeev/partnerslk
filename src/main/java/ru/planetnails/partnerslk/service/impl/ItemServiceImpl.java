@@ -83,4 +83,9 @@ public class ItemServiceImpl implements ItemService {
         List<Item> items = itemRepository.getItemByParams(params, from, size);
         return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteItems(List<String> itemsId) {
+        if(!itemsId.isEmpty()) itemRepository.ItemOutOfStuck(itemsId);
+    }
 }
