@@ -65,9 +65,9 @@ public class ItemServiceImpl implements ItemService {
         Page<Item> items;
         if (level != null && level == 1) {
             List<String> groupIds = groupRepository.findIdListGroupId(groupId);
-            items = itemRepository.findItemsFirstLevelGroup(groupIds, pageRequest);
-        } else if (groupId == null) items = itemRepository.findAll(pageRequest);
-        else items = itemRepository.findItemsByGroupId(groupId, pageRequest);
+            items = itemRepository.findItemsByFirstLevelGroup(groupIds, pageRequest);
+        } else if (groupId == null) items = itemRepository.findAllNotOutOfStock(pageRequest);
+        else items = itemRepository.findItemsBySecondLevelGroup(groupId, pageRequest);
         return items.map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount()));
     }
 

@@ -26,6 +26,8 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
         var query = cb.createQuery(Item.class);
         Root<Item> eventRoot = query.from(Item.class);
         List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(cb.equal(eventRoot.get("isOutOfStock"), false));
         if (params.getName() != null)
             predicates.add(cb.like(cb.lower(eventRoot.get("name")), "%" + params.getName() + "%"));
         if (params.getDescription() != null)
