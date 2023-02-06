@@ -10,4 +10,12 @@ public class PartnerMapper {
                 .discount(partnerAddDto.getDiscount())
                 .account(partnerAddDto.getAccount()).build();
     }
+
+    public static PartnerOutDto fromPartnerToPartnerOutDto(Partner partner) {
+        return PartnerOutDto.builder()
+                .id(partner.getId())
+                .name(partner.getName())
+                .discount(partner.getDiscount())
+                .account(partner.getAccount()).build();
+    }
 }

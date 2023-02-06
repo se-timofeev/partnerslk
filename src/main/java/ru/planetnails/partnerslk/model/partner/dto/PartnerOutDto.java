@@ -11,8 +11,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Schema(description = "DTO для POST запроса")
-public class PartnerAddDto {
+@Builder
+@Schema(description = "DTO для GET запроса")
+public class PartnerOutDto {
     @NotBlank
     @Schema(description = "id партнёра")
     @Size(max = 50)
