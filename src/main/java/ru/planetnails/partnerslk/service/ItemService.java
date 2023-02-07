@@ -18,4 +18,7 @@ public interface ItemService {
 
     List<ItemDtoOut> getItemByParams(String partnerId, ItemQueryParams params, Integer from, Integer size);
 
+    void deleteItems(List<String> itemsId);
+
+    ItemDtoOut getItemById(String itemId, String partnerId);
 }

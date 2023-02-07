@@ -54,6 +54,21 @@ public class ItemRestControllerV1 {
         return itemService.getItems(groupId, from, size, partnerId, level);
     }
 
+    @Operation(summary = "Получить товаров по id. Передача partnerId, itemId обязательна")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Возвращает ItemDtoOut",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ItemDtoOut.class)))}),
+            @ApiResponse(responseCode = "404", description = "Item с id = %s не найден",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "partner not found",
+                    content = @Content)
+    })
+    @GetMapping("/{itemId}")
+    public ItemDtoOut getItemById(@PathVariable String itemId, @RequestParam String partnerId) {
+        log.info("Получен эндпоинт GET /api/v1/items/{itemId}; itemId = {}, partnerId = {}", itemId, partnerId);
+        return itemService.getItemById(itemId, partnerId);
+    }
 
     @Operation(summary = "Получить список групп отфильтрованных по полям \"level\" и  \"groupId\"; " +
             "Поля \"level\" и  \"groupId\" опционально.")
@@ -102,5 +117,16 @@ public class ItemRestControllerV1 {
                 .maxPrice(maxPrice)
                 .build();
         return itemService.getItemByParams(partnerId, params, from, size);
+    }
+
+    @Operation(summary = "Удаление item. Удалаются те товары, которые были обнаружены в базе.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Пользователь удален",
+                    content = @Content),
+    })
+    @DeleteMapping
+    public void deleteItems(@RequestParam List<String> itemsId) {
+        log.info("Получен эндпоинт DELETE /api/v1/items, передан список id для удаления item: " + itemsId);
+        itemService.deleteItems(itemsId);
     }
 }

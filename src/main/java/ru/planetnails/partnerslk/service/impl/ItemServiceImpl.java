@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.exception.LoadingError;
+import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.group.Group;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.item.ItemQueryParams;
@@ -65,10 +66,18 @@ public class ItemServiceImpl implements ItemService {
         Page<Item> items;
         if (level != null && level == 1) {
             List<String> groupIds = groupRepository.findIdListGroupId(groupId);
-            items = itemRepository.findItemsFirstLevelGroup(groupIds, pageRequest);
-        } else if (groupId == null) items = itemRepository.findAll(pageRequest);
-        else items = itemRepository.findItemsByGroupId(groupId, pageRequest);
+            items = itemRepository.findItemsByFirstLevelGroup(groupIds, pageRequest);
+        } else if (groupId == null) items = itemRepository.findAllNotOutOfStock(pageRequest);
+        else items = itemRepository.findItemsBySecondLevelGroup(groupId, pageRequest);
         return items.map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount()));
+    }
+
+    @Override
+    public ItemDtoOut getItemById(String itemId, String partnerId) {
+        Partner partner = partnerService.findPartnerById(partnerId);
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new NotFoundException(String.format("Item с id = %s не найден", itemId)));
+        return ItemMapper.toItemDtoOut(item, partner.getDiscount());
     }
 
     @Override
@@ -82,5 +91,10 @@ public class ItemServiceImpl implements ItemService {
         Partner partner = partnerService.findPartnerById(partnerId);
         List<Item> items = itemRepository.getItemByParams(params, from, size);
         return items.stream().map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount())).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteItems(List<String> itemsId) {
+        if(!itemsId.isEmpty()) itemRepository.ItemOutOfStock(itemsId);
     }
 }
