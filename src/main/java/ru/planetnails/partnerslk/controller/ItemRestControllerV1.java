@@ -104,6 +104,11 @@ public class ItemRestControllerV1 {
         return itemService.getItemByParams(partnerId, params, from, size);
     }
 
+    @Operation(summary = "Удаление item. Удалаются те товары, которые были обнаружены в базе.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Пользователь удален",
+                    content = @Content),
+    })
     @DeleteMapping
     public void deleteItems(@RequestParam List<String> itemsId) {
         log.info("Получен эндпоинт DELETE /api/v1/items, передан список id для удаления item: " + itemsId);

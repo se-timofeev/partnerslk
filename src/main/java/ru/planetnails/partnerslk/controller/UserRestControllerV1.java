@@ -7,11 +7,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.model.user.UserStatus;
 import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
 import ru.planetnails.partnerslk.model.user.dto.UserMapper;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
@@ -22,6 +24,7 @@ import ru.planetnails.partnerslk.service.UserService;
 @Validated
 @Tag(name = "Users", description = "You can create, modify and, get the users")
 @RequestMapping(value = "/api/v1/users")
+@Slf4j
 public class UserRestControllerV1 {
     private final UserService userService;
 
@@ -36,7 +39,7 @@ public class UserRestControllerV1 {
     @GetMapping(value = "{id}")
     public ResponseEntity<UserOutDto> getUserById(@PathVariable(name = "id") String userId) {
         User user = userService.findById(userId);
-        if (user == null) {
+        if (user == null || user.getStatus().equals(UserStatus.DELETED)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         UserOutDto result = UserMapper.fromUserToUserOutDto(user);
@@ -97,4 +100,16 @@ public class UserRestControllerV1 {
         return userService.setUserBlocked(userId);
     }
 
+    @Operation(summary = "Удаление пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Пользователь удален",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content)
+    })
+    @DeleteMapping("/{idForDelete}/delete")
+    public void deleteUser(@PathVariable String idForDelete, @RequestParam String requesterId) {
+        log.info("Получен эндпоинт DELETE /api/v1/users; idForDelete = {}, requesterId = {}" + idForDelete, requesterId);
+        userService.deleteUser(idForDelete, requesterId);
+    }
 }

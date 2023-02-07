@@ -86,6 +86,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItems(List<String> itemsId) {
-        if(!itemsId.isEmpty()) itemRepository.ItemOutOfStuck(itemsId);
+        if(!itemsId.isEmpty()) itemRepository.ItemOutOfStock(itemsId);
     }
 }
