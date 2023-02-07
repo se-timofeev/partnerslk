@@ -18,8 +18,6 @@ import ru.planetnails.partnerslk.model.partner.dto.PartnerMapper;
 import ru.planetnails.partnerslk.model.partner.dto.PartnerOutDto;
 import ru.planetnails.partnerslk.service.PartnerService;
 
-import java.util.List;
-
 @RestController
 @Validated
 @AllArgsConstructor
@@ -29,7 +27,7 @@ import java.util.List;
 public class PartnerRestControllerV1 {
     PartnerService partnerService;
 
-    @Operation(summary = "Добавление/обновление данных партнёера")
+    @Operation(summary = "Добавление/обновление данных партнёра")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -49,13 +47,6 @@ public class PartnerRestControllerV1 {
         return "Your data has been queued.";
     }
 
-    @GetMapping
-    public List<Partner> getAllPartners() {
-        // подумать, тут должна быть учетка с админскими правами, чтобы
-        // обычный пользователь не мог дерануть такой сервис и вытащить всю информацию
-
-        return null;
-    }
 
     @Operation(summary = "Получение данных партнёра по id")
     @ApiResponses(value = {
@@ -70,7 +61,7 @@ public class PartnerRestControllerV1 {
                     description = "Данные не найдены",
                     content = @Content)
     })
-    @GetMapping(value = "/partner/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<PartnerOutDto> getPartnerById(@PathVariable(name = "id") String id) {
         log.info(String.format(" GET /api/v1/partners/partner; partnerId = %s", id));
         Partner partner = partnerService.findPartnerById(id);
