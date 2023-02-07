@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.exception.LoadingError;
+import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.group.Group;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.item.ItemQueryParams;
@@ -69,6 +70,14 @@ public class ItemServiceImpl implements ItemService {
         } else if (groupId == null) items = itemRepository.findAllNotOutOfStock(pageRequest);
         else items = itemRepository.findItemsBySecondLevelGroup(groupId, pageRequest);
         return items.map(x -> ItemMapper.toItemDtoOut(x, partner.getDiscount()));
+    }
+
+    @Override
+    public ItemDtoOut getItemById(String itemId, String partnerId) {
+        Partner partner = partnerService.findPartnerById(partnerId);
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new NotFoundException(String.format("Item с id = %s не найден", itemId)));
+        return ItemMapper.toItemDtoOut(item, partner.getDiscount());
     }
 
     @Override
