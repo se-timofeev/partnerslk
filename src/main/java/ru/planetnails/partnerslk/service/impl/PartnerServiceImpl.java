@@ -10,12 +10,14 @@ import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.partner.dto.PartnerAddDto;
 import ru.planetnails.partnerslk.model.partner.dto.PartnerMapper;
 import ru.planetnails.partnerslk.repository.PartnerRepository;
+import ru.planetnails.partnerslk.repository.UserRepository;
 import ru.planetnails.partnerslk.service.PartnerService;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class PartnerServiceImpl implements PartnerService {
+    private final UserRepository userRepository;
 
     PartnerRepository partnerRepository;
 
@@ -34,5 +36,22 @@ public class PartnerServiceImpl implements PartnerService {
     @Override
     public Partner findPartnerById(String partnerId) {
         return partnerRepository.findById(partnerId).orElseThrow(() -> new NotFoundException("partner not found"));
+    }
+
+    @Override
+    public Partner findPartnerByUsername(String username) {
+        return partnerRepository.findPartnerByUsername(username);
+
+    }
+
+    @Override
+    public Partner findPartnerByUserId(String id) {
+        return partnerRepository.findPartnerByUserId(id);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String id) {
+        partnerRepository.deleteById(id);
     }
 }
