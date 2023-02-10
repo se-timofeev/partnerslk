@@ -1,4 +1,4 @@
-package ru.planetnails.partnerslk.model.item;
+package ru.planetnails.partnerslk.model.item.queryParams;
 
 import lombok.Builder;
 import lombok.Getter;
