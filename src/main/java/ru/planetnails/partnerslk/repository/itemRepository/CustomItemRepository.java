@@ -1,7 +1,7 @@
 package ru.planetnails.partnerslk.repository.itemRepository;
 
 import ru.planetnails.partnerslk.model.item.Item;
-import ru.planetnails.partnerslk.model.item.ItemQueryParams;
+import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
 
 import java.util.List;
 

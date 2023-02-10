@@ -3,7 +3,7 @@ package ru.planetnails.partnerslk.repository.itemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.item.Item;
-import ru.planetnails.partnerslk.model.item.ItemQueryParams;
+import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

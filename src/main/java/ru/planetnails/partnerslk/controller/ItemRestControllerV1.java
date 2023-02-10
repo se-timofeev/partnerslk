@@ -11,7 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import ru.planetnails.partnerslk.model.item.ItemQueryParams;
+import ru.planetnails.partnerslk.model.item.queryParams.GetItemsParams;
+import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
 import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
 import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.GroupDtoOut;
@@ -39,7 +40,8 @@ public class ItemRestControllerV1 {
             "groupId - опционально, level - опционально")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Возвращает список групп. В случае отсутствия групп," +
-                    " удовлетворяющих параметром, возвращает пустой список",
+                    " удовлетворяющих параметром, возвращает пустой список. Сортировка (sortBy) возможна по 4 " +
+                    "параметрам: 'name', 'price', 'vendorCode', 'countryOfOrigin'; тип сортировки: 'asc' / 'desc'",
                     content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = ItemDtoOut.class)))}),
     })
@@ -48,10 +50,21 @@ public class ItemRestControllerV1 {
                                      @RequestParam(name = "size", defaultValue = "10") Integer size,
                                      @RequestParam String partnerId,
                                      @RequestParam(required = false) String groupId,
-                                     @RequestParam(required = false) Integer level) {
-        log.info(String.format("Получен эндпоинт GET /api/v1/items/; partnerId = %s, groupId = %s, level =%d",
-                partnerId, groupId, level));
-        return itemService.getItems(groupId, from, size, partnerId, level);
+                                     @RequestParam(required = false) Integer level,
+                                     @RequestParam(required = false) String sortBy,
+                                     @RequestParam(required = false) String sortType) {
+        log.info(String.format("Получен эндпоинт GET /api/v1/items/; partnerId = %s, groupId = %s, level =%d, " +
+                        "sortBy = %s, sortType = %s", partnerId, groupId, level, sortBy, sortType));
+        GetItemsParams params = GetItemsParams.builder()
+                .from(from)
+                .size(size)
+                .partnerId(partnerId)
+                .groupId(groupId)
+                .level(level)
+                .sortBy(sortBy)
+                .sortType(sortType)
+                .build();
+        return itemService.getItems(params);
     }
 
     @Operation(summary = "Получить товаров по id. Передача partnerId, itemId обязательна")
