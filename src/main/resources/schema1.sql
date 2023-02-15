@@ -161,3 +161,13 @@ create table orders
             references contractors
 )
 go
+
+create table images
+(
+    id      varchar(36) not null
+        primary key,
+    base64  NTEXT       not null,
+    item_id varchar(50) not null
+        constraint images_fk_items references items
+)
+go
