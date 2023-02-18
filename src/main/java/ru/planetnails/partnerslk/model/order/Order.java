@@ -1,7 +1,6 @@
 package ru.planetnails.partnerslk.model.order;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 
 import javax.persistence.*;

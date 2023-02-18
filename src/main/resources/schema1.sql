@@ -1,9 +1,9 @@
 create table groups
 (
-    id        varchar(255) collate SQL_Latin1_General_CP1_CI_AS not null primary key,
-    name      nvarchar(255)                                     not null,
+    id       varchar(255) collate SQL_Latin1_General_CP1_CI_AS not null primary key,
+    name     nvarchar(255)                                     not null,
     group_id varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
-    level     int                                               not null
+    level    int                                               not null
 )
 go
 
@@ -28,8 +28,8 @@ go
 
 create table prices
 (
-    id     varchar(50)
-        primary key ,
+    id      varchar(50)
+        primary key,
     retail  float       not null,
     sale    float       not null,
     updated datetime2,
@@ -161,3 +161,24 @@ create table orders
             references contractors
 )
 go
+
+insert roles (name)
+values ('ADMIN')
+insert roles (name)
+values ('USER')
+
+insert users (id, full_name, password, status, name)
+values ('1243cfb7-0058-4948-ad80-b779f01f8a45', 'Сергей Тимофеев',
+        '$2a$10$xlhPn8MVqTSxAsPDK13n6.YNY/ozojvjo/oCd2T0dYX0ZEXPQ9C2q', 'ACTIVE', '89037760813');
+
+insert contractors (id, name, description, inn, kpp, legal_address, actual_address, partner_id, updated)
+values ('d463bff1-fd5e-4e76-aeb0-1266d49e8f01', 'Эвика (Элизе бутово)', 'ООО ''Эвика''', '7731313883', '773101001',
+        '450068, Москва, Орджоникидзе, дом № 11, строение 43, Помещение1 к.16',
+        '117216, Москва, Дмитрия Донского (Южный город мкр.) ул, дом № 1', 'd463bff1-fd5e-4e76-aeb0-1266d49e8f01',
+        '2022-12-31 10:46:16.8024250');
+
+insert user_partners(user_id, partner_id)
+values ('1243cfb7-0058-4948-ad80-b779f01f8a45', 'd463bff1-fd5e-4e76-aeb0-1266d49e8f01');
+
+insert dbo.partners(id, name, discount, account)
+values ('d463bff1-fd5e-4e76-aeb0-1266d49e8f01', 'Ткаченко Владикавказ', '30', 'Пашкин П.В.');

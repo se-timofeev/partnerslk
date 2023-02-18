@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 @Repository
 public interface ContractorRepository extends JpaRepository<Contractor,String> {
+    Contractor findByPartnerId(String id);
 }
