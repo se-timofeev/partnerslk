@@ -3,6 +3,7 @@ package ru.planetnails.partnerslk.model.order.dto;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.order.Order;
+import ru.planetnails.partnerslk.model.order.OrderStatus;
 import ru.planetnails.partnerslk.model.order.OrderVt;
 import ru.planetnails.partnerslk.model.order.vtOrderStatuses;
 import ru.planetnails.partnerslk.model.user.User;
@@ -22,7 +23,7 @@ public class OrderMapper {
                 orderAddDto.getSumOfDiscount(),
                 orderAddDto.getSumWithDiscount(),
                 contractor,
-                orderAddDto.getStatus(),
+                OrderStatus.NEW,
                 orderVts,
                 vtOrderStatuses
         );

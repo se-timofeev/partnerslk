@@ -3,6 +3,7 @@ package ru.planetnails.partnerslk.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.OrderVt;
@@ -24,8 +25,7 @@ import java.util.UUID;
 public class OrderServiceImpl implements OrderService {
 
     private final ContractorRepository contractorRepository;
-    private final OrderVtRepository orderVtRepository;
-    private final vtOrderStatusesRepository vtOrderStatusesRepository;
+
     private final OrderRepository orderRepository;
 
     private final ItemRepository itemRepository;
@@ -33,18 +33,15 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
 
     @Autowired
-    public OrderServiceImpl(ContractorRepository contractorRepository, OrderVtRepository orderVtRepository,
-                            vtOrderStatusesRepository vtOrderStatusesRepository, OrderRepository orderRepository,
-                            ItemRepository itemRepository, UserRepository userRepository) {
+    public OrderServiceImpl(ContractorRepository contractorRepository, OrderRepository orderRepository, ItemRepository itemRepository, UserRepository userRepository) {
         this.contractorRepository = contractorRepository;
-        this.orderVtRepository = orderVtRepository;
-        this.vtOrderStatusesRepository = vtOrderStatusesRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
     }
 
     @Override
+    @Transactional
     public String add(OrderAddDto orderAddDto) {
         log.info("Add new order");
         Contractor contractor = contractorRepository.getReferenceById(orderAddDto.getContractorId());
@@ -63,16 +60,6 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, orderVtList, vtOrderStatusesList));
         Order newOrder = orderRepository.findOrderByContractor(contractor);
         UUID orderID = newOrder.getId();
-        List<OrderVt> orderVts = orderVtRepository.findAll();
-        for (OrderVt orderVt : orderVts) {
-            orderVt.setOrder(orderRepository.getReferenceById(orderID));
-            orderVtRepository.save(orderVt);
-        }
-        List<vtOrderStatuses> vtOrderStatuses = vtOrderStatusesRepository.findAll();
-        for (vtOrderStatuses vtOrderStatuse : vtOrderStatuses) {
-            vtOrderStatuse.setOrder(orderRepository.getReferenceById(orderID));
-            vtOrderStatusesRepository.save(vtOrderStatuse);
-        }
         return orderID.toString();
     }
 }

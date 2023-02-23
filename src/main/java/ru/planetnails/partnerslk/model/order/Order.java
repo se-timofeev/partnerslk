@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.model.order;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 
 import javax.persistence.*;
@@ -15,7 +16,11 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     private Long num;
