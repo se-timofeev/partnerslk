@@ -2,15 +2,11 @@ package ru.planetnails.partnerslk.model.order.dto;
 
 import lombok.*;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OderVtOutDto {
+public class OderVtAddDto {
 
-    private Long id;
-    private UUID orderId;
     private Long n_row;
     private String itemId;
     private Long amount;

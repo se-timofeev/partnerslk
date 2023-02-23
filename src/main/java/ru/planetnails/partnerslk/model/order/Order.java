@@ -8,14 +8,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "orders")
-@Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Embeddable
 public class Order {
 
     @Id
@@ -42,4 +38,18 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private List<vtOrderStatuses> vtOrderStatuses;
+
+    public Order(Long num, LocalDateTime orderDate, Double sumWithoutDiscount, Double sumOfDiscount,
+                 Double sumWithDiscount, Contractor contractor, OrderStatus status, List<OrderVt> orderVts,
+                 List<vtOrderStatuses> vtOrderStatuses) {
+        this.num = num;
+        this.orderDate = orderDate;
+        this.sumWithoutDiscount = sumWithoutDiscount;
+        this.sumOfDiscount = sumOfDiscount;
+        this.sumWithDiscount = sumWithDiscount;
+        this.contractor = contractor;
+        Status = status;
+        this.orderVts = orderVts;
+        this.vtOrderStatuses = vtOrderStatuses;
+    }
 }

@@ -7,17 +7,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.planetnails.partnerslk.model.item.dto.ItemDtoAddWithAmount;
+import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
 import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
 import ru.planetnails.partnerslk.service.OrderService;
 
-import java.util.List;
-
+@Slf4j
 @RestController
 @AllArgsConstructor
-@Validated
 @Tag(name = "Orders", description = "You can create, modify and, get the orders")
 @RequestMapping(value = "/api/v1/orders")
 public class OrderRestControllerV1 {
@@ -31,8 +29,9 @@ public class OrderRestControllerV1 {
                             schema = @Schema(implementation = OrderOutDto.class))})
     })
     @PostMapping
-    @PutMapping(value = "{id}")
-    public OrderOutDto add(@RequestBody List<ItemDtoAddWithAmount> items, @PathVariable(name = "id") String userId) {
-        return orderService.add(items, userId);
+    @PutMapping
+    public String add(@RequestBody OrderAddDto orderAddDto) {
+        log.info(String.format("Получен эндпоинт POST /api/v1/order"));
+        return String.format("Заказ успешно создан; orderId = %s", orderService.add(orderAddDto));
     }
 }
