@@ -120,7 +120,7 @@ create table vt_order_statuses
         primary key,
     order_status varchar(255),
     updated      datetime2,
-    order_id     binary(255)
+    order_id     varchar(255)
         constraint FKqermtixnbf4936ayg8jix2ob5
             references orders,
     user_id      varchar(50)
@@ -128,6 +128,7 @@ create table vt_order_statuses
             references users
 )
 go
+
 create table orders_vt
 (
     id       bigint not null
@@ -141,14 +142,14 @@ create table orders_vt
     item_id  varchar(50)
         constraint FKe2vvenpsuht663ti5jauhrx1n
             references items,
-    order_id binary(255)
+    order_id varchar(255)
         constraint FKq93kspsb17sd43yprlki3cs1s
             references orders
 )
 go
 create table orders
 (
-    id                   binary(255) not null
+    id                   varchar(255) not null
         primary key,
     status               varchar(255),
     num                  bigint,
@@ -161,24 +162,3 @@ create table orders
             references contractors
 )
 go
-
-insert roles (name)
-values ('ADMIN')
-insert roles (name)
-values ('USER')
-
-insert users (id, full_name, password, status, name)
-values ('1243cfb7-0058-4948-ad80-b779f01f8a45', 'Сергей Тимофеев',
-        '$2a$10$xlhPn8MVqTSxAsPDK13n6.YNY/ozojvjo/oCd2T0dYX0ZEXPQ9C2q', 'ACTIVE', '89037760813');
-
-insert contractors (id, name, description, inn, kpp, legal_address, actual_address, partner_id, updated)
-values ('d463bff1-fd5e-4e76-aeb0-1266d49e8f01', 'Эвика (Элизе бутово)', 'ООО ''Эвика''', '7731313883', '773101001',
-        '450068, Москва, Орджоникидзе, дом № 11, строение 43, Помещение1 к.16',
-        '117216, Москва, Дмитрия Донского (Южный город мкр.) ул, дом № 1', 'd463bff1-fd5e-4e76-aeb0-1266d49e8f01',
-        '2022-12-31 10:46:16.8024250');
-
-insert user_partners(user_id, partner_id)
-values ('1243cfb7-0058-4948-ad80-b779f01f8a45', 'd463bff1-fd5e-4e76-aeb0-1266d49e8f01');
-
-insert dbo.partners(id, name, discount, account)
-values ('d463bff1-fd5e-4e76-aeb0-1266d49e8f01', 'Ткаченко Владикавказ', '30', 'Пашкин П.В.');

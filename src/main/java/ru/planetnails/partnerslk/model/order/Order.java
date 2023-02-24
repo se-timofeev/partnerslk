@@ -1,13 +1,13 @@
 package ru.planetnails.partnerslk.model.order;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -16,13 +16,10 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID id;
-
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "id", unique = true)
+    private String id;
     private Long num;
     private LocalDateTime orderDate;
     private Double sumWithoutDiscount;
@@ -45,8 +42,8 @@ public class Order {
     private List<vtOrderStatuses> vtOrderStatuses;
 
     public Order(Long num, LocalDateTime orderDate, Double sumWithoutDiscount, Double sumOfDiscount,
-                 Double sumWithDiscount, Contractor contractor, OrderStatus status, List<OrderVt> orderVts,
-                 List<vtOrderStatuses> vtOrderStatuses) {
+                 Double sumWithDiscount, Contractor contractor, OrderStatus status,
+                 List<OrderVt> orderVts, List<ru.planetnails.partnerslk.model.order.vtOrderStatuses> vtOrderStatuses) {
         this.num = num;
         this.orderDate = orderDate;
         this.sumWithoutDiscount = sumWithoutDiscount;

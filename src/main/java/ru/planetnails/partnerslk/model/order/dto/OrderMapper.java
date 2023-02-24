@@ -14,10 +14,12 @@ import java.util.stream.Collectors;
 
 public class OrderMapper {
 
+    private static Long num = 1l;
+
     public static Order fromOrderAddDtoOrder(OrderAddDto orderAddDto, Contractor contractor, List<OrderVt> orderVts,
                                              List<vtOrderStatuses> vtOrderStatuses) {
         return new Order(
-                orderAddDto.getNum(),
+                num++,
                 LocalDateTime.now(),
                 orderAddDto.getSumWithoutDiscount(),
                 orderAddDto.getSumOfDiscount(),
@@ -37,7 +39,7 @@ public class OrderMapper {
                 order.getSumWithoutDiscount(),
                 order.getSumWithoutDiscount(),
                 order.getSumWithDiscount(),
-                order.getContractor(),
+                order.getContractor().getId(),
                 order.getStatus(),
                 order.getOrderVts().stream()
                         .map(OrderMapper::fromOderVtToOrderOutDto)

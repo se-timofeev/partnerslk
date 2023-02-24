@@ -1,10 +1,11 @@
 package ru.planetnails.partnerslk.model.order.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.planetnails.partnerslk.model.order.OrderStatus;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -12,7 +13,7 @@ import java.util.UUID;
 public class vtOrderStatusesOutDto {
 
     private Long id;
-    private UUID orderId;
+    private String orderId;
     private OrderStatus orderStatus;
     private LocalDateTime updated;
     private String userId;

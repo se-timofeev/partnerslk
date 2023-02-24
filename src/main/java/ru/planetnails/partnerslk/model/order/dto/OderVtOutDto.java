@@ -1,8 +1,8 @@
 package ru.planetnails.partnerslk.model.order.dto;
 
-import lombok.*;
-
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -10,7 +10,7 @@ import java.util.UUID;
 public class OderVtOutDto {
 
     private Long id;
-    private UUID orderId;
+    private String orderId;
     private Long n_row;
     private String itemId;
     private Long amount;
