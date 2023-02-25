@@ -15,6 +15,7 @@ public class OrderAddDto {
     private Double sumOfDiscount;
     private Double sumWithDiscount;
     private String contractorId;
+    private String partnerId;
     private List<OderVtAddDto> orderVts;
     private List<vtOrderStatusesAddDto> vtOrderStatuses;
 }

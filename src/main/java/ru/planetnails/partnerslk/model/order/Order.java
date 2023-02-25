@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
+import ru.planetnails.partnerslk.model.partner.Partner;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,6 +31,10 @@ public class Order {
     @JoinColumn(name = "contractor_id")
     private Contractor contractor;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_id")
+    private Partner partner;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus Status;
 
@@ -42,14 +47,15 @@ public class Order {
     private List<vtOrderStatuses> vtOrderStatuses;
 
     public Order(Long num, LocalDateTime orderDate, Double sumWithoutDiscount, Double sumOfDiscount,
-                 Double sumWithDiscount, Contractor contractor, OrderStatus status,
-                 List<OrderVt> orderVts, List<ru.planetnails.partnerslk.model.order.vtOrderStatuses> vtOrderStatuses) {
+                 Double sumWithDiscount, Contractor contractor, Partner partner,
+                 OrderStatus status, List<OrderVt> orderVts, List<vtOrderStatuses> vtOrderStatuses) {
         this.num = num;
         this.orderDate = orderDate;
         this.sumWithoutDiscount = sumWithoutDiscount;
         this.sumOfDiscount = sumOfDiscount;
         this.sumWithDiscount = sumWithDiscount;
         this.contractor = contractor;
+        this.partner = partner;
         Status = status;
         this.orderVts = orderVts;
         this.vtOrderStatuses = vtOrderStatuses;

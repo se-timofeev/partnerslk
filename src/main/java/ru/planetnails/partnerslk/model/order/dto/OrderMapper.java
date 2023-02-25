@@ -6,6 +6,7 @@ import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.OrderStatus;
 import ru.planetnails.partnerslk.model.order.OrderVt;
 import ru.planetnails.partnerslk.model.order.vtOrderStatuses;
+import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.user.User;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class OrderMapper {
 
     private static Long num = 1l;
 
-    public static Order fromOrderAddDtoOrder(OrderAddDto orderAddDto, Contractor contractor, List<OrderVt> orderVts,
+    public static Order fromOrderAddDtoOrder(OrderAddDto orderAddDto, Contractor contractor, Partner partner, List<OrderVt> orderVts,
                                              List<vtOrderStatuses> vtOrderStatuses) {
         return new Order(
                 num++,
@@ -25,6 +26,7 @@ public class OrderMapper {
                 orderAddDto.getSumOfDiscount(),
                 orderAddDto.getSumWithDiscount(),
                 contractor,
+                partner,
                 OrderStatus.NEW,
                 orderVts,
                 vtOrderStatuses
@@ -40,6 +42,7 @@ public class OrderMapper {
                 order.getSumWithoutDiscount(),
                 order.getSumWithDiscount(),
                 order.getContractor().getId(),
+                order.getPartner().getId(),
                 order.getStatus(),
                 order.getOrderVts().stream()
                         .map(OrderMapper::fromOderVtToOrderOutDto)

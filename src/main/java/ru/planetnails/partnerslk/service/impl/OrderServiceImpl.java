@@ -13,8 +13,10 @@ import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
 import ru.planetnails.partnerslk.model.order.dto.OrderMapper;
 import ru.planetnails.partnerslk.model.order.dto.vtOrderStatusesAddDto;
 import ru.planetnails.partnerslk.model.order.vtOrderStatuses;
+import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.repository.ContractorRepository;
 import ru.planetnails.partnerslk.repository.OrderRepository;
+import ru.planetnails.partnerslk.repository.PartnerRepository;
 import ru.planetnails.partnerslk.repository.UserRepository;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.OrderService;
@@ -34,13 +36,16 @@ public class OrderServiceImpl implements OrderService {
 
     private final UserRepository userRepository;
 
+    private final PartnerRepository partnerRepository;
+
     @Autowired
     public OrderServiceImpl(ContractorRepository contractorRepository, OrderRepository orderRepository,
-                            ItemRepository itemRepository, UserRepository userRepository) {
+                            ItemRepository itemRepository, UserRepository userRepository, PartnerRepository partnerRepository) {
         this.contractorRepository = contractorRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
+        this.partnerRepository = partnerRepository;
     }
 
     @Override
@@ -48,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
     public String add(OrderAddDto orderAddDto) {
         log.info("Add new order");
         Contractor contractor = contractorRepository.getReferenceById(orderAddDto.getContractorId());
+        Partner partner = partnerRepository.getReferenceById(orderAddDto.getPartnerId());
         List<OrderVt> orderVtList = new ArrayList<>();
         for (OderVtAddDto oderVtAddDto : orderAddDto.getOrderVts()) {
             OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto,
@@ -61,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
             vtOrderStatusesList.add(vtOrderStatuses);
         }
 
-        return orderRepository.save(OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, orderVtList,
+        return orderRepository.save(OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner, orderVtList,
                 vtOrderStatusesList)).getId();
     }
 

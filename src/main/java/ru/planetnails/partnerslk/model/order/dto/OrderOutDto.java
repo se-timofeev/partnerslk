@@ -20,6 +20,7 @@ public class OrderOutDto {
     private Double sumOfDiscount;
     private Double sumWithDiscount;
     private String contractorId;
+    private String partnerId;
     private OrderStatus Status;
     private List<OderVtOutDto> orderVts;
     private List<vtOrderStatusesOutDto> vtOrderStatuses;

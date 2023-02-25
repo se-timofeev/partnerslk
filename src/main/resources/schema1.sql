@@ -159,6 +159,9 @@ create table orders
     sum_without_discount float,
     contractor_id        varchar(50)
         constraint FK3xvcmuk6a7ktrx3awo4ye55fs
-            references contractors
+            references contractors,
+    partner_id           varchar(50)
+        constraint FK3xvcmuk6a7ktrx3awo4ye99fs
+            references partners
 )
 go
