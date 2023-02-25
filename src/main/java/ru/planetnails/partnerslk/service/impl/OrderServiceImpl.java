@@ -22,6 +22,7 @@ import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.OrderService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -55,10 +56,14 @@ public class OrderServiceImpl implements OrderService {
         Contractor contractor = contractorRepository.getReferenceById(orderAddDto.getContractorId());
         Partner partner = partnerRepository.getReferenceById(orderAddDto.getPartnerId());
         List<OrderVt> orderVtList = new ArrayList<>();
-        for (OderVtAddDto oderVtAddDto : orderAddDto.getOrderVts()) {
-            OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto,
-                    itemRepository.getReferenceById(oderVtAddDto.getItemId()));
-            orderVtList.add(orderVt);
+        if (orderAddDto.getOrderVts() == null){
+            orderVtList = Collections.emptyList();
+        } else {
+            for (OderVtAddDto oderVtAddDto : orderAddDto.getOrderVts()) {
+                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto,
+                        itemRepository.getReferenceById(oderVtAddDto.getItemId()));
+                orderVtList.add(orderVt);
+            }
         }
         List<vtOrderStatuses> vtOrderStatusesList = new ArrayList<>();
         for (vtOrderStatusesAddDto vtOrderStatusesAddDto : orderAddDto.getVtOrderStatuses()) {
