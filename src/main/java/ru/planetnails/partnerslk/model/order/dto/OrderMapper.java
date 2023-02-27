@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class OrderMapper {
 
-    private static Long num = 1l;
+    private static Long num = 1L;
 
     public static Order fromOrderAddDtoOrder(OrderAddDto orderAddDto, Contractor contractor, Partner partner, List<OrderVt> orderVts,
                                              List<vtOrderStatuses> vtOrderStatuses) {
@@ -91,7 +91,7 @@ public class OrderMapper {
 
     public static vtOrderStatuses fromVtOrderStatusesAddDtoToVtOrderStatuses (vtOrderStatusesAddDto vtOrderStatusesAddDto, User user){
         return new vtOrderStatuses(
-                vtOrderStatusesAddDto.getOrderStatus(),
+                OrderStatus.NEW,
                 LocalDateTime.now(),
                 user
         );

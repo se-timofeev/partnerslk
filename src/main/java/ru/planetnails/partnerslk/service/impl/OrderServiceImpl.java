@@ -14,6 +14,7 @@ import ru.planetnails.partnerslk.model.order.dto.OrderMapper;
 import ru.planetnails.partnerslk.model.order.dto.vtOrderStatusesAddDto;
 import ru.planetnails.partnerslk.model.order.vtOrderStatuses;
 import ru.planetnails.partnerslk.model.partner.Partner;
+import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.repository.ContractorRepository;
 import ru.planetnails.partnerslk.repository.OrderRepository;
 import ru.planetnails.partnerslk.repository.PartnerRepository;
@@ -53,10 +54,14 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public String add(OrderAddDto orderAddDto) {
         log.info("Add new order");
-        Contractor contractor = contractorRepository.getReferenceById(orderAddDto.getContractorId());
-        Partner partner = partnerRepository.getReferenceById(orderAddDto.getPartnerId());
+        Contractor contractor = contractorRepository.findById(orderAddDto.getContractorId())
+                .orElseThrow(() -> new NotFoundException("Contractor not found"));
+        log.info("Contractor with id {} found", orderAddDto.getContractorId());
+        Partner partner = partnerRepository.findById(orderAddDto.getPartnerId())
+                .orElseThrow(() -> new NotFoundException("Partner not found"));
+        log.info("Partner with id {} found", orderAddDto.getPartnerId());
         List<OrderVt> orderVtList = new ArrayList<>();
-        if (orderAddDto.getOrderVts() == null){
+        if (orderAddDto.getOrderVts() == null) {
             orderVtList = Collections.emptyList();
         } else {
             for (OderVtAddDto oderVtAddDto : orderAddDto.getOrderVts()) {
@@ -67,8 +72,11 @@ public class OrderServiceImpl implements OrderService {
         }
         List<vtOrderStatuses> vtOrderStatusesList = new ArrayList<>();
         for (vtOrderStatusesAddDto vtOrderStatusesAddDto : orderAddDto.getVtOrderStatuses()) {
+            User user = userRepository.findById(vtOrderStatusesAddDto.getUserId())
+                    .orElseThrow(() -> new NotFoundException("User not found"));
+            log.info("User with id {} found", vtOrderStatusesAddDto.getUserId());
             vtOrderStatuses vtOrderStatuses = OrderMapper.fromVtOrderStatusesAddDtoToVtOrderStatuses(
-                    vtOrderStatusesAddDto, userRepository.getReferenceById(vtOrderStatusesAddDto.getUserId()));
+                    vtOrderStatusesAddDto, user);
             vtOrderStatusesList.add(vtOrderStatuses);
         }
 
@@ -80,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
     public Order findById(String orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found"));
-        log.info("user with name {} found", orderId);
+        log.info("Order with id {} found", orderId);
         return order;
     }
 }
