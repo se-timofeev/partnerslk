@@ -5,8 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import ru.planetnails.partnerslk.model.notification.dto.EmailDtoOut;
 import ru.planetnails.partnerslk.model.notification.dto.NotificationDtoOut;
 import ru.planetnails.partnerslk.service.NotificationService;
+
+import javax.validation.constraints.Email;
+import java.util.List;
 
 
 @RestController
@@ -25,5 +29,29 @@ public class NotificationControllerV1 {
                                                              @RequestParam(name = "size", defaultValue = "10") Integer size) {
         log.info("Получен эндпоинт GET /api/v1/notifications/{userId}, userId = " + userId);
         return notificationService.getNotificationsByUserId(userId, from, size);
+    }
+
+    @PostMapping("/email")
+    public EmailDtoOut addEmail(@RequestParam @Email String email, @RequestParam String userId) {
+        log.info("Получен эндпоинт POST /api/v1/notifications/email, email = {}, userId = {}", email, userId);
+        return notificationService.addEmail(email, userId);
+    }
+
+    @GetMapping("/email")
+    public List<EmailDtoOut> getEmailsByUserId(@RequestParam String userId) {
+        log.info("Получен эндпоинт GET /api/v1/notifications/email, userId = {}", userId);
+        return notificationService.getEmailsByUserId(userId);
+    }
+
+    @GetMapping("/email")
+    public EmailDtoOut getEmailById(@RequestParam Integer mailId) {
+        log.info("Получен эндпоинт GET /api/v1/notifications/email, mailId = {}", mailId);
+        return notificationService.getEmailById(mailId);
+    }
+
+    @DeleteMapping
+    public void deleteEmailById(@RequestParam Integer mailId) {
+        log.info("Получен эндпоинт DELETE /api/v1/notifications/email, mailId = {}", mailId);
+        notificationService.deleteEmailById(mailId);
     }
 }

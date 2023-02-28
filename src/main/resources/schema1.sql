@@ -188,11 +188,11 @@ go
 
 create table mails_for_notifications
 (
-    id              int identity not null
+    id      int identity not null
         primary key,
-    user_id         varchar(50)
+    user_id varchar(50)
         constraint mails_by_notifications_on_users references users,
-    email           varchar(255) not null,
+    email   varchar(255) not null,
 )
 go
 
