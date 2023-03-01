@@ -37,14 +37,14 @@ public class NotificationControllerV1 {
         return notificationService.addEmail(email, userId);
     }
 
-    @GetMapping("/email")
-    public List<EmailDtoOut> getEmailsByUserId(@RequestParam String userId) {
+    @GetMapping("/email/{userId}")
+    public List<EmailDtoOut> getEmailsByUserId(@PathVariable String userId) {
         log.info("Получен эндпоинт GET /api/v1/notifications/email, userId = {}", userId);
         return notificationService.getEmailsByUserId(userId);
     }
 
-    @GetMapping("/email")
-    public EmailDtoOut getEmailById(@RequestParam Integer mailId) {
+    @GetMapping("/email/{mailId}")
+    public EmailDtoOut getEmailById(@PathVariable Integer mailId) {
         log.info("Получен эндпоинт GET /api/v1/notifications/email, mailId = {}", mailId);
         return notificationService.getEmailById(mailId);
     }
