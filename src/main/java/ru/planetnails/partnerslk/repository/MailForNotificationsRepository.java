@@ -8,4 +8,6 @@ import java.util.List;
 public interface MailForNotificationsRepository extends JpaRepository<MailForNotifications, Integer> {
 
     List<MailForNotifications> findAllByUserId(String userId);
+
+    MailForNotifications findByEmailAndUserId(String email, String userId);
 }

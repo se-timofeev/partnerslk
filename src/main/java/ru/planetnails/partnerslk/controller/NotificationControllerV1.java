@@ -37,19 +37,19 @@ public class NotificationControllerV1 {
         return notificationService.addEmail(email, userId);
     }
 
-    @GetMapping("/email/{userId}")
-    public List<EmailDtoOut> getEmailsByUserId(@PathVariable String userId) {
+    @GetMapping("/email/userId")
+    public List<EmailDtoOut> getEmailsByUserId(@RequestParam String userId) {
         log.info("Получен эндпоинт GET /api/v1/notifications/email, userId = {}", userId);
         return notificationService.getEmailsByUserId(userId);
     }
 
-    @GetMapping("/email/{mailId}")
-    public EmailDtoOut getEmailById(@PathVariable Integer mailId) {
+    @GetMapping("/email/mailId")
+    public EmailDtoOut getEmailById(@RequestParam Integer mailId) {
         log.info("Получен эндпоинт GET /api/v1/notifications/email, mailId = {}", mailId);
         return notificationService.getEmailById(mailId);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/email")
     public void deleteEmailById(@RequestParam Integer mailId) {
         log.info("Получен эндпоинт DELETE /api/v1/notifications/email, mailId = {}", mailId);
         notificationService.deleteEmailById(mailId);

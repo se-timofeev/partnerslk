@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.planetnails.partnerslk.exception.BadRequestException;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.notification.MailForNotifications;
 import ru.planetnails.partnerslk.model.notification.Notification;
@@ -48,6 +49,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public EmailDtoOut addEmail(String email, String userId) {
         User user = userService.findById(userId);
+        if (mailForNotificationsRepository.findByEmailAndUserId(email, userId) != null) throw new BadRequestException(
+                String.format("У пользователя с id = %s адрес для уведомлений %s уже указан", userId, email));
         MailForNotifications mail = mailForNotificationsRepository.save(new MailForNotifications(user, email));
         return NotificationMapper.toEmailDtoOut(mail);
     }
@@ -60,14 +63,14 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public EmailDtoOut getEmailById(Integer mailId) {
-        MailForNotifications mail = mailForNotificationsRepository.findById(mailId).orElseThrow(()->
+        MailForNotifications mail = mailForNotificationsRepository.findById(mailId).orElseThrow(() ->
                 new NotFoundException(String.format("Запись об электронном адресе с id = %d не обнаружено", mailId)));
         return NotificationMapper.toEmailDtoOut(mail);
     }
 
     @Override
     public void deleteEmailById(Integer mailId) {
-        if(!mailForNotificationsRepository.existsById(mailId))
+        if (!mailForNotificationsRepository.existsById(mailId))
             throw new NotFoundException(String.format("Запись об электронном адресе с id = %d не обнаружено", mailId));
         mailForNotificationsRepository.deleteById(mailId);
     }
