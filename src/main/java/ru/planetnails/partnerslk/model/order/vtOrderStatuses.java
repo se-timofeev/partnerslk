@@ -7,13 +7,9 @@ import ru.planetnails.partnerslk.model.user.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+@Data
 @Entity
-@Getter
-@Setter
-@Builder
+@NoArgsConstructor
 @Table(name = "vt_orderStatuses")
 public class vtOrderStatuses {
 
@@ -32,4 +28,10 @@ public class vtOrderStatuses {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public vtOrderStatuses(OrderStatus orderStatus, LocalDateTime updated, User user) {
+        this.orderStatus = orderStatus;
+        this.updated = updated;
+        this.user = user;
+    }
 }

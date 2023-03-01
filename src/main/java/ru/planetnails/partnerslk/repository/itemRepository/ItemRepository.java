@@ -10,7 +10,7 @@ import ru.planetnails.partnerslk.model.item.Item;
 import java.util.List;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Long>, CustomItemRepository {
+public interface ItemRepository extends JpaRepository<Item, String>, CustomItemRepository {
 
     Page<Item> findItemsByGroupId(String groupId, Pageable pageable);
 
