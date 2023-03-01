@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
@@ -18,6 +19,7 @@ import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
 import ru.planetnails.partnerslk.service.OrderService;
 
 @Slf4j
+@Validated
 @RestController
 @AllArgsConstructor
 @Tag(name = "Orders", description = "You can create, modify and, get the orders")
@@ -34,7 +36,7 @@ public class OrderRestControllerV1 {
     })
     @PostMapping
     @PutMapping
-    public String add(@RequestBody OrderAddDto orderAddDto) {
+    public String add(@RequestBody @Validated OrderAddDto orderAddDto) {
         log.info("Получен эндпоинт POST /api/v1/order");
         return String.format("Заказ успешно создан; orderId = %s", orderService.add(orderAddDto));
     }
