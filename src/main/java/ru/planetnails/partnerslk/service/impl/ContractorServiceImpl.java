@@ -9,6 +9,7 @@ import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.contractor.dto.ContractorAddDto;
 import ru.planetnails.partnerslk.model.contractor.dto.ContractorMapper;
+import ru.planetnails.partnerslk.model.contractor.dto.ContractorOutDto;
 import ru.planetnails.partnerslk.repository.ContractorRepository;
 import ru.planetnails.partnerslk.service.ContractorService;
 
@@ -39,5 +40,13 @@ public class ContractorServiceImpl implements ContractorService {
         Contractor contractor = contractorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Contrator_id not found"));
         return contractor;
+    }
+
+    @Override
+    public List<ContractorOutDto> findContractorsByPartnerId(String partnerId) {
+        List<ContractorOutDto> contractors = contractorRepository.findContractorsByPartnerId(partnerId)
+                .stream().map(ContractorMapper::fromContractorToContractorOutDto).
+                collect(Collectors.toList());
+        return contractors;
     }
 }

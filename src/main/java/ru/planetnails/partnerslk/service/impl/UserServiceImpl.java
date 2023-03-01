@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.planetnails.partnerslk.exception.BadRequestException;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.exception.PartnerNotFoundException;
 import ru.planetnails.partnerslk.exception.UsersNameIsAlreadyTaken;
@@ -74,14 +75,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByName(String name) {
         User user = userRepository.findByName(name);
+        if(user == null) throw new NotFoundException("User not found");
         log.info("user with name {} found", name);
         return user;
     }
 
     @Override
     public User findById(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User user = userRepository.findNotDeletedUser(userId);
+        if(user == null) throw new NotFoundException("User not found");
         log.info("user with name {} found", userId);
         return user;
     }
@@ -96,8 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserOutDto setUserActive(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User user = findById(userId);
         user.setStatus(UserStatus.ACTIVE);
         userRepository.save(user);
         return UserMapper.fromUserToUserOutDto(user);
@@ -107,8 +108,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserOutDto setUserBlocked(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User user = findById(userId);
         user.setStatus(UserStatus.BLOCKED);
         userRepository.save(user);
         return UserMapper.fromUserToUserOutDto(user);
@@ -117,8 +117,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserOutDto setUserPending(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User user = findById(userId);
         user.setStatus(UserStatus.PENDING);
         userRepository.save(user);
         return UserMapper.fromUserToUserOutDto(user);
@@ -128,6 +127,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserOutDto getUser(String userId) {
         return UserMapper.fromUserToUserOutDto(userRepository.findByName(userId));
+    }
+
+    @Override
+    public void deleteUser(String idForDelete, String requesterId) {
+        if(idForDelete.equals(requesterId)) throw new BadRequestException("Пользователь не может удалить сам себя");
+        User user = findById(idForDelete);
+        if(user.getRoles().stream().anyMatch(r -> r.getName().equalsIgnoreCase("ADMIN")))
+            throw new BadRequestException("Нельзя удалить пользователя с уровнем доступа (Role) = ADMIN");
+        user.setStatus(UserStatus.DELETED);
+        userRepository.save(user);
     }
 }
 

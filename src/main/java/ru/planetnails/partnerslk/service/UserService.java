@@ -22,4 +22,6 @@ public interface UserService {
     UserOutDto getUser(String userId);
 
     UserOutDto setUserPending(String userId);
+
+    void deleteUser(String idForDelete, String requesterId);
 }

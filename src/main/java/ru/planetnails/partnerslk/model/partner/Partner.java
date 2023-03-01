@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="partners")
+@Table(name = "partners")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,12 +19,12 @@ public class Partner {
     @Id
     private String id;
 
-    @Column (name="name")
-    private  String name;
+    @Column(name = "name")
+    private String name;
 
-    @Column (name="discount")
+    @Column(name = "discount")
     private int discount;
 
-    @Column(name ="account")
+    @Column(name = "account")
     private String account;
 }

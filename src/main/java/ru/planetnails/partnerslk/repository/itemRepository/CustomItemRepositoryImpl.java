@@ -3,7 +3,7 @@ package ru.planetnails.partnerslk.repository.itemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.item.Item;
-import ru.planetnails.partnerslk.model.item.ItemQueryParams;
+import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +26,8 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
         var query = cb.createQuery(Item.class);
         Root<Item> eventRoot = query.from(Item.class);
         List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(cb.equal(eventRoot.get("isOutOfStock"), false));
         if (params.getName() != null)
             predicates.add(cb.like(cb.lower(eventRoot.get("name")), "%" + params.getName() + "%"));
         if (params.getDescription() != null)
