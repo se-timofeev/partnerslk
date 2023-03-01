@@ -120,7 +120,7 @@ create table vt_order_statuses
         primary key,
     order_status varchar(255),
     updated      datetime2,
-    order_id     binary(255)
+    order_id     varchar(255)
         constraint FKqermtixnbf4936ayg8jix2ob5
             references orders,
     user_id      varchar(50)
@@ -128,6 +128,7 @@ create table vt_order_statuses
             references users
 )
 go
+
 create table orders_vt
 (
     id       bigint not null
@@ -141,14 +142,14 @@ create table orders_vt
     item_id  varchar(50)
         constraint FKe2vvenpsuht663ti5jauhrx1n
             references items,
-    order_id binary(255)
+    order_id varchar(255)
         constraint FKq93kspsb17sd43yprlki3cs1s
             references orders
 )
 go
 create table orders
 (
-    id                   binary(255) not null
+    id                   varchar(255) not null
         primary key,
     status               varchar(255),
     num                  bigint,
@@ -158,7 +159,10 @@ create table orders
     sum_without_discount float,
     contractor_id        varchar(50)
         constraint FK3xvcmuk6a7ktrx3awo4ye55fs
-            references contractors
+            references contractors,
+    partner_id           varchar(50)
+        constraint FK3xvcmuk6a7ktrx3awo4ye99fs
+            references partners
 )
 go
 
