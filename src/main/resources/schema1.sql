@@ -175,3 +175,28 @@ create table images
         constraint images_fk_items references items
 )
 go
+
+create table notifications
+(
+    id          int identity not null
+        primary key,
+    user_id     varchar(50)
+        constraint notifications_on_users references users,
+    order_id    varchar(255)
+        constraint notifications_on_orders references orders,
+    is_read     bit          not null,
+    create_time datetime     not null,
+    status      varchar(255) not null,
+)
+go
+
+create table mails_for_notifications
+(
+    id      int identity not null
+        primary key,
+    user_id varchar(50)
+        constraint mails_by_notifications_on_users references users,
+    email   varchar(255) not null,
+)
+go
+
