@@ -10,3 +10,4 @@ import java.util.List;
 public interface ContractorRepository extends JpaRepository<Contractor, String> {
     List<Contractor> findContractorsByPartnerId(String partnerId);
 }
+

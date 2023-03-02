@@ -5,13 +5,9 @@ import ru.planetnails.partnerslk.model.item.Item;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+@Data
 @Entity
-@Getter
-@Setter
-@Builder
+@NoArgsConstructor
 @Table(name = "orders_vt")
 public class OrderVt {
 
@@ -31,4 +27,14 @@ public class OrderVt {
     private Integer discount;
     private Double price;
     private Double total;
+
+    public OrderVt(Long n_row, Item item, Long amount, Double sale, Integer discount, Double price, Double total) {
+        this.n_row = n_row;
+        this.item = item;
+        this.amount = amount;
+        this.sale = sale;
+        this.discount = discount;
+        this.price = price;
+        this.total = total;
+    }
 }
