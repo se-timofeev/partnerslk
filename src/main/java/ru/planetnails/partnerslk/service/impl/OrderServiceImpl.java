@@ -30,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private Map<String, OrderGenerator> orderGenerators;
+
     private final ContractorRepository contractorRepository;
 
     private final OrderRepository orderRepository;
