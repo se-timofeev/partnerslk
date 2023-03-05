@@ -2,16 +2,15 @@ package ru.planetnails.partnerslk.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.order.Order;
+import ru.planetnails.partnerslk.model.order.OrderGenerator;
 import ru.planetnails.partnerslk.model.order.OrderVt;
-import ru.planetnails.partnerslk.model.order.dto.OderVtAddDto;
-import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
-import ru.planetnails.partnerslk.model.order.dto.OrderMapper;
-import ru.planetnails.partnerslk.model.order.dto.vtOrderStatusesAddDto;
+import ru.planetnails.partnerslk.model.order.dto.*;
 import ru.planetnails.partnerslk.model.order.vtOrderStatuses;
 import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.user.User;
@@ -22,14 +21,15 @@ import ru.planetnails.partnerslk.repository.UserRepository;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.OrderService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.validation.ValidationException;
+import java.util.*;
 
-@Service
 @Slf4j
+@Service
 public class OrderServiceImpl implements OrderService {
 
+    @Autowired
+    private Map<String, OrderGenerator> orderGenerators;
     private final ContractorRepository contractorRepository;
 
     private final OrderRepository orderRepository;
@@ -91,5 +91,22 @@ public class OrderServiceImpl implements OrderService {
         log.info("Order with id {} found", orderId);
         return order;
     }
-}
 
+    @Override
+    public List<Order> findAllByPartnerId(String partnerId, PageRequest pageRequest) {
+        Partner partner = partnerRepository.findById(partnerId)
+                .orElseThrow(() -> new NotFoundException("Partner not found"));
+        log.info("Partner with id {} found", partnerId);
+        return orderRepository.findAllByPartner(partner, pageRequest);
+    }
+
+    @Override
+    public OrderOutDto setStatusForOrder(String orderId, String status, String userId) {
+        OrderGenerator orderGenerator = orderGenerators.get(status);
+        if (!orderGenerators.containsKey(status)) {
+            log.error("Unknown state: UNSUPPORTED_STATUS: {}", status);
+            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
+        }
+        return orderGenerator.setStatusForOrder(orderId, userId);
+    }
+}
