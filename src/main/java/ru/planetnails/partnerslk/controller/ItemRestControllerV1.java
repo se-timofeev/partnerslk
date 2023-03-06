@@ -96,7 +96,7 @@ public class ItemRestControllerV1 {
                                                @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                @RequestParam(required = false) Integer level,
                                                @RequestParam(required = false) String groupId) {
-        log.info(String.format("Получен эндпоинт GET /api/v1/items/groups; level = %d, parentId = %s", level, groupId));
+        log.info(String.format("Получен эндпоинт GET /api/v1/items/groups; level = %d, groupId = %s", level, groupId));
         return itemService.getFilteredGroups(level, groupId, from, size);
     }
 

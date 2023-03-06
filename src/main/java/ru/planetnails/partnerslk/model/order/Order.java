@@ -36,7 +36,7 @@ public class Order {
     private Partner partner;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus Status;
+    private OrderStatus status;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
@@ -56,7 +56,7 @@ public class Order {
         this.sumWithDiscount = sumWithDiscount;
         this.contractor = contractor;
         this.partner = partner;
-        Status = status;
+        this.status = status;
         this.orderVts = orderVts;
         this.vtOrderStatuses = vtOrderStatuses;
     }
