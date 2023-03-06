@@ -1,6 +1,8 @@
 package ru.planetnails.partnerslk.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.planetnails.partnerslk.exception.BadRequestException;
 import ru.planetnails.partnerslk.exception.NotFoundException;
@@ -40,9 +42,10 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public List<ImageDtoOut> getImageByItemId(String itemId) {
-        List<Image> images = imageRepository.findByItemId(itemId);
-        if(images.size() < 1) throw new NotFoundException(String.format("картинка с itemId = %s не найдена", itemId));
-        return images.stream().map(ImageMapping::toImageDtoOut).collect(Collectors.toList());
+    public Page<ImageDtoOut> getImageByItemId(String itemId, Integer from, Integer size) {
+        PageRequest pageRequest = PageRequest.of(from / size, size);
+        Page<Image> images = imageRepository.findByItemId(itemId, pageRequest);
+        if(images.getContent().size() < 1) throw new NotFoundException(String.format("картинка с itemId = %s не найдена", itemId));
+        return images.map(ImageMapping::toImageDtoOut);
     }
 }

@@ -1,5 +1,6 @@
 package ru.planetnails.partnerslk.service;
 
+import org.springframework.data.domain.Page;
 import ru.planetnails.partnerslk.model.image.dto.ImageDtoIn;
 import ru.planetnails.partnerslk.model.image.dto.ImageDtoOut;
 
@@ -12,5 +13,5 @@ public interface ImageService {
 
     void deleteImageById(String imageId);
 
-    List<ImageDtoOut> getImageByItemId(String itemId);
+    Page<ImageDtoOut> getImageByItemId(String itemId, Integer from, Integer size);
 }
