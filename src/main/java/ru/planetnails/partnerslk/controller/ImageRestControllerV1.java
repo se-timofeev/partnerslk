@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.image.dto.ImageDtoIn;
 import ru.planetnails.partnerslk.model.image.dto.ImageDtoOut;
@@ -76,8 +77,10 @@ public class ImageRestControllerV1 {
                     content = @Content),
     })
     @GetMapping("/getByItemId/{itemId}")
-    public List<ImageDtoOut> getImageByItemId(@PathVariable String itemId) {
+    public Page<ImageDtoOut> getImageByItemId(@PathVariable String itemId,
+                                              @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                              @RequestParam(name = "size", defaultValue = "10") Integer size) {
         log.info("Получен эндпоинт GET /api/v1/images/{itemId}, itemId = " + itemId);
-        return imageService.getImageByItemId(itemId);
+        return imageService.getImageByItemId(itemId, from, size);
     }
 }
