@@ -15,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.order.Order;
-import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
-import ru.planetnails.partnerslk.model.order.dto.OrderMapper;
-import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
+import ru.planetnails.partnerslk.model.order.dto.*;
 import ru.planetnails.partnerslk.service.OrderService;
 
 import java.util.List;
@@ -101,5 +99,59 @@ public class OrderRestControllerV1 {
                                          @RequestParam String status,
                                          @RequestParam String userId) {
         return orderService.setStatusForOrder(orderId, status, userId);
+    }
+
+    @Operation(summary = "Get the status for order by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the status for order",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Order not found",
+                    content = @Content)
+    })
+    @GetMapping("/status/condition")
+    public ResponseEntity<String> getStatusForOrder(@RequestParam String orderId) {
+        log.info("Get status for order with orderId={}", orderId);
+        Order order = orderService.findById(orderId);
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        log.info("Status for order with orderId={}, is status={}", orderId, order.getStatus().toString());
+        return new ResponseEntity<>(order.getStatus().toString(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get the first part of order by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the first part of order",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderFirstPartOutDto.class))}),
+            @ApiResponse(responseCode = "404", description = "The first part of order not found",
+                    content = @Content)
+    })
+    @GetMapping("/first")
+    public ResponseEntity<OrderFirstPartOutDto> getFirstPartOfOrder(@RequestParam String orderId) {
+        Order order = orderService.findById(orderId);
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        OrderFirstPartOutDto result = OrderMapper.fromOrderToOrderFirstPartOutDto(order);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get the second part of order by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the second part of order",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderSecondPartOutDto.class))}),
+            @ApiResponse(responseCode = "404", description = "The second part of order not found",
+                    content = @Content)
+    })
+    @GetMapping("/second")
+    public ResponseEntity<OrderSecondPartOutDto> getSecondPartOfOrder(@RequestParam String orderId) {
+        Order order = orderService.findById(orderId);
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        OrderSecondPartOutDto result = OrderMapper.fromOrderSecondPartOutDto(order);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
