@@ -89,9 +89,17 @@ public class OrderMapper {
         );
     }
 
-    public static vtOrderStatuses fromVtOrderStatusesAddDtoToVtOrderStatuses(vtOrderStatusesAddDto vtOrderStatusesAddDto, User user) {
+    public static vtOrderStatuses AddVtOrderStatuses(User user) {
         return new vtOrderStatuses(
                 OrderStatus.NEW,
+                LocalDateTime.now(),
+                user
+        );
+    }
+
+    public static vtOrderStatuses UpdateVtOrderStatuses(User user) {
+        return new vtOrderStatuses(
+                OrderStatus.UPDATED,
                 LocalDateTime.now(),
                 user
         );

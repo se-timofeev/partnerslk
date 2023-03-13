@@ -31,14 +31,13 @@ public class OrderRestControllerV1 {
 
     private final OrderService orderService;
 
-    @Operation(summary = "Create or update the order.")
+    @Operation(summary = "Create the order.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Order has been registered",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = OrderAddDto.class))})
     })
     @PostMapping
-    @PutMapping
     public String add(@RequestBody @Validated OrderAddDto orderAddDto) {
         log.info("Получен эндпоинт POST /api/v1/orders");
         return String.format("Заказ успешно создан; orderId = %s", orderService.add(orderAddDto));
@@ -153,5 +152,18 @@ public class OrderRestControllerV1 {
         }
         OrderSecondPartOutDto result = OrderMapper.fromOrderSecondPartOutDto(order);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Update the order.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Order has been updated",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderAddDto.class))})
+    })
+    @PutMapping("/update")
+    public String update(@RequestBody @Validated OrderAddDto orderAddDto,
+                         @RequestParam String orderId) {
+        log.info("Received endpoint POST /api/v1/orders/update");
+        return String.format("Order updated successfully; orderId = %s", orderService.update(orderAddDto, orderId));
     }
 }
