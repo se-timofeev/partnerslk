@@ -6,5 +6,6 @@ public enum OrderStatus {
     WORKHOUSE,
     COMPLETED,
     APPROVED,
-    CANCELED
+    CANCELED,
+    UPDATED
 }

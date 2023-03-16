@@ -76,7 +76,7 @@ public class OrderMapper {
                 oderVtAddDto.getDiscount(),
                 oderVtAddDto.getPrice(),
                 oderVtAddDto.getTotal()
-                );
+        );
     }
 
     public static vtOrderStatusesOutDto fromVtOrderStatusesToOrderStatusesOutDto(vtOrderStatuses vtOrderStatuses) {
@@ -89,11 +89,41 @@ public class OrderMapper {
         );
     }
 
-    public static vtOrderStatuses fromVtOrderStatusesAddDtoToVtOrderStatuses (vtOrderStatusesAddDto vtOrderStatusesAddDto, User user){
+    public static vtOrderStatuses AddVtOrderStatuses(User user) {
         return new vtOrderStatuses(
                 OrderStatus.NEW,
                 LocalDateTime.now(),
                 user
+        );
+    }
+
+    public static vtOrderStatuses UpdateVtOrderStatuses(User user) {
+        return new vtOrderStatuses(
+                OrderStatus.UPDATED,
+                LocalDateTime.now(),
+                user
+        );
+    }
+
+    public static OrderFirstPartOutDto fromOrderToOrderFirstPartOutDto(Order order) {
+        return new OrderFirstPartOutDto(
+                order.getId(),
+                order.getNum(),
+                order.getOrderDate(),
+                order.getSumWithoutDiscount(),
+                order.getSumOfDiscount(),
+                order.getSumWithDiscount(),
+                order.getContractor().getId(),
+                order.getPartner().getId(),
+                order.getStatus()
+        );
+    }
+
+    public static OrderSecondPartOutDto fromOrderSecondPartOutDto(Order order) {
+        return new OrderSecondPartOutDto(
+                order.getOrderVts().stream()
+                        .map(OrderMapper::fromOderVtToOrderOutDto)
+                        .collect(Collectors.toList())
         );
     }
 }

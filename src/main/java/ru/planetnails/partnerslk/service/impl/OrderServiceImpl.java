@@ -7,11 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
-import ru.planetnails.partnerslk.model.order.Order;
-import ru.planetnails.partnerslk.model.order.OrderGenerator;
-import ru.planetnails.partnerslk.model.order.OrderVt;
+import ru.planetnails.partnerslk.model.order.*;
 import ru.planetnails.partnerslk.model.order.dto.*;
-import ru.planetnails.partnerslk.model.order.vtOrderStatuses;
 import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.repository.ContractorRepository;
@@ -61,28 +58,16 @@ public class OrderServiceImpl implements OrderService {
         Partner partner = partnerRepository.findById(orderAddDto.getPartnerId())
                 .orElseThrow(() -> new NotFoundException("Partner not found"));
         log.info("Partner with id {} found", orderAddDto.getPartnerId());
-        List<OrderVt> orderVtList = new ArrayList<>();
-        if (orderAddDto.getOrderVts() == null) {
-            orderVtList = Collections.emptyList();
-        } else {
-            for (OderVtAddDto oderVtAddDto : orderAddDto.getOrderVts()) {
-                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto,
-                        itemRepository.getReferenceById(oderVtAddDto.getItemId()));
-                orderVtList.add(orderVt);
-            }
-        }
         List<vtOrderStatuses> vtOrderStatusesList = new ArrayList<>();
-        for (vtOrderStatusesAddDto vtOrderStatusesAddDto : orderAddDto.getVtOrderStatuses()) {
-            User user = userRepository.findById(vtOrderStatusesAddDto.getUserId())
-                    .orElseThrow(() -> new NotFoundException("User not found"));
-            log.info("User with id {} found", vtOrderStatusesAddDto.getUserId());
-            vtOrderStatuses vtOrderStatuses = OrderMapper.fromVtOrderStatusesAddDtoToVtOrderStatuses(
-                    vtOrderStatusesAddDto, user);
-            vtOrderStatusesList.add(vtOrderStatuses);
-        }
+        User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId())
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        log.info("User with id {} found", orderAddDto.getVtOrderStatuses().get(0).getUserId());
+        vtOrderStatuses vtOrderStatuses = OrderMapper.AddVtOrderStatuses(user);
+        vtOrderStatusesList.add(vtOrderStatuses);
 
-        return orderRepository.save(OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner, orderVtList,
-                vtOrderStatusesList)).getId();
+
+        return orderRepository.save(OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner,
+                convertToOrderVtList(orderAddDto), vtOrderStatusesList)).getId();
     }
 
     @Override
@@ -109,5 +94,40 @@ public class OrderServiceImpl implements OrderService {
             throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
         }
         return orderGenerator.setStatusForOrder(orderId, userId);
+    }
+
+    @Override
+    public String update(OrderAddDto orderAddDto, String orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Order not found"));
+        List<vtOrderStatuses> vtOrderStatusesList = order.getVtOrderStatuses();
+        User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId())
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        log.info("User with id {} found", orderAddDto.getVtOrderStatuses().get(0).getUserId());
+        vtOrderStatuses vtOrderStatuses = OrderMapper.UpdateVtOrderStatuses(user);
+        vtOrderStatusesList.add(vtOrderStatuses);
+
+        order.setOrderVts(convertToOrderVtList(orderAddDto));
+        order.setVtOrderStatuses(vtOrderStatusesList);
+        order.setSumWithDiscount(orderAddDto.getSumWithDiscount());
+        order.setSumOfDiscount(orderAddDto.getSumOfDiscount());
+        order.setSumWithoutDiscount(orderAddDto.getSumWithoutDiscount());
+        order.setStatus(OrderStatus.UPDATED);
+
+        return orderRepository.save(order).getId();
+    }
+
+    private List<OrderVt> convertToOrderVtList(OrderAddDto orderAddDto) {
+        List<OrderVt> orderVtList = new ArrayList<>();
+        if (orderAddDto.getOrderVts() == null) {
+            orderVtList = Collections.emptyList();
+        } else {
+            for (OderVtAddDto oderVtAddDto : orderAddDto.getOrderVts()) {
+                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto,
+                        itemRepository.getReferenceById(oderVtAddDto.getItemId()));
+                orderVtList.add(orderVt);
+            }
+        }
+        return orderVtList;
     }
 }
