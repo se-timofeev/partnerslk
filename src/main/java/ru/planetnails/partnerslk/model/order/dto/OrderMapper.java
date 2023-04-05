@@ -1,5 +1,10 @@
 package ru.planetnails.partnerslk.model.order.dto;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.order.Order;
@@ -9,7 +14,11 @@ import ru.planetnails.partnerslk.model.order.vtOrderStatuses;
 import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.user.User;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,11 +91,8 @@ public class OrderMapper {
     public static vtOrderStatusesOutDto fromVtOrderStatusesToOrderStatusesOutDto(vtOrderStatuses vtOrderStatuses) {
         return new vtOrderStatusesOutDto(
                 vtOrderStatuses.getId(),
-                vtOrderStatuses.getOrder().getId(),
                 vtOrderStatuses.getOrderStatus(),
-                vtOrderStatuses.getUpdated(),
-                vtOrderStatuses.getUser().getId()
-        );
+                vtOrderStatuses.getUpdated());
     }
 
     public static vtOrderStatuses AddVtOrderStatuses(User user) {
@@ -126,4 +132,35 @@ public class OrderMapper {
                         .collect(Collectors.toList())
         );
     }
+
+
+    public static Gson getGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
+        return gsonBuilder.create();
+    }
+
+    static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
+        DateTimeFormatter fmt = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        @Override
+        public void write(JsonWriter jsonWriter, LocalDateTime localDateTime) throws IOException {
+            if (localDateTime == null) {
+                jsonWriter.value("null");
+                return;
+            }
+            jsonWriter.value(localDateTime.format(fmt));
+        }
+
+        @Override
+        public LocalDateTime read(JsonReader jsonReader) throws IOException {
+            final String text = jsonReader.nextString();
+            if (text.equals("null")) {
+                return null;
+            }
+            return LocalDateTime.parse(text, fmt);
+        }
+    }
+
 }
+

@@ -1,13 +1,12 @@
 package ru.planetnails.partnerslk.model.order.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.planetnails.partnerslk.model.order.OrderStatus;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class vtOrderStatusesOutDto {
@@ -17,4 +16,10 @@ public class vtOrderStatusesOutDto {
     private OrderStatus orderStatus;
     private LocalDateTime updated;
     private String userId;
+
+    public vtOrderStatusesOutDto(Long id, OrderStatus orderStatus, LocalDateTime updated) {
+        this.id = id;
+        this.orderStatus = orderStatus;
+        this.updated=updated;
+    }
 }

@@ -42,6 +42,7 @@ public class UserMapper {
     public static UserOutDto fromUserToUserOutDto(User user) {
         return UserOutDto.builder()
                 .name(user.getName())
+                .id(user.getId())
                 .status(user.getStatus()).build();
     }
 }

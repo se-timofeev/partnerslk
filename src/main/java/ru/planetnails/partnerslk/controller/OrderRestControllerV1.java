@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Validated
 @RestController
+@CrossOrigin
 @AllArgsConstructor
 @Tag(name = "Orders", description = "You can create, modify and, get the orders")
 @RequestMapping(value = "/api/v1/orders")

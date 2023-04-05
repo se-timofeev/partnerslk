@@ -89,6 +89,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        User user = userRepository.findByName(username);
+        if(user == null) throw new NotFoundException("User not found");
+        log.info("user with name {} found", username);
+        return user;
+    }
+
+    @Override
     @Transactional
     public void delete(String userId) {
         userRepository.deleteById(userId);
