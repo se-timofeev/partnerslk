@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @Slf4j
+@CrossOrigin
 @Tag(name = "Contrators", description = "Сервис для создания/изменения, а также получения данных по контрагентам")
 @RequestMapping(value = "/api/v1/contractors")
 public class

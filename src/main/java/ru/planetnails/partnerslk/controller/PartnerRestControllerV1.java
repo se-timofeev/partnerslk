@@ -22,6 +22,7 @@ import ru.planetnails.partnerslk.service.PartnerService;
 @Validated
 @AllArgsConstructor
 @Slf4j
+@CrossOrigin
 @Tag(name = "Partners", description = "Сервис для создания/изменения, а также получения данных по партнёрам")
 @RequestMapping(value = "/api/v1/partners")
 public class PartnerRestControllerV1 {

@@ -1,10 +1,12 @@
 package ru.planetnails.partnerslk.service.impl;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.planetnails.partnerslk.broker.RabbitMQProducerService;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.order.*;
@@ -38,14 +40,18 @@ public class OrderServiceImpl implements OrderService {
 
     private final PartnerRepository partnerRepository;
 
+    private final RabbitMQProducerService rabbitMQProducerService;
+
     @Autowired
     public OrderServiceImpl(ContractorRepository contractorRepository, OrderRepository orderRepository,
-                            ItemRepository itemRepository, UserRepository userRepository, PartnerRepository partnerRepository) {
+                            ItemRepository itemRepository, UserRepository userRepository,
+                            PartnerRepository partnerRepository, RabbitMQProducerService rabbitMQProducerService) {
         this.contractorRepository = contractorRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.partnerRepository = partnerRepository;
+        this.rabbitMQProducerService = rabbitMQProducerService;
     }
 
     @Override
@@ -66,8 +72,19 @@ public class OrderServiceImpl implements OrderService {
         vtOrderStatusesList.add(vtOrderStatuses);
 
 
-        return orderRepository.save(OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner,
-                convertToOrderVtList(orderAddDto), vtOrderStatusesList)).getId();
+        Order order = OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner,
+                convertToOrderVtList(orderAddDto), vtOrderStatusesList);
+
+        // cохранение заказа после которого будет ясен id
+        orderRepository.save(order);
+
+        Gson gson = OrderMapper.getGson();
+        String toJson = gson.toJson(OrderMapper.fromOrderToOrderOutDto(order));
+        // сохраняем данные в брокере сообщений
+        // обратить внимание, что ID крайне важен, так без него мастер система
+        // не поймет как матчить данные
+        rabbitMQProducerService.sendMessage(toJson);
+        return order.getId();
     }
 
     @Override

@@ -22,6 +22,7 @@ import ru.planetnails.partnerslk.service.UserService;
 @RestController
 @AllArgsConstructor
 @Validated
+@CrossOrigin
 @Tag(name = "Users", description = "You can create, modify and, get the users")
 @RequestMapping(value = "/api/v1/users")
 @Slf4j
@@ -39,6 +40,23 @@ public class UserRestControllerV1 {
     @GetMapping(value = "{id}")
     public ResponseEntity<UserOutDto> getUserById(@PathVariable(name = "id") String userId) {
         User user = userService.findById(userId);
+        if (user == null || user.getStatus().equals(UserStatus.DELETED)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        UserOutDto result = UserMapper.fromUserToUserOutDto(user);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    @Operation(summary = "Get the userID by username")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the user",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserOutDto.class))}),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content)
+    })
+    @GetMapping(value = "/name/{username}")
+    public ResponseEntity<UserOutDto> getUserByUsername(@PathVariable(name = "username") String username) {
+        User user = userService.findByUsername(username);
         if (user == null || user.getStatus().equals(UserStatus.DELETED)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
