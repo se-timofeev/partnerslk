@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,8 +61,11 @@ public class AuthenticationRestControllerV1 {
         try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
+            if (user == null) {
+                return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+            }
             if (user == null || user.getStatus() != UserStatus.ACTIVE) {
-                throw new NotFoundException("User with username: " + username + " not found");
+                return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
             }
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
                     requestDto.getPassword()));
@@ -72,7 +76,8 @@ public class AuthenticationRestControllerV1 {
             response.put("token", token);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            throw new UserOrPasswordAreIncorrectException("Invalid username or password");
+            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+            //throw new UserOrPasswordAreIncorrectException("Invalid username or password");
         }
     }
 }
