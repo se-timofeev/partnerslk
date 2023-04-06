@@ -10,8 +10,9 @@ import ru.planetnails.partnerslk.model.user.UserStatus;
 @Builder
 @ToString
 
-public class UserOutDto {
+public class UserFullOutDto {
 
     private String name;
+    private String id;
     private UserStatus status;
 }

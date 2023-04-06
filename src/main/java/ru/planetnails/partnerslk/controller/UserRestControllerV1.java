@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.model.user.UserStatus;
 import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
+import ru.planetnails.partnerslk.model.user.dto.UserFullOutDto;
 import ru.planetnails.partnerslk.model.user.dto.UserMapper;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 import ru.planetnails.partnerslk.service.UserService;
@@ -55,12 +56,12 @@ public class UserRestControllerV1 {
                     content = @Content)
     })
     @GetMapping(value = "/name/{username}")
-    public ResponseEntity<UserOutDto> getUserByUsername(@PathVariable(name = "username") String username) {
+    public ResponseEntity<UserFullOutDto> getUserByUsername(@PathVariable(name = "username") String username) {
         User user = userService.findByUsername(username);
         if (user == null || user.getStatus().equals(UserStatus.DELETED)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        UserOutDto result = UserMapper.fromUserToUserOutDto(user);
+        UserFullOutDto result = UserMapper.fromUserToUserFullOutDto(user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
