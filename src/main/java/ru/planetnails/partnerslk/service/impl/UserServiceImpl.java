@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByName(String name) {
         User user = userRepository.findByName(name);
-        if(user == null) throw new NotFoundException("User not found");
-        log.info("user with name {} found", name);
+       // if(user == null) throw new NotFoundException("User not found");
+       // log.info("user with name {} found", name);
         return user;
     }
 
