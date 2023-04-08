@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class OderVtOutDto {
 
     private Long id;
-    private String orderId;
+
     private Long n_row;
     private String itemId;
     private Long amount;

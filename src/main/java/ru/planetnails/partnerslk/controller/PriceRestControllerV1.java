@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @AllArgsConstructor
+@CrossOrigin
 @RequestMapping(value = "/api/v1/prices")
 public class PriceRestControllerV1 {
     PriceService priceService;

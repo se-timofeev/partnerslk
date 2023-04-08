@@ -13,6 +13,8 @@ public interface UserService {
 
     User findById(String id);
 
+    User findByUsername(String username);
+
     void delete(String id);
 
     UserOutDto setUserActive(String userId);

@@ -44,4 +44,11 @@ public class UserMapper {
                 .name(user.getName())
                 .status(user.getStatus()).build();
     }
+
+    public static UserFullOutDto fromUserToUserFullOutDto(User user) {
+        return UserFullOutDto.builder()
+                .name(user.getName())
+                .id(user.getId())
+                .status(user.getStatus()).build();
+    }
 }

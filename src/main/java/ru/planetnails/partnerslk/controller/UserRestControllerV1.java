@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.model.user.UserStatus;
 import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
+import ru.planetnails.partnerslk.model.user.dto.UserFullOutDto;
 import ru.planetnails.partnerslk.model.user.dto.UserMapper;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 import ru.planetnails.partnerslk.service.UserService;
@@ -22,6 +23,7 @@ import ru.planetnails.partnerslk.service.UserService;
 @RestController
 @AllArgsConstructor
 @Validated
+@CrossOrigin
 @Tag(name = "Users", description = "You can create, modify and, get the users")
 @RequestMapping(value = "/api/v1/users")
 @Slf4j
@@ -43,6 +45,23 @@ public class UserRestControllerV1 {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         UserOutDto result = UserMapper.fromUserToUserOutDto(user);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    @Operation(summary = "Get the userID by username")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the user",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserOutDto.class))}),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content)
+    })
+    @GetMapping(value = "/name/{username}")
+    public ResponseEntity<UserFullOutDto> getUserByUsername(@PathVariable(name = "username") String username) {
+        User user = userService.findByUsername(username);
+        if (user == null || user.getStatus().equals(UserStatus.DELETED)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        UserFullOutDto result = UserMapper.fromUserToUserFullOutDto(user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByName(String name) {
         User user = userRepository.findByName(name);
-        if(user == null) throw new NotFoundException("User not found");
-        log.info("user with name {} found", name);
+       // if(user == null) throw new NotFoundException("User not found");
+       // log.info("user with name {} found", name);
         return user;
     }
 
@@ -85,6 +85,14 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findNotDeletedUser(userId);
         if(user == null) throw new NotFoundException("User not found");
         log.info("user with name {} found", userId);
+        return user;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        User user = userRepository.findByName(username);
+        if(user == null) throw new NotFoundException("User not found");
+        log.info("user with name {} found", username);
         return user;
     }
 
