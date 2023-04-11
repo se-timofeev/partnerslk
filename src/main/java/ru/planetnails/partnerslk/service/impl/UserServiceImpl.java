@@ -161,11 +161,15 @@ public class UserServiceImpl implements UserService {
             }
             User authUser = userRepository.findByName(auth.getName());
             User delUser = userRepository.findByUserId(userId);
+            if (delUser==null){
+                throw new BadRequestException("User not found");
+            }
 
             if (authUser != null) {
                 if (authUser.getId().equals(userId)) {
                     throw new BadRequestException("Пользователь не может удалить сам себя");
                 }
+
 
                 if (delUser.getRoles().stream().anyMatch(r -> r.getName().equalsIgnoreCase("ADMIN"))) {
                     throw new BadRequestException("Нельзя удалить пользователя с уровнем доступа (Role) = ADMIN");
