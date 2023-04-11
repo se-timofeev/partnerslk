@@ -175,6 +175,7 @@ public class UserServiceImpl implements UserService {
             }
             throw new BadRequestException("User not found");
         }
+        throw new BadRequestException("User not found");
 
 
     }
