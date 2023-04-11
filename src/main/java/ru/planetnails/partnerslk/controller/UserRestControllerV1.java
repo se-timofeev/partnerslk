@@ -18,7 +18,10 @@ import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
 import ru.planetnails.partnerslk.model.user.dto.UserFullOutDto;
 import ru.planetnails.partnerslk.model.user.dto.UserMapper;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
+import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @AllArgsConstructor
@@ -126,9 +129,9 @@ public class UserRestControllerV1 {
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content)
     })
-    @DeleteMapping("/{idForDelete}/delete")
-    public void deleteUser(@PathVariable String idForDelete, @RequestParam String requesterId) {
-        log.info("Получен эндпоинт DELETE /api/v1/users; idForDelete = {}, requesterId = {}" + idForDelete, requesterId);
-        userService.deleteUser(idForDelete, requesterId);
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable String userId, HttpServletRequest request ) {
+        log.info("Получен эндпоинт DELETE /api/v1/users; userId = {} " + userId);
+        userService.deleteUser(userId,request);
     }
 }

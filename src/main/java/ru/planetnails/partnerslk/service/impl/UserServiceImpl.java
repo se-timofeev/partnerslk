@@ -1,7 +1,10 @@
 package ru.planetnails.partnerslk.service.impl;
 
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +22,11 @@ import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 import ru.planetnails.partnerslk.repository.PartnerRepository;
 import ru.planetnails.partnerslk.repository.RoleRepository;
 import ru.planetnails.partnerslk.repository.UserRepository;
+import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +38,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
                            BCryptPasswordEncoder passwordEncoder,
-                           PartnerRepository partnerRepository) {
+                           PartnerRepository partnerRepository, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.partnerRepository = partnerRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -75,15 +83,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByName(String name) {
         User user = userRepository.findByName(name);
-       // if(user == null) throw new NotFoundException("User not found");
-       // log.info("user with name {} found", name);
+        // if(user == null) throw new NotFoundException("User not found");
+        // log.info("user with name {} found", name);
         return user;
     }
 
     @Override
     public User findById(String userId) {
         User user = userRepository.findNotDeletedUser(userId);
-        if(user == null) throw new NotFoundException("User not found");
+        if (user == null) throw new NotFoundException("User not found");
         log.info("user with name {} found", userId);
         return user;
     }
@@ -91,7 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         User user = userRepository.findByName(username);
-        if(user == null) throw new NotFoundException("User not found");
+        if (user == null) throw new NotFoundException("User not found");
         log.info("user with name {} found", username);
         return user;
     }
@@ -138,13 +146,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String idForDelete, String requesterId) {
-        if(idForDelete.equals(requesterId)) throw new BadRequestException("Пользователь не может удалить сам себя");
-        User user = findById(idForDelete);
-        if(user.getRoles().stream().anyMatch(r -> r.getName().equalsIgnoreCase("ADMIN")))
-            throw new BadRequestException("Нельзя удалить пользователя с уровнем доступа (Role) = ADMIN");
-        user.setStatus(UserStatus.DELETED);
-        userRepository.save(user);
+    public void deleteUser(String userId, HttpServletRequest request) {
+        // сценарий:
+        // если пользователь найден, то он помечается на удаление (меняется статус)
+        // пользователь не может поменять статус/удалить самого себя
+        // также пользователь не может удалять другого пользователя с админскими правами
+
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        if (token != null && jwtTokenProvider.validateAccessToken(token)) {
+            final Claims claims = jwtTokenProvider.getAccessClaims(token);
+            Authentication auth = jwtTokenProvider.getAuthentication(claims);
+            if (auth == null) {
+                throw new BadRequestException("Bad authentication");
+            }
+            User authUser = userRepository.findByName(auth.getName());
+            User delUser = userRepository.findByUserId(userId);
+
+            if (authUser != null) {
+                if (authUser.getId().equals(userId)) {
+                    throw new BadRequestException("Пользователь не может удалить сам себя");
+                }
+
+                if (delUser.getRoles().stream().anyMatch(r -> r.getName().equalsIgnoreCase("ADMIN"))) {
+                    throw new BadRequestException("Нельзя удалить пользователя с уровнем доступа (Role) = ADMIN");
+                }
+                delUser.setStatus(UserStatus.DELETED);
+                userRepository.save(delUser);
+            }
+        }
+
+
     }
 }
 
