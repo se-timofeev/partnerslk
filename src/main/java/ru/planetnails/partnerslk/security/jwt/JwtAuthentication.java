@@ -37,6 +37,7 @@ public class JwtAuthentication implements Authentication {
         return username;
     }
 
+
     @Override
     public boolean isAuthenticated() {
         return authenticated;
@@ -49,6 +50,6 @@ public class JwtAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return firstName;
+        return username;
     }
 }
