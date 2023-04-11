@@ -173,6 +173,7 @@ public class UserServiceImpl implements UserService {
                 delUser.setStatus(UserStatus.DELETED);
                 userRepository.save(delUser);
             }
+            throw new BadRequestException("User not found");
         }
 
 

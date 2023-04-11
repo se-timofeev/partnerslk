@@ -126,7 +126,7 @@ public class UserRestControllerV1 {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь удален",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "User not found",
+            @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content)
     })
     @DeleteMapping("/{userId}")
