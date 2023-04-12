@@ -37,4 +37,8 @@ build/
 /src/main/resources/application-prod.properties
 /src/main/resources/application-am.properties
 
+# file: ~/.gitignore_global
+/src/main/resources/application-prod.properties
+/src/main/resources/application-am.properties
+
 
