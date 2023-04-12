@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
         version = "0.1",
         description = "Partners account API description"))
 public class PartnersLkApplication {
-//test
+
     public static void main(String[] args) {
         SpringApplication.run(PartnersLkApplication.class, args);
     }
