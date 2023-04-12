@@ -17,9 +17,10 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: 'jdk'
 
       - name: Build with Maven
         run: mvn clean install
 
       - name: Start the app
-        run: java -jar target/your-app.jar
+        run: java -jar target/app.jar
