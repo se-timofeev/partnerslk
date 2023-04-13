@@ -51,3 +51,6 @@ jobs:
 
       - name: Start the app
         run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
+      
+      - name: Finish 
+        run: mvn spring-boot:stop
