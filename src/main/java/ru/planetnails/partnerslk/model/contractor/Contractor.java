@@ -42,4 +42,7 @@ public class Contractor {
 
     @Column(name="updated")
     private LocalDateTime updated;
+
+
+
 }
