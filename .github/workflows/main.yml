@@ -50,4 +50,4 @@ jobs:
         run: mvn clean install
 
       - name: Start the app
-        run: java -jar target/app.jar
+        run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
