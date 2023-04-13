@@ -15,6 +15,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class PartnersLkApplication {
 
     public static void main(String[] args) {
+
+
                SpringApplication.run(PartnersLkApplication.class, args);
 
 
