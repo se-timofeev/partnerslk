@@ -19,11 +19,12 @@ public class SetStatusCompletedForOrder implements OrderGenerator {
     public SetStatusCompletedForOrder(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
+
     @Override
     public OrderOutDto setStatusForOrder(String orderId, String userId) {
         Order order = SetStatusApprovedForOrder.validation(orderId, userId, orderRepository, log);
         order.setStatus(OrderStatus.COMPLETED);
-        vtOrderStatuses vtOrderStatuses = new vtOrderStatuses(
+        VtOrderStatuses vtOrderStatuses = new VtOrderStatuses(
                 OrderStatus.COMPLETED,
                 LocalDateTime.now(),
                 order.getVtOrderStatuses().get(0).getUser()

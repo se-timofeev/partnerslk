@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Table(name = "vt_orderStatuses")
-public class vtOrderStatuses {
+public class VtOrderStatuses {
 
     @Id
     @GeneratedValue
@@ -29,7 +29,7 @@ public class vtOrderStatuses {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public vtOrderStatuses(OrderStatus orderStatus, LocalDateTime updated, User user) {
+    public VtOrderStatuses(OrderStatus orderStatus, LocalDateTime updated, User user) {
         this.orderStatus = orderStatus;
         this.updated = updated;
         this.user = user;

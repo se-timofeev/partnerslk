@@ -43,8 +43,8 @@ public class SecurityConfig {
                 .httpBasic()
                 .and()
                 .addFilterAfter(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors().
-                and()
+                .cors()
+                .and()
                 .build();
     }
 }

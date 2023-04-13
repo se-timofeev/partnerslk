@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class CostumeGroupRepositoryImpl implements CostumeGroupRepository{
+public class CostumeGroupRepositoryImpl implements CostumeGroupRepository {
 
     @PersistenceContext
     private final EntityManager em;

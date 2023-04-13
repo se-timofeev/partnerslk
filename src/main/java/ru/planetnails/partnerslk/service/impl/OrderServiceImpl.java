@@ -64,11 +64,11 @@ public class OrderServiceImpl implements OrderService {
         Partner partner = partnerRepository.findById(orderAddDto.getPartnerId())
                 .orElseThrow(() -> new NotFoundException("Partner not found"));
         log.info("Partner with id {} found", orderAddDto.getPartnerId());
-        List<vtOrderStatuses> vtOrderStatusesList = new ArrayList<>();
+        List<VtOrderStatuses> vtOrderStatusesList = new ArrayList<>();
         User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
         log.info("User with id {} found", orderAddDto.getVtOrderStatuses().get(0).getUserId());
-        vtOrderStatuses vtOrderStatuses = OrderMapper.AddVtOrderStatuses(user);
+        VtOrderStatuses vtOrderStatuses = OrderMapper.addVtOrderStatuses(user);
         vtOrderStatusesList.add(vtOrderStatuses);
 
 
@@ -117,11 +117,11 @@ public class OrderServiceImpl implements OrderService {
     public String update(OrderAddDto orderAddDto, String orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found"));
-        List<vtOrderStatuses> vtOrderStatusesList = order.getVtOrderStatuses();
+        List<VtOrderStatuses> vtOrderStatusesList = order.getVtOrderStatuses();
         User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
         log.info("User with id {} found", orderAddDto.getVtOrderStatuses().get(0).getUserId());
-        vtOrderStatuses vtOrderStatuses = OrderMapper.UpdateVtOrderStatuses(user);
+        VtOrderStatuses vtOrderStatuses = OrderMapper.updateVtOrderStatuses(user);
         vtOrderStatusesList.add(vtOrderStatuses);
 
         order.setOrderVts(convertToOrderVtList(orderAddDto));

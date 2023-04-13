@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class ImageServiceImpl implements ImageService {
 
     private ImageRepository imageRepository;
+
     @Override
     public void addImages(List<ImageDtoIn> imageList) {
         if (imageList.size() < 1) throw new BadRequestException("Нет изображений для сохранения");
@@ -36,7 +37,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void deleteImageById(String imageId) {
-        if(!imageRepository.existsById(imageId))
+        if (!imageRepository.existsById(imageId))
             throw new NotFoundException(String.format("картинка с id = %s не найдена", imageId));
         imageRepository.deleteById(imageId);
     }
@@ -45,7 +46,8 @@ public class ImageServiceImpl implements ImageService {
     public Page<ImageDtoOut> getImageByItemId(String itemId, Integer from, Integer size) {
         PageRequest pageRequest = PageRequest.of(from / size, size);
         Page<Image> images = imageRepository.findByItemId(itemId, pageRequest);
-        if(images.getContent().size() < 1) throw new NotFoundException(String.format("картинка с itemId = %s не найдена", itemId));
+        if (images.getContent().size() < 1)
+            throw new NotFoundException(String.format("картинка с itemId = %s не найдена", itemId));
         return images.map(ImageMapping::toImageDtoOut);
     }
 }

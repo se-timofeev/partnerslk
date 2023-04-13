@@ -20,5 +20,5 @@ public class OrderFirstPartOutDto {
     private Double sumWithDiscount;
     private String contractorId;
     private String partnerId;
-    private OrderStatus Status;
+    private OrderStatus status;
 }

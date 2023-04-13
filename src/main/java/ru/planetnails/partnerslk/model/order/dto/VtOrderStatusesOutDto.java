@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class vtOrderStatusesOutDto {
+public class VtOrderStatusesOutDto {
 
     private Long id;
     private String orderId;
@@ -17,9 +17,9 @@ public class vtOrderStatusesOutDto {
     private LocalDateTime updated;
     private String userId;
 
-    public vtOrderStatusesOutDto(Long id, OrderStatus orderStatus, LocalDateTime updated) {
+    public VtOrderStatusesOutDto(Long id, OrderStatus orderStatus, LocalDateTime updated) {
         this.id = id;
         this.orderStatus = orderStatus;
-        this.updated=updated;
+        this.updated = updated;
     }
 }
