@@ -19,6 +19,5 @@ public class PartnersLkApplication {
 
                SpringApplication.run(PartnersLkApplication.class, args);
 
-
-
+}
 }
