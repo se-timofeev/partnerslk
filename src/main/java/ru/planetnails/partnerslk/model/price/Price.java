@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="prices")
+@Table(name = "prices")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,13 +22,13 @@ public class Price {
     @Column(name = "retail")
     private double retail;
 
-    @Column(name="sale")
+    @Column(name = "sale")
     private double sale;
 
-    @Column (name="updated")
+    @Column(name = "updated")
     private LocalDateTime updated;
 
     @OneToOne
-    @JoinColumn (name = "item_id")
+    @JoinColumn(name = "item_id")
     private Item item;
 }

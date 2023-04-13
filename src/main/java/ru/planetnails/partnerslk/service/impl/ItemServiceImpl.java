@@ -100,7 +100,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItems(List<String> itemsId) {
-        if(!itemsId.isEmpty()) itemRepository.ItemOutOfStock(itemsId);
+        if (!itemsId.isEmpty()) itemRepository.itemOutOfStock(itemsId);
     }
 
     private PageRequest getPageWithSort(GetItemsParams params) {

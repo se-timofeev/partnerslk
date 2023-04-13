@@ -14,7 +14,7 @@ public class ItemMapper {
         item.setId(itemAddDto.getId());
         item.setLevel(itemAddDto.getLevel());
         item.setVendorCode(itemAddDto.getVendorCode());
-        item.setGroupId(itemAddDto.getParent_id());
+        item.setGroupId(itemAddDto.getParentId());
         item.setIsOutOfStock(itemAddDto.getIsOutOfStock());
         item.setUpdated(LocalDateTime.now());
         item.setCountryOfOrigin(itemAddDto.getCountryOfOrigin());
@@ -26,7 +26,7 @@ public class ItemMapper {
         Group group = new Group();
         group.setId(itemAddDto.getId());
         group.setName(itemAddDto.getName());
-        group.setGroupId(itemAddDto.getParent_id());
+        group.setGroupId(itemAddDto.getParentId());
         group.setLevel(itemAddDto.getLevel());
         return group;
     }

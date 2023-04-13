@@ -26,5 +26,5 @@ OrderAddDto {
     private String partnerId;
     private List<OderVtAddDto> orderVts;
     @NotNull(message = "VtOrderStatuses may not be null")
-    private List<vtOrderStatusesAddDto> vtOrderStatuses;
+    private List<VtOrderStatusesAddDto> vtOrderStatuses;
 }

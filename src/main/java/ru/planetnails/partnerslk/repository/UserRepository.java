@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.user.User;
 
-import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
