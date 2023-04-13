@@ -36,11 +36,24 @@ jobs:
             java-version: 11
             distribution: 'temurin'
 
-      - name: Build with Maven
-        run: mvn clean install
+      #- name: Build with Maven
+      #  run: mvn clean install
 
-      - name: Start the app
-        run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
+      #- name: Start the app
+      #  run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
+
+              #Set up Maven cache
+      - name: Cache Maven packages
+                #This action allows caching dependencies and build outputs to improve workflow execution time.
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+              #Run Tests
+      - name: Run Tests
+        run: mvn -B test
 
         # do some tests
 
