@@ -27,10 +27,6 @@ jobs:
               sudo apt-get update && sudo apt-get install -y mssql-tools
               /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -Q 'CREATE DATABASE partnersLK'
 
-  #build:
-   # runs-on: ubuntu-latest
-
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -40,14 +36,13 @@ jobs:
             java-version: 11
             distribution: 'temurin'
 
-      - name: Build and Run Java Application
-        run: |
-            export DB_URL=jdbc:sqlserver://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }};databaseName=partnersLK
-              export DB_USERNAME=${{ secrets.DB_USERNAME }}
-              export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-
       - name: Build with Maven
         run: mvn clean install
 
       - name: Start the app
         run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
+
+        # do some tests
+
+      - name: Finish
+        run: mvn spring-boot:stop
