@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class vtOrderStatusesAddDto {
+public class VtOrderStatusesAddDto {
 
     private String userId;
 }

@@ -10,13 +10,11 @@ import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.OrderStatus;
 import ru.planetnails.partnerslk.model.order.OrderVt;
-import ru.planetnails.partnerslk.model.order.vtOrderStatuses;
+import ru.planetnails.partnerslk.model.order.VtOrderStatuses;
 import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.user.User;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,7 +25,7 @@ public class OrderMapper {
     private static Long num = 1L;
 
     public static Order fromOrderAddDtoOrder(OrderAddDto orderAddDto, Contractor contractor, Partner partner, List<OrderVt> orderVts,
-                                             List<vtOrderStatuses> vtOrderStatuses) {
+                                             List<VtOrderStatuses> vtOrderStatuses) {
         return new Order(
                 num++,
                 LocalDateTime.now(),
@@ -65,7 +63,7 @@ public class OrderMapper {
     public static OderVtOutDto fromOderVtToOrderOutDto(OrderVt orderVt) {
         return new OderVtOutDto(
                 orderVt.getId(),
-                orderVt.getN_row(),
+                orderVt.getNRow(),
                 orderVt.getItem().getId(),
                 orderVt.getAmount(),
                 orderVt.getSale(),
@@ -77,7 +75,7 @@ public class OrderMapper {
 
     public static OrderVt fromOrderVtAddDtoToOrderVt(OderVtAddDto oderVtAddDto, Item item) {
         return new OrderVt(
-                oderVtAddDto.getN_row(),
+                oderVtAddDto.getNRow(),
                 item,
                 oderVtAddDto.getAmount(),
                 oderVtAddDto.getSale(),
@@ -87,23 +85,23 @@ public class OrderMapper {
         );
     }
 
-    public static vtOrderStatusesOutDto fromVtOrderStatusesToOrderStatusesOutDto(vtOrderStatuses vtOrderStatuses) {
-        return new vtOrderStatusesOutDto(
+    public static VtOrderStatusesOutDto fromVtOrderStatusesToOrderStatusesOutDto(VtOrderStatuses vtOrderStatuses) {
+        return new VtOrderStatusesOutDto(
                 vtOrderStatuses.getId(),
                 vtOrderStatuses.getOrderStatus(),
                 vtOrderStatuses.getUpdated());
     }
 
-    public static vtOrderStatuses AddVtOrderStatuses(User user) {
-        return new vtOrderStatuses(
+    public static VtOrderStatuses addVtOrderStatuses(User user) {
+        return new VtOrderStatuses(
                 OrderStatus.NEW,
                 LocalDateTime.now(),
                 user
         );
     }
 
-    public static vtOrderStatuses UpdateVtOrderStatuses(User user) {
-        return new vtOrderStatuses(
+    public static VtOrderStatuses updateVtOrderStatuses(User user) {
+        return new VtOrderStatuses(
                 OrderStatus.UPDATED,
                 LocalDateTime.now(),
                 user

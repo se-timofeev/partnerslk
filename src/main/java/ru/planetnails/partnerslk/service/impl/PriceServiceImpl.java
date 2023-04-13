@@ -19,12 +19,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PriceServiceImpl implements PriceService {
     PriceRepository priceRepository;
+
     @Override
     @Async
     public void add(List<PriceAddDto> priceAddDto) {
         log.info("Add prices as List ");
-        List<Price> prices =priceAddDto.stream()
-                .map(x-> PriceMapper.fromPriceAddDtoToPrice(x))
+        List<Price> prices = priceAddDto.stream()
+                .map(x -> PriceMapper.fromPriceAddDtoToPrice(x))
                 .collect(Collectors.toList());
         try {
             priceRepository.saveAll(prices);

@@ -45,8 +45,8 @@ public class ContractorServiceImpl implements ContractorService {
     @Override
     public List<ContractorOutDto> findContractorsByPartnerId(String partnerId) {
         List<ContractorOutDto> contractors = contractorRepository.findContractorsByPartnerId(partnerId)
-                .stream().map(ContractorMapper::fromContractorToContractorOutDto).
-                collect(Collectors.toList());
+                .stream().map(ContractorMapper::fromContractorToContractorOutDto)
+                .collect(Collectors.toList());
         return contractors;
     }
 }

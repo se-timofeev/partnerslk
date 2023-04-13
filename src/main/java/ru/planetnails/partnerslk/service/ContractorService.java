@@ -10,7 +10,8 @@ public interface ContractorService {
 
     void add(List<ContractorAddDto> contractors);
 
-    Contractor findById(String id);
+    Contractor findById(String id)
+            ;
 
     List<ContractorOutDto> findContractorsByPartnerId(String partnerId);
 }

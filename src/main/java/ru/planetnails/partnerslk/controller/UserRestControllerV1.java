@@ -18,7 +18,6 @@ import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
 import ru.planetnails.partnerslk.model.user.dto.UserFullOutDto;
 import ru.planetnails.partnerslk.model.user.dto.UserMapper;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
-import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +49,7 @@ public class UserRestControllerV1 {
         UserOutDto result = UserMapper.fromUserToUserOutDto(user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
     @Operation(summary = "Get the userID by username")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the user",
@@ -130,8 +130,8 @@ public class UserRestControllerV1 {
                     content = @Content)
     })
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable String userId, HttpServletRequest request ) {
+    public void deleteUser(@PathVariable String userId, HttpServletRequest request) {
         log.info("Получен эндпоинт DELETE /api/v1/users; userId = {} " + userId);
-        userService.deleteUser(userId,request);
+        userService.deleteUser(userId, request);
     }
 }

@@ -5,7 +5,6 @@ import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.http.HttpRequest;
 
 public interface UserService {
 
