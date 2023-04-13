@@ -17,5 +17,6 @@ public class PartnersLkApplication {
     public static void main(String[] args) {
         SpringApplication.run(PartnersLkApplication.class, args);
 
+
     }
 }
