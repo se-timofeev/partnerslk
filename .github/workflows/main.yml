@@ -43,6 +43,9 @@ jobs:
       #  run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
 
               #Set up Maven cache
+      - name: Maven Verify
+        run: mvn -B clean verify
+
       - name: Cache Maven packages
                 #This action allows caching dependencies and build outputs to improve workflow execution time.
         uses: actions/cache@v1
