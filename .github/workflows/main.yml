@@ -8,7 +8,7 @@ on:
 
 jobs:
   windows-auth-tsqlt:
-    name: Installting tSQLt with SQL Auth
+    name: SQL and Java
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -33,18 +33,6 @@ jobs:
           user: sa
           password: 3uuiCaKxfbForrK
 
-      #- name: Get the containers list unformatted
-      #  run: docker ps
-
-      #- name: Get the containers list formatted
-      #  run: docker ps --all --filter status=running --no-trunc --format "{{.ID}}"
-
-      #- name: Set the container ID
-      #  run: echo '::set-output name=CONTAINER_ID::$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")'
-      #  id: ContainerID
-
-      #- name: Get container ID
-      #  run: echo "The container ID is ${{ steps.ContainerID.outputs.CONTAINER_ID }}"
 
       - name: Set environment variable ENV_CONTAINER_ID
         run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
@@ -52,22 +40,22 @@ jobs:
       - name: Test environment variable ENV_CONTAINER_ID
         run: echo $ENV_CONTAINER_ID
 
-  build:
-    runs-on: ubuntu-latest
+  #build:
+   # runs-on: ubuntu-latest
 
-    steps:
+
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
-          java-version: 11
-          distribution: 'temurin'
+            java-version: 11
+            distribution: 'temurin'
 
       - name: Build and Run Java Application
         run: |
-              export DB_URL=jdbc:sqlserver://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }};databaseName=partnersLK
+            export DB_URL=jdbc:sqlserver://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }};databaseName=partnersLK
               export DB_USERNAME=${{ secrets.DB_USERNAME }}
               export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
