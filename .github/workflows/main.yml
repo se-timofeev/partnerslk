@@ -14,31 +14,25 @@ jobs:
 
     services:
       sqlserver:
-        image: chriseaton/adventureworks:latest
+        image: mcr.microsoft.com/mssql/server:2019-latest
         ports:
           - 1433:1433
         env:
           ACCEPT_EULA: Y
           SA_PASSWORD: 3uuiCaKxfbForrK
 
+
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install tSQLt with SQL auth on tempdb
+      - name: Install DB
         uses: lowlydba/tsqlt-installer@v1
         with:
           sql-instance: localhost
-          database: tempdb
+          database: partnersLK
           version: latest
           user: sa
           password: 3uuiCaKxfbForrK
-
-
-      - name: Set environment variable ENV_CONTAINER_ID
-        run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
-
-      - name: Test environment variable ENV_CONTAINER_ID
-        run: echo $ENV_CONTAINER_ID
 
   #build:
    # runs-on: ubuntu-latest
