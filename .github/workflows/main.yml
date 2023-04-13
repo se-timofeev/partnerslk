@@ -19,8 +19,6 @@ jobs:
         env:
           ACCEPT_EULA: Y
           SA_PASSWORD: 3uuiCaKxfbForrK
-            - name: Set environment variable ENV_CONTAINER_ID
-            run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
 
   build:
     runs-on: ubuntu-latest
