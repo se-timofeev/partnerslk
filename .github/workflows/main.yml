@@ -1,4 +1,4 @@
-name: Build and deploy the app
+name: build
 
 on:
   pull_request:
