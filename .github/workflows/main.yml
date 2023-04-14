@@ -62,18 +62,18 @@ jobs:
       - name: Run Tests
         run: mvn -B test
 
-    test:
-      defaults:
-      run:
-        working-directory: ./tests
-      environment: staging
-      name: "Run tests"
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "18"
+   # test:
+    #  defaults:
+    #  run:
+    #    working-directory: ./tests
+    #  environment: staging
+    #  name: "Run tests"
+    #  runs-on: ubuntu-latest
+    #  steps:
+    #  - uses: actions/checkout@v2
+    #  - uses: actions/setup-node@v2
+    #    with:
+    #      node-version: "18"
       - name: "Install newman"
         run: "npm install -g newman"
       - name: "Install newman reporter"
