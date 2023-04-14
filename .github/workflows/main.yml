@@ -80,7 +80,8 @@ jobs:
         run: "npm install -g newman-reporter-htmlextra"
       - name: "Run tests"
         run: "newman run authentification.json -e postman_environment.json  
-          -r htmlextra --reporter-htmlextra-export htmlreport.html --reporter-htmlextra-darkTheme  > runreport1.html"
+         
+        ## -r htmlextra --reporter-htmlextra-export htmlreport.html --reporter-htmlextra-darkTheme  > runreport1.html"
 
 
         # do some tests
