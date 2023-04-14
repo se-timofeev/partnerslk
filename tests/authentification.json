@@ -23,11 +23,6 @@
           "script": {
             "exec": [
               "\r",
-              "var jsonData = JSON.parse(responseBody);\r",
-              "var token = jsonData[\"token\"];\r",
-              "pm.environment.set(\"token\",token);\r",
-              "pm.variables.set(\"token\",token);\r",
-              "\r",
               "\r",
               "\r",
               ""
