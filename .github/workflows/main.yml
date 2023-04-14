@@ -28,6 +28,8 @@ jobs:
               sudo apt-get update && sudo apt-get install -y mssql-tools
               /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -Q 'CREATE DATABASE partnersLK'
 
+        sql-file: './start.sql'
+
       - name: Checkout code
         uses: actions/checkout@v2
 
