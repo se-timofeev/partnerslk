@@ -63,6 +63,7 @@ jobs:
         environment: staging
       - name: "Run tests"
       - name: "Install newman"
+        run: "npm install -g newman"
       - name: "Run tests"
         run: "newman run authentification.json -e postman_environment.json  
 
