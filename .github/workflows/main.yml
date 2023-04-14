@@ -82,14 +82,7 @@ jobs:
         run: "newman run authentification.json -e postman_environment.json  
           -r htmlextra --reporter-htmlextra-export htmlreport.html --reporter-htmlextra-darkTheme  > runreport1.html"
 
-      - name: Publish report
-        uses: MeilCli/slack-upload-file@v1
-        with:
-          slack_token: ${{ secrets.SLACK_TOKEN }}
-          file_path: './tests/htmlreport.html'
-          file_name: 'postmanReport.html'
-          file_type: 'html'
-          channels: 'api-test-reports'
+
         # do some tests
 
       - name: Finish
