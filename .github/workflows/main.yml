@@ -79,7 +79,7 @@ jobs:
       - name: "Install newman reporter"
         run: "npm install -g newman-reporter-htmlextra"
       - name: "Run tests"
-        run: "newman run NewmanDemo.postman_collection.json -e ReqResDev.postman_environment.json  
+        run: "newman run authentification.json -e postman_environment.json  
           -r htmlextra --reporter-htmlextra-export htmlreport.html --reporter-htmlextra-darkTheme  > runreport1.html"
 
       - name: Publish report
