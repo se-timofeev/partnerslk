@@ -58,13 +58,13 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
   steps:
-  - name: Postman tests
-    working-directory: ./tests
-    environment: staging
-  - name: "Run tests"
-  - name: "Install newman"
-  - name: "Run tests"
-  run: "newman run authentification.json -e postman_environment.json  
+      - name: Postman tests
+        working-directory: ./tests
+        environment: staging
+      - name: "Run tests"
+      - name: "Install newman"
+      - name: "Run tests"
+        run: "newman run authentification.json -e postman_environment.json  
 
   #Run Tests
   - name: Run Tests
