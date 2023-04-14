@@ -7,13 +7,13 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="items")
+@Table(name = "items")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Item  {
+public class Item {
 
     @Id
     private String id;
@@ -26,25 +26,25 @@ public class Item  {
     @Column(name = "vendor_code")
     private String vendorCode;
 
-    @Column(name="description_html")
+    @Column(name = "description_html")
     private String descriptionHtml;
 
-    @Column (name="group_id")
+    @Column(name = "group_id")
     private String groupId;
 
-    @Column (name="level")
+    @Column(name = "level")
     private Integer level;
 
-    @Column (name="country")
+    @Column(name = "country")
     private String countryOfOrigin;
 
-    @Column(name="is_out_of_stock")
+    @Column(name = "is_out_of_stock")
     private Boolean isOutOfStock;
 
-    @Column(name="updated")
+    @Column(name = "updated")
     private LocalDateTime updated;
 
-    @OneToOne (mappedBy="item")
+    @OneToOne(mappedBy = "item")
     private Price price;
 
     @Column(name = "is_novelty")

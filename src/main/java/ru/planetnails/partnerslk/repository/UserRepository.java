@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.user.User;
 
+
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
@@ -15,5 +16,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("select u from User u " +
             "where u.id = ?1 and u.status <> ru.planetnails.partnerslk.model.user.UserStatus.DELETED")
     User findNotDeletedUser(String userId);
+
+    @Query("select u from User u " +
+            "where u.id = ?1")
+    User findByUserId(String userId);
 
 }

@@ -1,0 +1,65 @@
+name: build
+
+on:
+  pull_request:
+    branches:
+      - develop
+  push:
+    branches:
+      - develop
+    workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: sd$98sdANq
+
+    steps:
+      - name: Create MS SQL Database
+        run: |
+              sudo apt-get update && sudo apt-get install -y mssql-tools
+              /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -Q 'CREATE DATABASE partnersLK'
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+            java-version: 11
+            distribution: 'temurin'
+
+      #- name: Build with Maven
+      #  run: mvn clean install
+
+      #- name: Start the app
+      #  run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
+
+              #Set up Maven cache
+      - name: Maven Verify
+        run: mvn -B clean verify
+
+      - name: Cache Maven packages
+                #This action allows caching dependencies and build outputs to improve workflow execution time.
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+              #Run Tests
+      - name: Run Tests
+        run: mvn -B test
+
+        # do some tests
+
+      - name: Finish
+        run: mvn spring-boot:stop

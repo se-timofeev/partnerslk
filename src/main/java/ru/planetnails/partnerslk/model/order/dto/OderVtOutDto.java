@@ -11,7 +11,7 @@ public class OderVtOutDto {
 
     private Long id;
 
-    private Long n_row;
+    private Long nRow;
     private String itemId;
     private Long amount;
     private Double sale;

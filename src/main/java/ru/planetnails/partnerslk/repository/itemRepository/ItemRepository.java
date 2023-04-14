@@ -27,5 +27,5 @@ public interface ItemRepository extends JpaRepository<Item, String>, CustomItemR
     @Modifying
     @Transactional
     @Query(value = "update items set is_out_of_stock = 1 where id in(?1)", nativeQuery = true)
-    void ItemOutOfStock(List<String> itemsId);
+    void itemOutOfStock(List<String> itemsId);
 }

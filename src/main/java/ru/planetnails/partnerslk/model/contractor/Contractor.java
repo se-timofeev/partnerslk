@@ -40,6 +40,8 @@ public class Contractor {
     @NotBlank
     private String partnerId;
 
-    @Column(name="updated")
+    @Column(name = "updated")
     private LocalDateTime updated;
+
+
 }

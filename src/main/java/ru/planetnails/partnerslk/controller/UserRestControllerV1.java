@@ -20,6 +20,8 @@ import ru.planetnails.partnerslk.model.user.dto.UserMapper;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 import ru.planetnails.partnerslk.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @AllArgsConstructor
 @Validated
@@ -47,6 +49,7 @@ public class UserRestControllerV1 {
         UserOutDto result = UserMapper.fromUserToUserOutDto(user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
     @Operation(summary = "Get the userID by username")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the user",
@@ -123,12 +126,12 @@ public class UserRestControllerV1 {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь удален",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "User not found",
+            @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content)
     })
-    @DeleteMapping("/{idForDelete}/delete")
-    public void deleteUser(@PathVariable String idForDelete, @RequestParam String requesterId) {
-        log.info("Получен эндпоинт DELETE /api/v1/users; idForDelete = {}, requesterId = {}" + idForDelete, requesterId);
-        userService.deleteUser(idForDelete, requesterId);
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable String userId, HttpServletRequest request) {
+        log.info("Получен эндпоинт DELETE /api/v1/users; userId = {} " + userId);
+        userService.deleteUser(userId, request);
     }
 }

@@ -24,7 +24,7 @@ public class ItemAddDto {
 
     private Boolean isGroup;
 
-    private String parent_id;
+    private String parentId;
 
     private Integer level;
 
@@ -40,7 +40,7 @@ public class ItemAddDto {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", isGroup=" + isGroup +
-                ", groupId='" + parent_id + '\'' +
+                ", groupId='" + parentId + '\'' +
                 '}';
     }
 }

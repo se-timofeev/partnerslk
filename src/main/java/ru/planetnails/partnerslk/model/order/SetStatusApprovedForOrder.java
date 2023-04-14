@@ -22,11 +22,12 @@ public class SetStatusApprovedForOrder implements OrderGenerator {
     public SetStatusApprovedForOrder(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
+
     @Override
     public OrderOutDto setStatusForOrder(String orderId, String userId) {
         Order order = validation(orderId, userId, orderRepository, log);
         order.setStatus(OrderStatus.APPROVED);
-        vtOrderStatuses vtOrderStatuses = new vtOrderStatuses(
+        VtOrderStatuses vtOrderStatuses = new VtOrderStatuses(
                 OrderStatus.APPROVED,
                 LocalDateTime.now(),
                 order.getVtOrderStatuses().get(0).getUser()
@@ -37,11 +38,11 @@ public class SetStatusApprovedForOrder implements OrderGenerator {
         return OrderMapper.fromOrderToOrderOutDto(orderRepository.save(order));
     }
 
-   protected static Order validation(String orderId, String userId, OrderRepository orderRepository, Logger log) {
+    protected static Order validation(String orderId, String userId, OrderRepository orderRepository, Logger log) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found"));
         log.info("Order with id {} found", orderId);
-        if(!userId.equals(order.getVtOrderStatuses().get(0).getUser().getId())){
+        if (!userId.equals(order.getVtOrderStatuses().get(0).getUser().getId())) {
             log.error("Order doesn't belong to User with id {}", userId);
             throw new ValidationException("Order doesn't belong to this User");
         }

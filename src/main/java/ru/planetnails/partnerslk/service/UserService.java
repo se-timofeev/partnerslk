@@ -4,6 +4,8 @@ import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserService {
 
     UserOutDto add(UserAddDto userAddDto);
@@ -25,5 +27,5 @@ public interface UserService {
 
     UserOutDto setUserPending(String userId);
 
-    void deleteUser(String idForDelete, String requesterId);
+    void deleteUser(String userId, HttpServletRequest request);
 }

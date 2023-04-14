@@ -44,11 +44,11 @@ public class Order {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
-    private List<vtOrderStatuses> vtOrderStatuses;
+    private List<VtOrderStatuses> vtOrderStatuses;
 
     public Order(Long num, LocalDateTime orderDate, Double sumWithoutDiscount, Double sumOfDiscount,
                  Double sumWithDiscount, Contractor contractor, Partner partner,
-                 OrderStatus status, List<OrderVt> orderVts, List<vtOrderStatuses> vtOrderStatuses) {
+                 OrderStatus status, List<OrderVt> orderVts, List<VtOrderStatuses> vtOrderStatuses) {
         this.num = num;
         this.orderDate = orderDate;
         this.sumWithoutDiscount = sumWithoutDiscount;
