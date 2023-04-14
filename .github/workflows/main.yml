@@ -58,6 +58,10 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+        run:
+          working-directory: ./tests
+        environment: staging
+      - name: "Run tests"
 
       - name: "Install newman"
         run: "npm install -g newman"
@@ -74,10 +78,6 @@ jobs:
 
    # test:
     #  defaults:
-    #  run:
-    #    working-directory: ./tests
-    #  environment: staging
-    #  name: "Run tests"
     #  runs-on: ubuntu-latest
     #  steps:
     #  - uses: actions/checkout@v2
