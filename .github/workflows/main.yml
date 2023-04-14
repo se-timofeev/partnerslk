@@ -50,6 +50,7 @@ jobs:
 
       - name: Install newman
         run: npm install -g newman
+        working-directory: ./tests
 
       - name: Install newman reporter
         run: npm install -g newman-reporter-htmlextra
