@@ -48,6 +48,10 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+
+      - name: Run Tests
+
+        run: mvn -B test
       - name: Install newman
         run: npm install -g newman
         working-directory: ./tests
@@ -57,9 +61,6 @@ jobs:
 
       - name: Run Postman tests
         run: newman run ./tests/authentification.json -e ./tests/postman_environment.json
-
-      - name: Run Tests
-        run: mvn -B test
 
       - name: Finish
         run: mvn spring-boot:stop
