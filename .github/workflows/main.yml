@@ -58,6 +58,9 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name:  "Install newman"
+        run: "npm install -g newman"
+
         #Run Tests
       - name: Run Tests
         run: mvn -B test
