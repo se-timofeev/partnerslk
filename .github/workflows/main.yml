@@ -25,10 +25,8 @@ jobs:
     steps:
       - name: Create MS SQL Database
         run: |
-              sudo apt-get update && sudo apt-get install -y mssql-tools
-              /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -Q 'CREATE DATABASE partnersLK'
-
-        
+          sudo apt-get update && sudo apt-get install -y mssql-tools
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -Q 'CREATE DATABASE partnersLK'
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -36,46 +34,31 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
-            java-version: 11
-            distribution: 'temurin'
-            sql-file: './start.sql'
+          java-version: 11
+          distribution: 'temurin'
+          sql-file: './start.sql'
 
-      #- name: Build with Maven
-      #  run: mvn clean install
-
-      #- name: Start the app
-      #  run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
-
-              #Set up Maven cache
       - name: Maven Verify
         run: mvn -B clean verify
 
       - name: Cache Maven packages
-                #This action allows caching dependencies and build outputs to improve workflow execution time.
         uses: actions/cache@v1
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name:  "Install newman"
-        run: "npm install -g newman"
+      - name: Install newman
+        run: npm install -g newman
 
-        working-directory: ./tests
+      - name: Install newman reporter
+        run: npm install -g newman-reporter-htmlextra
 
-      - name: "Install newman reporter"
-        run: "npm install -g newman-reporter-htmlextra"
+      - name: Run Postman tests
+        run: newman run ./tests/authentification.json -e ./tests/postman_environment.json
 
-      - name: "Intergration tests"
-        run: "newman run ./tests/authentification.json -e ./tests/postman_environment.json"
-
-        #Run Tests
       - name: Run Tests
-
         run: mvn -B test
-
-
-        # do some tests
 
       - name: Finish
         run: mvn spring-boot:stop
