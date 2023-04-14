@@ -61,6 +61,8 @@ jobs:
       - name:  "Install newman"
         run: "npm install -g newman"
 
+        working-directory: ./tests
+
         #Run Tests
       - name: Run Tests
         run: mvn -B test
