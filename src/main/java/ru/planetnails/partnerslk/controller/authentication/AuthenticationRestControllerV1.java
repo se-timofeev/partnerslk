@@ -65,13 +65,13 @@ public class AuthenticationRestControllerV1 {
             if (user == null || user.getStatus() != UserStatus.ACTIVE) {
                 return new ResponseEntity<>("Invalid username or password", HttpStatus.CONFLICT);
             }
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
-                    requestDto.getPassword()));
-            String token = jwtTokenProvider.createToken(username, user.getRoles());
-            log.info("token has been granted to user {}", username);
+//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
+//                    requestDto.getPassword()));
+//            String token = jwtTokenProvider.createToken(username, user.getRoles());
+//            log.info("token has been granted to user {}", username);
             Map<Object, Object> response = new HashMap<>();
             response.put("username", username);
-            response.put("token", token);
+            response.put("token", "");
             return ResponseEntity.ok(response);
 //        } catch (AuthenticationException e) {
 //            return new ResponseEntity<>("Invalid username or password", HttpStatus.FORBIDDEN);
