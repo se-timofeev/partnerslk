@@ -59,6 +59,10 @@ public class AuthenticationRestControllerV1 {
         try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
+            log.info("username ", username);
+
+            log.info("user ", user);
+
             if (user == null) {
                 return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
             }
