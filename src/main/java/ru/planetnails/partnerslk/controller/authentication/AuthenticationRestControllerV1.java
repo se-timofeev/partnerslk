@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.user.User;
@@ -75,13 +75,13 @@ public class AuthenticationRestControllerV1 {
             if (user == null || user.getStatus() != UserStatus.ACTIVE) {
                 return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
             }
-//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
-//                    requestDto.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
+                    requestDto.getPassword()));
             String token = jwtTokenProvider.createToken(username, user.getRoles());
             System.out.println("token= " + token);
             Map<Object, Object> response = new HashMap<>();
             response.put("username", username);
-            response.put("token", "");
+            response.put("token", token);
             return ResponseEntity.ok(response);
         } catch (
                 AuthenticationException e) {
