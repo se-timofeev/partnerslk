@@ -14,7 +14,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.user.User;
-import ru.planetnails.partnerslk.model.user.UserStatus;
+//import ru.planetnails.partnerslk.model.user.UserStatus;
 import ru.planetnails.partnerslk.security.config.CustomAuthenticationManager;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;
@@ -62,13 +62,13 @@ public class AuthenticationRestControllerV1 {
             log.info("username ", username);
 
             log.info("user ", user);
-
-            if (user == null) {
-                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
-            }
-            if (user == null || user.getStatus() != UserStatus.ACTIVE) {
-                return new ResponseEntity<>("Invalid username or password", HttpStatus.CONFLICT);
-            }
+//
+//            if (user == null) {
+//                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
+//            }
+//            if (user == null || user.getStatus() != UserStatus.ACTIVE) {
+//                return new ResponseEntity<>("Invalid username or password", HttpStatus.CONFLICT);
+//            }
 //            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
 //                    requestDto.getPassword()));
 //            String token = jwtTokenProvider.createToken(username, user.getRoles());
