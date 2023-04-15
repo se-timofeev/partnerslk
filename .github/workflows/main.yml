@@ -43,12 +43,13 @@ jobs:
       - name: Start App
         run: java -jar ./target/partnerslk-0.0.1-SNAPSHOT.jar > app.log & #
 
-      - name: Show App Log
-        run: cat app.log # Displaying log output in the workflow execution log
-
 
       - name: Wait for App to Start
         run: sleep 5 #
+
+      - name: Show App Log
+        run: cat app.log # Displaying log output in the workflow execution log
+
 
       - name: Insert Data into Users Table
         run: |
@@ -107,3 +108,8 @@ jobs:
 
       - name: Run Postman tests
         run: newman run ./tests/authentification.json -e ./tests/postman_environment.json
+
+      - name: Show App Log2
+        run: cat app.log # Displaying log output in the workflow execution log
+
+
