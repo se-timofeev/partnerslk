@@ -41,8 +41,10 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Build Jar file
-        run: ./target build-jar
+      - name: Start App
+        run: java -jar ./target/partnerslk-0.0.1-SNAPSHOT.jar
+
+
 
       #- name: Save Jar file
       #  uses: actions/upload-artifact@v3
