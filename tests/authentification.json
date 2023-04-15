@@ -40,7 +40,12 @@
 					"type": "noauth"
 				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n\"username\":\"test_user\",\r\n\"password\":\"Qe2mGvBV\"\r\n}",
