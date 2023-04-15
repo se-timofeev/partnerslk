@@ -48,7 +48,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\"username\":\"test_user\",\r\n\"password\":\"Qe2mGvBV\"\r\n}",
+					"raw": "{ \"username\": \"test_user\", \"password\": \"Qe2mGvBV\" }",
 					"options": {
 						"raw": {
 							"language": "json"
