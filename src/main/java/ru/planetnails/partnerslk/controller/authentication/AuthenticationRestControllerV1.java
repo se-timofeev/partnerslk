@@ -56,7 +56,7 @@ public class AuthenticationRestControllerV1 {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws HttpMessageNotReadableException {
         log.info("login {}", requestDto);
-        try {
+     //   try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
             if (user == null) {
@@ -73,9 +73,9 @@ public class AuthenticationRestControllerV1 {
             response.put("username", username);
             response.put("token", token);
             return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.FORBIDDEN);
-
-        }
+//        } catch (AuthenticationException e) {
+//            return new ResponseEntity<>("Invalid username or password", HttpStatus.FORBIDDEN);
+//
+//        }
     }
 }
