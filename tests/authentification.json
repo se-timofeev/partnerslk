@@ -78,7 +78,7 @@
 	"variable": [
 		{
 			"key": "url",
-			"value": "https://localhost:8080",
+			"value": "http://localhost:8080",
 			"type": "string"
 		}
 	]
