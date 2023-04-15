@@ -1,21 +1,19 @@
 {
   "info": {
     "_postman_id": "448580c4-7308-4bec-b326-7edf736a0bac",
-    "name": "New Collection",
+    "name": "authentication",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "24693473"
   },
   "item": [
     {
-      "name": "Authentication",
+      "name": "Авторизация Copy",
       "event": [
         {
           "listen": "prerequest",
           "script": {
             "exec": [
-              "pm.test(\"Status code is 401\", function () {",
-              "    pm.response.to.have.status(401);",
-              "});"
+              ""
             ],
             "type": "text/javascript"
           }
@@ -63,6 +61,33 @@
         }
       },
       "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "url",
+      "value": "http://localhost:8080",
+      "type": "string"
     }
   ]
 }
