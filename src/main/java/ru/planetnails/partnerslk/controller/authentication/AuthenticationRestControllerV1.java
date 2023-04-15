@@ -9,12 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
-//import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.model.user.User;
 //import ru.planetnails.partnerslk.model.user.UserStatus;
 import ru.planetnails.partnerslk.security.config.CustomAuthenticationManager;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
@@ -55,15 +54,15 @@ public class AuthenticationRestControllerV1 {
                     )})
     })
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody String requestDto) throws HttpMessageNotReadableException {
+    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws HttpMessageNotReadableException {
         log.info("login=", requestDto);
         try {
-//            String username = requestDto.getUsername();
-//            User user = userService.findByName(username);
-//            log.info("username=", username);
+            String username = requestDto.getUsername();
+            User user = userService.findByName(username);
+            log.info("username=", username);
+
+            log.info("user=", user);
 //
-//            log.info("user=", user);
-////
 //            if (user == null) {
 //                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
 //            }
@@ -75,7 +74,7 @@ public class AuthenticationRestControllerV1 {
 //            String token = jwtTokenProvider.createToken(username, user.getRoles());
 //            log.info("token has been granted to user {}", username);
             Map<Object, Object> response = new HashMap<>();
-            //response.put("username", username);
+            response.put("username", username);
             response.put("token", "");
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
