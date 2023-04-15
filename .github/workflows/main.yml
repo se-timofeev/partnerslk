@@ -41,7 +41,11 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Start App
-        run: java -jar ./target/partnerslk-0.0.1-SNAPSHOT.jar &
+        run: java -jar ./target/partnerslk-0.0.1-SNAPSHOT.jar > app.log & #
+
+      - name: Show App Log
+        run: cat app.log # Displaying log output in the workflow execution log
+
 
       - name: Wait for App to Start
         run: sleep 5 #
