@@ -42,7 +42,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Build Jar file
-        run: ./target
+        run: ./project-dev build-jar
 
       #- name: Save Jar file
       #  uses: actions/upload-artifact@v3
