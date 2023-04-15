@@ -56,24 +56,20 @@ public class AuthenticationRestControllerV1 {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws HttpMessageNotReadableException {
         log.info("login=", requestDto);
-        System.out.println(requestDto);
+
         try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
-            log.info("username=", username);
-            log.info("username lent", username.length());
 
-            System.out.println("username2= " + username);
-            log.info("user=", user);
-//
+            System.out.println("username= " + username);
+            System.out.println("pass= " + requestDto.getPassword());
+
+
             if (user == null) {
-//                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
-                log.info("user is null");
-            } else {
-                log.info("user is not null");
-                log.info("user lent", username.length());
-                log.info("user status", user.getStatus());
+                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
             }
+            System.out.println("status= " + user.getStatus());
+
 
 //            if (user == null || user.getStatus() != UserStatus.ACTIVE) {
 //                return new ResponseEntity<>("Invalid username or password", HttpStatus.CONFLICT);
@@ -82,13 +78,16 @@ public class AuthenticationRestControllerV1 {
 //                    requestDto.getPassword()));
 //            String token = jwtTokenProvider.createToken(username, user.getRoles());
 //            log.info("token has been granted to user {}", username);
-            Map<Object, Object> response = new HashMap<>();
-            response.put("username", username);
-            response.put("token", "");
-            return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+        Map<Object, Object> response = new HashMap<>();
+        response.put("username", username);
+        response.put("token", "");
+        return ResponseEntity.ok(response);
+    } catch(
+    AuthenticationException e)
+
+    {
+        return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
 //
-        }
     }
+}
 }
