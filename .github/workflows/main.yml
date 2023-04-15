@@ -39,15 +39,15 @@ jobs:
         run: |
               /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
               insert into roles (name)
-              values ('ADMIN') 
+              values ('ADMIN');
             insert into roles (name)
-            values ('USER')'
+            values ('USER');'
 
       - name: Insert Data into user_roles Table
         run: |
               /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
               insert into user_roles (user_id, role_id)
-              values ('91ae04bc-6a19-47cf-b066-4cf2692d8213',1)'     
+              values ('91ae04bc-6a19-47cf-b066-4cf2692d8213',1);'     
       
 
       - name: Checkout code
