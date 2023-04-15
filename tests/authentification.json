@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "448580c4-7308-4bec-b326-7edf736a0bac",
 		"name": "authentication",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "24693473"
 	},
 	"item": [
@@ -36,6 +36,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -47,18 +50,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{url}}/api/v1/auth/login",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"auth",
-						"login"
-					]
-				}
+				"url": "{{url}}/api/v1/auth/login"
 			},
 			"response": []
 		}
