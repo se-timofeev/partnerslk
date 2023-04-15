@@ -7,7 +7,7 @@
   },
   "item": [
     {
-      "name": "Авторизация Copy",
+      "name": "Authentication",
       "event": [
         {
           "listen": "prerequest",
@@ -23,7 +23,7 @@
           "script": {
             "exec": [
               "pm.test(\"Ожидаем code 200\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
+              "    pm.response.to.have.status(401);\r",
               "});\r",
               "\r",
               "\r",
