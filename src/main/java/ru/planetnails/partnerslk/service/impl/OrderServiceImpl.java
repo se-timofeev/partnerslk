@@ -1,5 +1,6 @@
 package ru.planetnails.partnerslk.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderOutDto setStatusForOrder(String orderId, String status, String userId) {
         OrderGenerator orderGenerator = orderGenerators.get(status);
         if (!orderGenerators.containsKey(status)) {
@@ -114,6 +116,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public String update(OrderAddDto orderAddDto, String orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found"));
@@ -132,6 +135,43 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatus.UPDATED);
 
         return orderRepository.save(order).getId();
+    }
+
+    @Override
+    @Transactional
+    public void rabbitUpdate(String message) throws JsonProcessingException {
+        OrderRabbitAddDto orderRabbitAddDto = OrderMapper.fromMessageToOrderRabbitAddDto(message);
+        Order order = orderRepository.findById(orderRabbitAddDto.getOrderId())
+                .orElseThrow(() -> new NotFoundException("Order not found"));
+        List<VtOrderStatuses> vtOrderStatusesList = order.getVtOrderStatuses();
+        User user = userRepository.findById(orderRabbitAddDto.getVtOrderStatuses().get(0).getUserId())
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        log.info("User with id {} found", orderRabbitAddDto.getVtOrderStatuses().get(0).getUserId());
+        VtOrderStatuses vtOrderStatuses = OrderMapper.updateVtOrderStatuses(user);
+        vtOrderStatusesList.add(vtOrderStatuses);
+
+        order.setOrderVts(rabbitConvertToOrderVtList(orderRabbitAddDto));
+        order.setVtOrderStatuses(vtOrderStatusesList);
+        order.setSumWithDiscount(orderRabbitAddDto.getSumWithDiscount());
+        order.setSumOfDiscount(orderRabbitAddDto.getSumOfDiscount());
+        order.setSumWithoutDiscount(orderRabbitAddDto.getSumWithoutDiscount());
+        order.setStatus(OrderStatus.UPDATED);
+
+        log.info("Order was updated successfully with orderId = {}", order.getId());
+    }
+
+    private List<OrderVt> rabbitConvertToOrderVtList(OrderRabbitAddDto orderRabbitAddDto) {
+        List<OrderVt> orderVtList = new ArrayList<>();
+        if (orderRabbitAddDto.getOrderVts() == null) {
+            orderVtList = Collections.emptyList();
+        } else {
+            for (OderVtAddDto oderVtAddDto : orderRabbitAddDto.getOrderVts()) {
+                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto,
+                        itemRepository.getReferenceById(oderVtAddDto.getItemId()));
+                orderVtList.add(orderVt);
+            }
+        }
+        return orderVtList;
     }
 
     private List<OrderVt> convertToOrderVtList(OrderAddDto orderAddDto) {
