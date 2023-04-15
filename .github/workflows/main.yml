@@ -27,7 +27,29 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y mssql-tools
           /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -Q 'CREATE DATABASE partnersLK'
+
+      - name: Insert Data into Users Table
+        run: |
+              /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+              INSERT INTO users (id, name, password, status)
+              VALUES ('91ae04bc-6a19-47cf-b066-4cf2692d8213', 'test_user', 
+          '$2a$10$dKNOh0hMY2MJAr1Y.kq/5.a5HYy5X3bDxMJbmvLuEeR3MF5Pq7zfK', 'ACTIVE');'    
+
+      - name: Insert Data into Roles Table
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+          insert into roles (name)
+           values ('ADMIN') 
           
+          insert into roles (name)
+          values ('USER')'
+
+      - name: Insert Data into user_roles Table
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+          insert into user_roles (user_id, role_id)
+          values ('91ae04bc-6a19-47cf-b066-4cf2692d8213',1)'     
+      
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -37,7 +59,7 @@ jobs:
         with:
           java-version: 11
           distribution: 'temurin'
-          sql-file: './start.sql'
+
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
@@ -46,7 +68,7 @@ jobs:
         run: java -jar ./target/partnerslk-0.0.1-SNAPSHOT.jar &
 
       - name: Wait for App to Start
-        run: sleep 10 #
+        run: sleep 5 #
 
       - name: Install newman
         run: npm install -g newman
