@@ -60,10 +60,10 @@ public class AuthenticationRestControllerV1 {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
             if (user == null) {
-                return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
             }
             if (user == null || user.getStatus() != UserStatus.ACTIVE) {
-                return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Invalid username or password", HttpStatus.CONFLICT);
             }
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
                     requestDto.getPassword()));
@@ -74,7 +74,7 @@ public class AuthenticationRestControllerV1 {
             response.put("token", token);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Invalid username or password", HttpStatus.FORBIDDEN);
 
         }
     }
