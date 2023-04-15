@@ -70,6 +70,7 @@ public class AuthenticationRestControllerV1 {
             } else {
                 log.info("user is not null");
                 log.info("user lent", username.length());
+                log.info("user status", user.getStatus());
             }
 
 //            if (user == null || user.getStatus() != UserStatus.ACTIVE) {
