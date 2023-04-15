@@ -44,6 +44,17 @@ jobs:
       - name: Start App
         run: java -jar ./target/partnerslk-0.0.1-SNAPSHOT.jar
 
+      - name: Install newman
+        run: npm install -g newman
+        working-directory: ./tests
+
+      - name: Install newman reporter
+        run: npm install -g newman-reporter-htmlextra
+        working-directory: ./tests
+
+      - name: Run Postman tests
+        run: newman run ./tests/authentification.json -e ./tests/postman_environment.json
+
 
 
       #- name: Save Jar file
