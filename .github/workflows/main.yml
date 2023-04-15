@@ -89,7 +89,12 @@ jobs:
       - name: Read Data from Roles Table
         run: |
           /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
-            SELECT * FROM roles;'  
+            SELECT * FROM roles;'
+
+      - name: Read Data from Users Table
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+            SELECT * FROM users;'      
       
 
       - name: Install newman reporter
