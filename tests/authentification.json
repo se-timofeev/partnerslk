@@ -37,7 +37,12 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{ \"username\": \"test_user\", \"password\": \"Qe2mGvBV\" }",

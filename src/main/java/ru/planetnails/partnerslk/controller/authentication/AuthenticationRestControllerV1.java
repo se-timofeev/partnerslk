@@ -60,6 +60,7 @@ public class AuthenticationRestControllerV1 {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
             log.info("username=", username);
+            log.info("username lent", username.length());
 
             log.info("user=", user);
 //
@@ -68,6 +69,7 @@ public class AuthenticationRestControllerV1 {
                 log.info("user is null");
             } else {
                 log.info("user is not null");
+                log.info("user lent", username.length());
             }
 
 //            if (user == null || user.getStatus() != UserStatus.ACTIVE) {
