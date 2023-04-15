@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.model.user.UserStatus;
@@ -56,7 +56,7 @@ public class AuthenticationRestControllerV1 {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws HttpMessageNotReadableException {
         log.info("login {}", requestDto);
-     //   try {
+        try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
             if (user == null) {
@@ -73,9 +73,9 @@ public class AuthenticationRestControllerV1 {
             response.put("username", username);
             response.put("token", "");
             return ResponseEntity.ok(response);
-//        } catch (AuthenticationException e) {
-//            return new ResponseEntity<>("Invalid username or password", HttpStatus.FORBIDDEN);
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
 //
-//        }
+        }
     }
 }
