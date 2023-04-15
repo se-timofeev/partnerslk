@@ -56,12 +56,14 @@ public class AuthenticationRestControllerV1 {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws HttpMessageNotReadableException {
         log.info("login=", requestDto);
+        System.out.println(requestDto);
         try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
             log.info("username=", username);
             log.info("username lent", username.length());
 
+            System.out.println("username2= " + username);
             log.info("user=", user);
 //
             if (user == null) {
