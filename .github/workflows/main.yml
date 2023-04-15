@@ -81,6 +81,17 @@ jobs:
         run: npm install -g newman
         working-directory: ./tests
 
+      - name: Read Data from user_roles Table
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+            SELECT * FROM user_roles;'
+
+      - name: Read Data from Roles Table
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+            SELECT * FROM roles;'  
+      
+
       - name: Install newman reporter
         run: npm install -g newman-reporter-htmlextra
         working-directory: ./tests
