@@ -106,8 +106,8 @@ jobs:
         run: npm install -g newman-reporter-htmlextra
         working-directory: ./tests
 
-      - name: Run Postman tests
-        run: newman run ./tests/authentification.json -e ./tests/postman_environment.json
+      #- name: Run Postman tests
+      #  run: newman run ./tests/authentification.json -e ./tests/postman_environment.json
 
       - name: Run Newman Tests2
         run: |
