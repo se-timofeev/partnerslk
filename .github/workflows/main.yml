@@ -111,7 +111,7 @@ jobs:
 
       - name: Run Newman Tests2
         run: |
-              newman newman run ./tests/authentification.json -e ./tests/postman_environment.json > newman.log 2>&1 # Capturing Newman log output to a file
+              newman run ./tests/authentification.json -e ./tests/postman_environment.json > newman.log 2>&1 # Capturing Newman log output to a file
               exitCode=$?
               cat newman.log # Displaying Newman log output in the workflow execution log
               exit $exitCode # Exiting with Newman's exit code to propagate test failures
