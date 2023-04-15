@@ -61,16 +61,9 @@ public class AuthenticationRestControllerV1 {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
 
-            System.out.println("username= " + username);
-            System.out.println("pass= " + requestDto.getPassword());
-
-
             if (user == null) {
                 return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
             }
-            System.out.println("status= " + user.getStatus());
-            System.out.println("roles= " + user.getRoles());
-
 
             if (user == null || user.getStatus() != UserStatus.ACTIVE) {
                 return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
@@ -78,7 +71,6 @@ public class AuthenticationRestControllerV1 {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
                     requestDto.getPassword()));
             String token = jwtTokenProvider.createToken(username, user.getRoles());
-            System.out.println("token= " + token);
             Map<Object, Object> response = new HashMap<>();
             response.put("username", username);
             response.put("token", token);
@@ -86,7 +78,7 @@ public class AuthenticationRestControllerV1 {
         } catch (
                 AuthenticationException e) {
             return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
-//
+
         }
     }
 }
