@@ -41,8 +41,8 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      #- name: Build Jar file
-      #  run: ./target
+      - name: Build Jar file
+        run: ./target
 
       #- name: Save Jar file
       #  uses: actions/upload-artifact@v3
