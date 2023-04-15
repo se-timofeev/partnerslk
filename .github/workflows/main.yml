@@ -25,41 +25,97 @@ jobs:
     steps:
       - name: Create MS SQL Database
         run: |
-              sudo apt-get update && sudo apt-get install -y mssql-tools
-              /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -Q 'CREATE DATABASE partnersLK'
+          sudo apt-get update && sudo apt-get install -y mssql-tools
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -Q 'CREATE DATABASE partnersLK COLLATE SQL_Latin1_General_CP1_CI_AS'
 
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Java
-        uses: actions/setup-java@v2
+        uses: actions/checkout@v2
         with:
-            java-version: 11
-            distribution: 'temurin'
+          java-version: 11
+          distribution: 'temurin'
 
-      #- name: Build with Maven
-      #  run: mvn clean install
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
 
-      #- name: Start the app
-      #  run: java -jar target/partnerslk-0.0.1-SNAPSHOT.jar
+      - name: Start App
+        run: java -jar ./target/partnerslk-0.0.1-SNAPSHOT.jar > app.log & #
 
-              #Set up Maven cache
-      - name: Maven Verify
-        run: mvn -B clean verify
 
-      - name: Cache Maven packages
-                #This action allows caching dependencies and build outputs to improve workflow execution time.
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+      - name: Wait for App to Start
+        run: sleep 2 #
 
-              #Run Tests
-      - name: Run Tests
-        run: mvn -B test
+      #- name: Show App Log
+      #  run: cat app.log # Displaying log output in the workflow execution log
 
-        # do some tests
 
-      - name: Finish
-        run: mvn spring-boot:stop
+      - name: Insert Data into Users Table
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q "\
+             INSERT INTO users (id, name, password, status) \
+             VALUES ('91ae04bc-6a19-47cf-b066-4cf2692d8213', 'test_user',  '\$2a\$10\$5aMeDsiVTo14JW15KBeeweOMLSrOLREpavcVGP4jY9cKxxxLtosT6', 'ACTIVE')"
+
+      - name: Insert Data into Roles Table ADMIN
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q "\
+            insert into roles (name) \
+            values ('ADMIN')"
+
+      - name: Insert Data into Roles Table USER
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q "\
+            insert into roles (name) \
+            values ('USER')"
+      
+
+      - name: Insert Data into user_roles Table
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q "\
+            insert into user_roles (user_id, role_id) \
+            values ('91ae04bc-6a19-47cf-b066-4cf2692d8213',1)"  
+
+      - name: Insert Data into user_roles Table2
+        run: |
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q "\
+            insert into user_roles (user_id, role_id) \
+            values ('91ae04bc-6a19-47cf-b066-4cf2692d8213',2)"    
+
+      - name: Install newman
+        run: npm install -g newman
+       # working-directory: ./tests
+
+      #- name: Read Data from user_roles Table
+      #  run: |
+      #    /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+      #      SELECT * FROM user_roles;'
+
+      #- name: Read Data from Roles Table
+      #  run: |
+      #    /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+      #      SELECT * FROM roles;'
+
+     # - name: Read Data from Users Table
+     #  run: |
+     #     /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
+     #       SELECT * FROM users;'
+      
+
+      - name: Install newman reporter
+        run: npm install -g newman-reporter-htmlextra
+        working-directory: ./tests
+
+      - name: Run Postman tests
+        run: newman run ./tests/authentication.json
+
+      #- name: Run Newman Tests2
+       ##      newman run ./tests/authentification.json > newman.log 2>&1
+         #     exitCode=$?
+          #    cat newman.log
+           #   exit $exitCode
+
+      - name: Show App Log2
+        run: cat app.log # Displaying log output in the workflow execution log
+
+

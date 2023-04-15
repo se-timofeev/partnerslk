@@ -16,4 +16,12 @@ public class AuthenticationRequestDto {
     private String username;
     @Size(min = 8, max = 15)
     private String password;
+
+    @Override
+    public String toString() {
+        return "AuthenticationRequestDto{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
