@@ -2,7 +2,7 @@
 insert into users (id,name,password,status)
 values ('91ae04bc-6a19-47cf-b066-4cf2692d8213',
         'test_user',
-        '$2a$10$5aMeDsiVTo14JW15KBeeweOMLSrOLREpavcVGP4jY9cKxxxLtosT6','ACTIVE')
+        '$2a$10$lMOafQevsnvtAbSZKi6dyuCORSuD9fic/uLBPYRps6El2bgqOBF1u','ACTIVE')
 
 insert into roles (name)
 values ('ADMIN')

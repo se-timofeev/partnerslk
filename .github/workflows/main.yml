@@ -45,7 +45,7 @@ jobs:
         run: java -jar ./target/partnerslk-0.0.1-SNAPSHOT.jar &
 
       - name: Wait for App to Start
-        run: sleep 20 #
+        run: sleep 10 #
 
       - name: Install newman
         run: npm install -g newman
