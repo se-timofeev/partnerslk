@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Авторизация Copy",
+			"name": "authentication",
 			"event": [
 				{
 					"listen": "prerequest",

@@ -107,7 +107,7 @@ jobs:
         working-directory: ./tests
 
       - name: Run Postman tests
-        run: newman run ./tests/authentification.json
+        run: newman run ./tests/authentication.json
 
       #- name: Run Newman Tests2
        ##      newman run ./tests/authentification.json > newman.log 2>&1
