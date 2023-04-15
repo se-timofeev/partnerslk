@@ -111,10 +111,10 @@ jobs:
 
       - name: Run Newman Tests2
         run: |
-              newman run ./tests/authentification.json > newman.log 2>&1 # Capturing Newman log output to a file
+              newman run ./tests/authentification.json > newman.log 2>&1 
               exitCode=$?
-              cat newman.log # Displaying Newman log output in the workflow execution log
-              exit $exitCode # Exiting with Newman's exit code to propagate test failures
+              cat newman.log 
+              exit $exitCode 
 
       - name: Show App Log2
         run: cat app.log # Displaying log output in the workflow execution log
