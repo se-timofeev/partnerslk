@@ -63,9 +63,13 @@ public class AuthenticationRestControllerV1 {
 
             log.info("user=", user);
 //
-//            if (user == null) {
+            if (user == null) {
 //                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
-//            }
+                log.info("user is null" );
+            }else{
+                log.info("user is not null" );
+            }
+
 //            if (user == null || user.getStatus() != UserStatus.ACTIVE) {
 //                return new ResponseEntity<>("Invalid username or password", HttpStatus.CONFLICT);
 //            }
