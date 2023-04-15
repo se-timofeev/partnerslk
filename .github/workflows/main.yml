@@ -84,7 +84,7 @@ jobs:
 
       - name: Install newman
         run: npm install -g newman
-        working-directory: ./tests
+       # working-directory: ./tests
 
       #- name: Read Data from user_roles Table
       #  run: |
@@ -107,7 +107,7 @@ jobs:
         working-directory: ./tests
 
       - name: Run Postman tests
-        run: newman run ./tests/authentification.json -e ./tests/postman_environment.json
+        run: newman run ./tests/authentification.json
 
       #- name: Run Newman Tests2
        ##      newman run ./tests/authentification.json > newman.log 2>&1
