@@ -65,9 +65,9 @@ public class AuthenticationRestControllerV1 {
 //
             if (user == null) {
 //                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
-                log.info("user is null" );
-            }else{
-                log.info("user is not null" );
+                log.info("user is null");
+            } else {
+                log.info("user is not null");
             }
 
 //            if (user == null || user.getStatus() != UserStatus.ACTIVE) {
