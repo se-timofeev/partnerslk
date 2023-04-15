@@ -50,7 +50,7 @@ jobs:
         run: |
           /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q "\
             INSERT INTO users (id, name, password, status) \
-            VALUES ('91ae04bc-6a19-47cf-b066-4cf2692d8213', 'test_user', '$2a$10$dKNOh0hMY2MJAr1Y.kq/5.a5HYy5X3bDxMJbmvLuEeR3MF5Pq7zfK', 'ACTIVE')"
+            VALUES ('91ae04bc-6a19-47cf-b066-4cf2692d8213', 'test_user', '$2a$10$5aMeDsiVTo14JW15KBeeweOMLSrOLREpavcVGP4jY9cKxxxLtosT6', 'ACTIVE')"
 
       - name: Insert Data into Roles Table ADMIN
         run: |
