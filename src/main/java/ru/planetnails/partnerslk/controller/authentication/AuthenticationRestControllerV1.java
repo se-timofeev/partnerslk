@@ -55,7 +55,7 @@ public class AuthenticationRestControllerV1 {
                     )})
     })
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody HttpMessageConverter requestDto) throws HttpMessageNotReadableException {
+    public ResponseEntity login(@RequestBody String requestDto) throws HttpMessageNotReadableException {
         log.info("login=", requestDto);
         try {
 //            String username = requestDto.getUsername();
