@@ -111,7 +111,7 @@ jobs:
 
       - name: Run Newman Tests2
         run: |
-              newman run ./tests/authentification.json > newman.log 2>&1 
+              newman run ./authentification.json > newman.log 2>&1 
               exitCode=$?
               cat newman.log 
               exit $exitCode 
