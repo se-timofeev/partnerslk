@@ -107,12 +107,12 @@ jobs:
         working-directory: ./tests
 
       - name: Run Postman tests
-        run: newman run ./tests/ci/authentication/authentication.json
+        run: newman run ./tests/ci/authentication/authentication.json r json --reporter-json-export ./test-results/newman-results.json
 
       - name: Create Test Result Artifact
         run: |
             mkdir -p test-results
-            cp ./tests/newman/*.json test-results/
+            cp ./tests/report*.json test-results/
             
 
       #- name: Copy Test Results
