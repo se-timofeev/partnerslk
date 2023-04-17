@@ -114,8 +114,8 @@ jobs:
             mkdir -p test-results
             
 
-      - name: Copy Test Results
-        run: cp ./newman-results.json ./tests/
+      #- name: Copy Test Results
+      #  run: cp ./newman-results.json ./tests/
 
       - name: Publish Test Result Artifact
         uses: actions/upload-artifact@v2
