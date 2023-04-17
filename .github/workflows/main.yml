@@ -108,7 +108,7 @@ jobs:
 
 
       - name: Run Postman tests and Generate a Report
-        run: newman run ./tests/ci/authentication/authentication.json -r html --reporter-html-export ./test-results/newman-results.html
+        run: newman run ./tests/ci/authentication/authentication.json -r html --reporter-html-export ./newman-results.html
 
       - name: Create Test Results Directory
         run: mkdir -p ./test-results
