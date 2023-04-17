@@ -109,14 +109,21 @@ jobs:
       - name: Run Postman tests
         run: newman run ./tests/ci/authentication/authentication.json r json --reporter-json-export ./test-results/newman-results.json
 
-      - name: Create Test Result Artifact
-        run: |
-            mkdir -p test-results
-            cp ./tests/report*.json test-results/
-            
+      - name: Create Test Results Directory
+        run: mkdir -p ./test-results
 
-      #- name: Copy Test Results
-      #  run: cp ./newman-results.json ./tests/
+      - name: Copy Test Results
+        run: cp ./test-results/newman-results.json ./test-results/
+
+     # - name: Create Test Result Artifact
+     #   run: |
+      #      mkdir -p test-results
+      #      cp ./tests/report*.json test-results/
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: ./test-results
 
       - name: Publish Test Result Artifact
         uses: actions/upload-artifact@v2
