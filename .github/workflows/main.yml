@@ -107,7 +107,7 @@ jobs:
         working-directory: ./tests
 
       - name: Run Postman tests
-        run: newman run ./tests/ci/authentication/authentication.json r json --reporter-json-export ./newman-results.json
+        run: newman run ./tests/ci/authentication/authentication.json -r json --reporter-json-export ./newman-results.json
 
       - name: Create Test Results Directory
         run: mkdir -p ./test-results
