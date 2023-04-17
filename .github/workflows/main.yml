@@ -112,7 +112,10 @@ jobs:
       - name: Create Test Result Artifact
         run: |
             mkdir -p test-results
-            cp ./tests/newman/*.json test-results/
+            cp ./tests/test-results/
+
+      - name: Copy Test Results
+        run: cp ./tests/test-results/newman-results.json ./tests/test-results/
 
       - name: Publish Test Result Artifact
         uses: actions/upload-artifact@v2
