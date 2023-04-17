@@ -115,21 +115,17 @@ jobs:
       - name: Copy Test Results
         run: cp ./newman-results.json ./test-results/
 
-     # - name: Create Test Result Artifact
-     #   run: |
-      #      mkdir -p test-results
-      #      cp ./tests/report*.json test-results/
+      - name: Install Newman HTML Reporter
+        run: npm install -g newman-reporter-html
+
+      - name: Generate HTML Report
+        run: newman run ./tests/collection.json -r html --reporter-html-export ./test-results/newman-results.html
+
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
         with:
-          name: test-results
-          path: ./test-results
-
-      - name: Publish Test Result Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: test-results
+           name: test-results
+           path: ./test-results
 
       - name: Show App Log2
         run: cat app.log # Displaying log output in the workflow execution log
