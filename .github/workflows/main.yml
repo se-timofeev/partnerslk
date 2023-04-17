@@ -115,7 +115,7 @@ jobs:
             
 
       - name: Copy Test Results
-        run: cp ./tests/newman-results.json ./tests/
+        run: cp ./newman-results.json ./tests/
 
       - name: Publish Test Result Artifact
         uses: actions/upload-artifact@v2
