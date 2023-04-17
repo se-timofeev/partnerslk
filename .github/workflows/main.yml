@@ -82,9 +82,7 @@ jobs:
             insert into user_roles (user_id, role_id) \
             values ('91ae04bc-6a19-47cf-b066-4cf2692d8213',2)"    
 
-      - name: Install newman
-        run: npm install -g newman
-       # working-directory: ./tests
+   
 
       #- name: Read Data from user_roles Table
       #  run: |
@@ -100,20 +98,30 @@ jobs:
      #  run: |
      #     /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
      #       SELECT * FROM users;'
-      
 
-      - name: Install newman reporter
-        run: npm install -g newman-reporter-htmlextra
+      - name: Install newman
+        run: npm install -g newman
+
+      - name: Install Newman HTML Reporter
+        run: npm install -g newman-reporter-html
         working-directory: ./tests
 
-      - name: Run Postman tests
-        run: newman run ./tests/authentication.json
 
-      #- name: Run Newman Tests2
-       ##      newman run ./tests/authentification.json > newman.log 2>&1
-         #     exitCode=$?
-          #    cat newman.log
-           #   exit $exitCode
+      - name: Run Postman tests and Generate a Report
+        run: newman run ./tests/ci/authentication/authentication.json -r html --reporter-html-export ./newman-results.html
+
+      - name: Create Test Results Directory
+        run: mkdir -p ./test-results
+
+      - name: Copy Test Results
+        run: cp ./newman-results.html ./test-results/
+
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+           name: test-results
+           path: ./test-results
 
       - name: Show App Log2
         run: cat app.log # Displaying log output in the workflow execution log
