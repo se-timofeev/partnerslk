@@ -82,9 +82,7 @@ jobs:
             insert into user_roles (user_id, role_id) \
             values ('91ae04bc-6a19-47cf-b066-4cf2692d8213',2)"    
 
-      - name: Install newman
-        run: npm install -g newman
-       # working-directory: ./tests
+   
 
       #- name: Read Data from user_roles Table
       #  run: |
@@ -100,7 +98,9 @@ jobs:
      #  run: |
      #     /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'sd$98sdANq' -d partnersLK -Q '
      #       SELECT * FROM users;'
-      
+
+      - name: Install newman
+        run: npm install -g newman
 
       - name: Install newman reporter
         run: npm install -g newman-reporter-htmlextra
@@ -112,6 +112,7 @@ jobs:
       - name: Create Test Result Artifact
         run: |
             mkdir -p test-results
+            cp ./tests/*.json test-results/
             
 
       #- name: Copy Test Results
