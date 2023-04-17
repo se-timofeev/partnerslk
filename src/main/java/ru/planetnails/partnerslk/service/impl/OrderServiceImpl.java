@@ -166,7 +166,7 @@ public class OrderServiceImpl implements OrderService {
             orderVtList = Collections.emptyList();
         } else {
             for (OderVtAddDto oderVtAddDto : orderRabbitAddDto.getOrderVts()) {
-                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto,
+                OrderVt orderVt = OrderMapper.fromRabbitOrderVtAddDtoToOrderVt(oderVtAddDto,
                         itemRepository.getReferenceById(oderVtAddDto.getItemId()));
                 orderVtList.add(orderVt);
             }

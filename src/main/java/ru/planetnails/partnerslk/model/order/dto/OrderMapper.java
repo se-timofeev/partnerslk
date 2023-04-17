@@ -79,7 +79,19 @@ public class OrderMapper {
 
     public static OrderVt fromOrderVtAddDtoToOrderVt(OderVtAddDto oderVtAddDto, Item item) {
         return new OrderVt(
-                oderVtAddDto.getNRow(),
+                oderVtAddDto.getN_row(),
+                item,
+                oderVtAddDto.getAmount(),
+                oderVtAddDto.getSale(),
+                oderVtAddDto.getDiscount(),
+                oderVtAddDto.getPrice(),
+                oderVtAddDto.getTotal()
+        );
+    }
+
+    public static OrderVt fromRabbitOrderVtAddDtoToOrderVt(OderVtAddDto oderVtAddDto, Item item) {
+        return new OrderVt(
+                oderVtAddDto.getN_row(),
                 item,
                 oderVtAddDto.getAmount(),
                 oderVtAddDto.getSale(),
@@ -141,7 +153,7 @@ public class OrderMapper {
         return gsonBuilder.create();
     }
 
-    public static OrderRabbitAddDto fromMessageToOrderRabbitAddDto (String message) throws JsonProcessingException {
+    public static OrderRabbitAddDto fromMessageToOrderRabbitAddDto(String message) throws JsonProcessingException {
         return objectMapper.readValue(message, OrderRabbitAddDto.class);
     }
 

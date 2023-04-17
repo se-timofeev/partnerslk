@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.planetnails.partnerslk.service.OrderService;
 
-import javax.persistence.Access;
-
 @Slf4j
 @Service
 public class RabbitMQConsumer {
