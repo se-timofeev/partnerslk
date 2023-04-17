@@ -114,7 +114,7 @@ jobs:
         run: mkdir -p ./test-results
 
       - name: Copy Test Results
-        run: cp ./newman-results.json ./test-results/
+        run: cp ./newman-results.html ./test-results/
 
 
       - name: Upload Test Results
