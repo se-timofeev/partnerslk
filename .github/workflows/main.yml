@@ -112,7 +112,7 @@ jobs:
       - name: Create Test Result Artifact
         run: |
             mkdir -p test-results
-            cp ./tests/*.json test-results/
+            cp ./tests/newman/*.json test-results/
             
 
       #- name: Copy Test Results
