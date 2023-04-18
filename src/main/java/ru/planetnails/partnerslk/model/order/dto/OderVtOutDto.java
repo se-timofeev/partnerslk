@@ -13,6 +13,8 @@ public class OderVtOutDto {
 
     private Long nRow;
     private String itemId;
+    private String vendorCode;
+    private String name;
     private Long amount;
     private Double sale;
     private Integer discount;

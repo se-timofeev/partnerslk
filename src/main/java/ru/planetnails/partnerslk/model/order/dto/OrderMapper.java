@@ -65,6 +65,8 @@ public class OrderMapper {
                 orderVt.getId(),
                 orderVt.getNRow(),
                 orderVt.getItem().getId(),
+                orderVt.getItem().getVendorCode(),
+                orderVt.getItem().getName(),
                 orderVt.getAmount(),
                 orderVt.getSale(),
                 orderVt.getDiscount(),
