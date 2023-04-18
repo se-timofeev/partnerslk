@@ -79,7 +79,7 @@ public class OrderMapper {
 
     public static OrderVt fromOrderVtAddDtoToOrderVt(OderVtAddDto oderVtAddDto, Item item) {
         return new OrderVt(
-                oderVtAddDto.getN_row(),
+                oderVtAddDto.getRow(),
                 item,
                 oderVtAddDto.getAmount(),
                 oderVtAddDto.getSale(),
@@ -91,7 +91,7 @@ public class OrderMapper {
 
     public static OrderVt fromRabbitOrderVtAddDtoToOrderVt(OderVtAddDto oderVtAddDto, Item item) {
         return new OrderVt(
-                oderVtAddDto.getN_row(),
+                oderVtAddDto.getRow(),
                 item,
                 oderVtAddDto.getAmount(),
                 oderVtAddDto.getSale(),
