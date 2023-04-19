@@ -46,3 +46,4 @@ public class RabbitController {
         rabbitMQProducerService.sendMessage(s);
     }
 }
+

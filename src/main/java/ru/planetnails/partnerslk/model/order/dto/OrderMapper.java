@@ -1,5 +1,7 @@
 package ru.planetnails.partnerslk.model.order.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 public class OrderMapper {
 
     private static Long num = 1L;
+
+    static ObjectMapper objectMapper = new ObjectMapper();
 
     public static Order fromOrderAddDtoOrder(OrderAddDto orderAddDto, Contractor contractor, Partner partner, List<OrderVt> orderVts,
                                              List<VtOrderStatuses> vtOrderStatuses) {
@@ -77,7 +81,19 @@ public class OrderMapper {
 
     public static OrderVt fromOrderVtAddDtoToOrderVt(OderVtAddDto oderVtAddDto, Item item) {
         return new OrderVt(
-                oderVtAddDto.getNRow(),
+                oderVtAddDto.getRow(),
+                item,
+                oderVtAddDto.getAmount(),
+                oderVtAddDto.getSale(),
+                oderVtAddDto.getDiscount(),
+                oderVtAddDto.getPrice(),
+                oderVtAddDto.getTotal()
+        );
+    }
+
+    public static OrderVt fromRabbitOrderVtAddDtoToOrderVt(OderVtAddDto oderVtAddDto, Item item) {
+        return new OrderVt(
+                oderVtAddDto.getRow(),
                 item,
                 oderVtAddDto.getAmount(),
                 oderVtAddDto.getSale(),
@@ -137,6 +153,10 @@ public class OrderMapper {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         return gsonBuilder.create();
+    }
+
+    public static OrderRabbitAddDto fromMessageToOrderRabbitAddDto(String message) throws JsonProcessingException {
+        return objectMapper.readValue(message, OrderRabbitAddDto.class);
     }
 
     static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {

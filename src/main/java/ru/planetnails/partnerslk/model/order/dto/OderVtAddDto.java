@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OderVtAddDto {
 
-    private Long nRow;
+    private Long row;
     private String itemId;
     private Long amount;
     private Double sale;
