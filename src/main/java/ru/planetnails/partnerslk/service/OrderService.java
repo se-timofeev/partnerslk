@@ -1,5 +1,6 @@
 package ru.planetnails.partnerslk.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.PageRequest;
 import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
@@ -17,4 +18,6 @@ public interface OrderService {
     OrderOutDto setStatusForOrder(String orderId, String status, String userId);
 
     String update(OrderAddDto orderAddDto, String orderId);
+
+    void rabbitUpdate(String message) throws JsonProcessingException;
 }
