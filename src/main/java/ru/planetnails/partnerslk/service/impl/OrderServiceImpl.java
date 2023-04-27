@@ -3,6 +3,7 @@ package ru.planetnails.partnerslk.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.support.ListenerExecutionFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private Map<String, OrderGenerator> orderGenerators;
+    private Map<String, OrderGenerator> orderGeneratorMap;
 
     private final ContractorRepository contractorRepository;
 
@@ -69,14 +70,14 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
         log.info("User with id {} found", orderAddDto.getVtOrderStatuses().get(0).getUserId());
-        VtOrderStatuses vtOrderStatuses = OrderMapper.addVtOrderStatuses(user);
+        VtOrderStatuses vtOrderStatuses = OrderMapper.addVtOrderStatuses(user.getId());
         vtOrderStatusesList.add(vtOrderStatuses);
 
 
         Order order = OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner,
                 convertToOrderVtList(orderAddDto), vtOrderStatusesList);
 
-        // cохранение заказа после которого будет ясен id
+        // сохранение заказа после которого будет ясен id
         orderRepository.save(order);
 
         Gson gson = OrderMapper.getGson();
@@ -106,13 +107,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderOutDto setStatusForOrder(String orderId, String status, String userId) {
-        OrderGenerator orderGenerator = orderGenerators.get(status);
-        if (!orderGenerators.containsKey(status)) {
+    public OrderOutDto statusForOrderUser(String orderId, String status, String user) {
+        OrderGenerator orderGenerator = this.orderGeneratorMap.get(status);
+        if (!this.orderGeneratorMap.containsKey(status)) {
             log.error("Unknown state: UNSUPPORTED_STATUS: {}", status);
             throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
         }
-        return orderGenerator.setStatusForOrder(orderId, userId);
+        return orderGenerator.setStatusForOrderUser(orderId, user);
+    }
+
+    @Override
+    @Transactional
+    public Order statusForOrderManager(String orderId, String status, String user) {
+        OrderGenerator orderGenerator = this.orderGeneratorMap.get(status);
+        if (!orderGeneratorMap.containsKey(status)) {
+            log.error("Unknown state: UNSUPPORTED_STATUS: {}", status);
+            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
+        }
+        return orderGenerator.setStatusForOrderManager(orderId, user);
     }
 
     @Override
@@ -124,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
         log.info("User with id {} found", orderAddDto.getVtOrderStatuses().get(0).getUserId());
-        VtOrderStatuses vtOrderStatuses = OrderMapper.updateVtOrderStatuses(user);
+        VtOrderStatuses vtOrderStatuses = OrderMapper.updateVtOrderStatuses(user.getId());
         vtOrderStatusesList.add(vtOrderStatuses);
 
         order.setOrderVts(convertToOrderVtList(orderAddDto));
@@ -141,21 +153,21 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void rabbitUpdate(String message) throws JsonProcessingException {
         OrderRabbitAddDto orderRabbitAddDto = OrderMapper.fromMessageToOrderRabbitAddDto(message);
-        Order order = orderRepository.findById(orderRabbitAddDto.getOrderId())
-                .orElseThrow(() -> new NotFoundException("Order not found"));
-        List<VtOrderStatuses> vtOrderStatusesList = order.getVtOrderStatuses();
-        User user = userRepository.findById(orderRabbitAddDto.getVtOrderStatuses().get(0).getUserId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
-        log.info("User with id {} found", orderRabbitAddDto.getVtOrderStatuses().get(0).getUserId());
-        VtOrderStatuses vtOrderStatuses = OrderMapper.updateVtOrderStatuses(user);
-        vtOrderStatusesList.add(vtOrderStatuses);
+        Order order = statusForOrderManager(orderRabbitAddDto.getOrderId(), orderRabbitAddDto.getStatus(),
+                orderRabbitAddDto.getUser());
 
-        order.setOrderVts(rabbitConvertToOrderVtList(orderRabbitAddDto));
-        order.setVtOrderStatuses(vtOrderStatusesList);
-        order.setSumWithDiscount(orderRabbitAddDto.getSumWithDiscount());
-        order.setSumOfDiscount(orderRabbitAddDto.getSumOfDiscount());
-        order.setSumWithoutDiscount(orderRabbitAddDto.getSumWithoutDiscount());
-        order.setStatus(OrderStatus.UPDATED);
+        if (orderRabbitAddDto.getOrderVts() != null) {
+            order.setOrderVts(rabbitConvertToOrderVtList(orderRabbitAddDto));
+        }
+        if (orderRabbitAddDto.getSumWithDiscount() != null) {
+            order.setSumWithDiscount(orderRabbitAddDto.getSumWithDiscount());
+        }
+        if (orderRabbitAddDto.getSumOfDiscount() != null) {
+            order.setSumOfDiscount(orderRabbitAddDto.getSumOfDiscount());
+        }
+        if (orderRabbitAddDto.getSumWithoutDiscount() != null) {
+            order.setSumWithoutDiscount(orderRabbitAddDto.getSumWithoutDiscount());
+        }
 
         log.info("Order was updated successfully with orderId = {}", order.getId());
     }

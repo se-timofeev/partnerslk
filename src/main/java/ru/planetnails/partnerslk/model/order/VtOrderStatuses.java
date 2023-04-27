@@ -1,8 +1,7 @@
 package ru.planetnails.partnerslk.model.order;
 
-import lombok.*;
-import ru.planetnails.partnerslk.model.user.User;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,20 +15,16 @@ public class VtOrderStatuses {
     @Id
     @GeneratedValue
     private Long id;
-
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "order_id")
     private Order order;
-
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-
     private LocalDateTime updated;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private String user;
 
-    public VtOrderStatuses(OrderStatus orderStatus, LocalDateTime updated, User user) {
+    public VtOrderStatuses(OrderStatus orderStatus, LocalDateTime updated, String user) {
         this.orderStatus = orderStatus;
         this.updated = updated;
         this.user = user;

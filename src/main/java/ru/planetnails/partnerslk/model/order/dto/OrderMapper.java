@@ -14,7 +14,6 @@ import ru.planetnails.partnerslk.model.order.OrderStatus;
 import ru.planetnails.partnerslk.model.order.OrderVt;
 import ru.planetnails.partnerslk.model.order.VtOrderStatuses;
 import ru.planetnails.partnerslk.model.partner.Partner;
-import ru.planetnails.partnerslk.model.user.User;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -67,8 +66,10 @@ public class OrderMapper {
     public static OderVtOutDto fromOderVtToOrderOutDto(OrderVt orderVt) {
         return new OderVtOutDto(
                 orderVt.getId(),
-                orderVt.getNRow(),
+                orderVt.getN_row(),
                 orderVt.getItem().getId(),
+                orderVt.getItem().getName(),
+                orderVt.getItem().getVendorCode(),
                 orderVt.getAmount(),
                 orderVt.getSale(),
                 orderVt.getDiscount(),
@@ -108,7 +109,7 @@ public class OrderMapper {
                 vtOrderStatuses.getUpdated());
     }
 
-    public static VtOrderStatuses addVtOrderStatuses(User user) {
+    public static VtOrderStatuses addVtOrderStatuses(String user) {
         return new VtOrderStatuses(
                 OrderStatus.NEW,
                 LocalDateTime.now(),
@@ -116,7 +117,7 @@ public class OrderMapper {
         );
     }
 
-    public static VtOrderStatuses updateVtOrderStatuses(User user) {
+    public static VtOrderStatuses updateVtOrderStatuses(String user) {
         return new VtOrderStatuses(
                 OrderStatus.UPDATED,
                 LocalDateTime.now(),
@@ -178,5 +179,4 @@ public class OrderMapper {
             return LocalDateTime.parse(text, fmt);
         }
     }
-
 }

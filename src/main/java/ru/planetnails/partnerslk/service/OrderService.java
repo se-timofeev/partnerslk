@@ -2,6 +2,7 @@ package ru.planetnails.partnerslk.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
 import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
@@ -15,7 +16,9 @@ public interface OrderService {
 
     List<Order> findAllByPartnerId(String partnerId, PageRequest pageRequest);
 
-    OrderOutDto setStatusForOrder(String orderId, String status, String userId);
+    OrderOutDto statusForOrderUser(String orderId, String status, String userId);
+
+    Order statusForOrderManager(String orderId, String status, String userId);
 
     String update(OrderAddDto orderAddDto, String orderId);
 
