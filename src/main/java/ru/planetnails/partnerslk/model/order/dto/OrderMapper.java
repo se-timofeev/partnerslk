@@ -63,7 +63,7 @@ public class OrderMapper {
         );
     }
 
-    public static OderVtOutDto fromOderVtToOrderOutDto(OrderVt orderVt) {
+ public static OderVtOutDto fromOderVtToOrderOutDto(OrderVt orderVt) {
         return new OderVtOutDto(
                 orderVt.getId(),
                 orderVt.getN_row(),

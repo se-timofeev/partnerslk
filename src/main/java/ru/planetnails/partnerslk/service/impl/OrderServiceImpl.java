@@ -107,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByPartner(partner, pageRequest);
     }
 
-    @Override
+   @Override
     @Transactional
     public OrderOutDto statusForOrderUser(String orderId, String status, String user) {
         OrderGenerator orderGenerator = this.orderGeneratorMap.get(status);
@@ -151,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order).getId();
     }
 
-    @Override
+     @Override
     @Transactional
     public void rabbitUpdate(String message) throws JsonProcessingException {
         OrderRabbitAddDto orderRabbitAddDto = OrderMapper.fromMessageToOrderRabbitAddDto(message);
