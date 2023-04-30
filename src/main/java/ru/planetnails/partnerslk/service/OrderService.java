@@ -2,7 +2,6 @@ package ru.planetnails.partnerslk.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
 import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;

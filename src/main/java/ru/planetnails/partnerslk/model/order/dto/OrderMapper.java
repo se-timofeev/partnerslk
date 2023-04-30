@@ -66,7 +66,7 @@ public class OrderMapper {
     public static OderVtOutDto fromOderVtToOrderOutDto(OrderVt orderVt) {
         return new OderVtOutDto(
                 orderVt.getId(),
-                orderVt.getN_row(),
+                orderVt.getRow(),
                 orderVt.getItem().getId(),
                 orderVt.getItem().getName(),
                 orderVt.getItem().getVendorCode(),

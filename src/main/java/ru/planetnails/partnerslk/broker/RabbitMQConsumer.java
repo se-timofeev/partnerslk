@@ -29,7 +29,7 @@ public class RabbitMQConsumer {
         try {
             orderService.rabbitUpdate(message);
         } catch (Exception exception) {
-            System.out.println(exception);
+            log.error(exception.getMessage());
             log.info("The message can not de convert to OrderRabbitAddDto");
         }
     }

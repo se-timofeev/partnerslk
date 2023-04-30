@@ -12,18 +12,18 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Component("READY")
-public class putStatusReadyForOrder implements OrderGenerator {
+public class READY implements OrderGenerator {
 
     private final OrderRepository orderRepository;
 
     @Autowired
-    public putStatusReadyForOrder(OrderRepository orderRepository) {
+    public READY(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
     @Override
     public OrderOutDto setStatusForOrderUser(String orderId, String user) {
-        Order order = putStatusApprovedForOrder.validation(orderId, user, orderRepository, log);
+        Order order = APPROVED.validation(orderId, user, orderRepository, log);
         order.setStatus(OrderStatus.READY);
         VtOrderStatuses vtOrderStatuses = new VtOrderStatuses(
                 OrderStatus.READY,
@@ -35,6 +35,7 @@ public class putStatusReadyForOrder implements OrderGenerator {
 
         return OrderMapper.fromOrderToOrderOutDto(orderRepository.save(order));
     }
+
     @Override
     public Order setStatusForOrderManager(String orderId, String user) {
         Order order = orderRepository.findById(orderId)
