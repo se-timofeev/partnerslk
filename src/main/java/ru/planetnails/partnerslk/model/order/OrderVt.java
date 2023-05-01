@@ -17,7 +17,8 @@ public class OrderVt {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "order_id")
     private Order order;
-    private Long nRow;
+    @Column(name = "n_row")
+    private Long row;
     @OneToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "item_id")
@@ -28,8 +29,8 @@ public class OrderVt {
     private Double price;
     private Double total;
 
-    public OrderVt(Long nRow, Item item, Long amount, Double sale, Integer discount, Double price, Double total) {
-        this.nRow = nRow;
+    public OrderVt(Long row, Item item, Long amount, Double sale, Integer discount, Double price, Double total) {
+        this.row = row;
         this.item = item;
         this.amount = amount;
         this.sale = sale;

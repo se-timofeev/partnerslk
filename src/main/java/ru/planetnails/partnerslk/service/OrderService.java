@@ -15,7 +15,9 @@ public interface OrderService {
 
     List<Order> findAllByPartnerId(String partnerId, PageRequest pageRequest);
 
-    OrderOutDto setStatusForOrder(String orderId, String status, String userId);
+    OrderOutDto statusForOrderUser(String orderId, String status, String userId);
+
+    Order statusForOrderManager(String orderId, String status, String userId);
 
     String update(OrderAddDto orderAddDto, String orderId);
 

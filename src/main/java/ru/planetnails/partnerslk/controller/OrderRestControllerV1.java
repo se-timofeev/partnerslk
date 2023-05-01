@@ -98,7 +98,7 @@ public class OrderRestControllerV1 {
     public OrderOutDto setStatusForOrder(@RequestParam String orderId,
                                          @RequestParam String status,
                                          @RequestParam String userId) {
-        return orderService.setStatusForOrder(orderId, status, userId);
+        return orderService.statusForOrderUser(orderId, status, userId);
     }
 
     @Operation(summary = "Get the status for order by ID")

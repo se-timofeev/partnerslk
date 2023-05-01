@@ -34,7 +34,6 @@ public class RabbitConfig {
     @Value("${rabbit.routingKey}")
     private String routingKey;
 
-
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory =
@@ -70,5 +69,4 @@ public class RabbitConfig {
     Binding binding(Queue queue, DirectExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
-
 }

@@ -1,7 +1,6 @@
 package ru.planetnails.partnerslk.model.order;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.planetnails.partnerslk.exception.NotFoundException;
@@ -9,28 +8,27 @@ import ru.planetnails.partnerslk.model.order.dto.OrderMapper;
 import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
 import ru.planetnails.partnerslk.repository.OrderRepository;
 
-import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 
 @Slf4j
-@Component("APPROVED")
-public class SetStatusApprovedForOrder implements OrderGenerator {
+@Component("COMPLETED")
+public class COMPLETED implements OrderGenerator {
 
     private final OrderRepository orderRepository;
 
     @Autowired
-    public SetStatusApprovedForOrder(OrderRepository orderRepository) {
+    public COMPLETED(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
     @Override
-    public OrderOutDto setStatusForOrder(String orderId, String userId) {
-        Order order = validation(orderId, userId, orderRepository, log);
-        order.setStatus(OrderStatus.APPROVED);
+    public OrderOutDto setStatusForOrderUser(String orderId, String user) {
+        Order order = APPROVED.validation(orderId, user, orderRepository, log);
+        order.setStatus(OrderStatus.COMPLETED);
         VtOrderStatuses vtOrderStatuses = new VtOrderStatuses(
-                OrderStatus.APPROVED,
+                OrderStatus.COMPLETED,
                 LocalDateTime.now(),
-                order.getVtOrderStatuses().get(0).getUser()
+                user
         );
         vtOrderStatuses.setOrder(order);
         order.getVtOrderStatuses().add(vtOrderStatuses);
@@ -38,14 +36,20 @@ public class SetStatusApprovedForOrder implements OrderGenerator {
         return OrderMapper.fromOrderToOrderOutDto(orderRepository.save(order));
     }
 
-    protected static Order validation(String orderId, String userId, OrderRepository orderRepository, Logger log) {
+    @Override
+    public Order setStatusForOrderManager(String orderId, String user) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found"));
         log.info("Order with id {} found", orderId);
-        if (!userId.equals(order.getVtOrderStatuses().get(0).getUser().getId())) {
-            log.error("Order doesn't belong to User with id {}", userId);
-            throw new ValidationException("Order doesn't belong to this User");
-        }
+        order.setStatus(OrderStatus.COMPLETED);
+        VtOrderStatuses vtOrderStatuses = new VtOrderStatuses(
+                OrderStatus.COMPLETED,
+                LocalDateTime.now(),
+                user
+        );
+        vtOrderStatuses.setOrder(order);
+        order.getVtOrderStatuses().add(vtOrderStatuses);
+
         return order;
     }
 }

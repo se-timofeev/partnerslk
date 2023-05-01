@@ -14,7 +14,7 @@ import java.util.List;
 public class
 OrderRabbitAddDto {
 
-    @NotEmpty(message = "OrderId may not be null or empty")
+ @NotEmpty(message = "OrderId may not be null or empty")
     private String orderId;
     @NotNull(message = "SumWithoutDiscount may not be null")
     private Double sumWithoutDiscount;
@@ -27,6 +27,8 @@ OrderRabbitAddDto {
     @NotEmpty(message = "PartnerId may not be null or empty")
     private String partnerId;
     private List<OderVtAddDto> orderVts;
-    @NotNull(message = "VtOrderStatuses may not be null")
-    private List<VtOrderStatusesAddDto> vtOrderStatuses;
+    @NotEmpty(message = "Status may not be null or empty")
+    private String status;
+    @NotEmpty(message = "User may not be null or empty")
+    private String user;
 }

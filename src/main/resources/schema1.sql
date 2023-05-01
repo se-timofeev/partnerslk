@@ -123,9 +123,7 @@ create table vt_order_statuses
     order_id     varchar(255)
         constraint FKqermtixnbf4936ayg8jix2ob5
             references orders,
-    user_id      varchar(50)
-        constraint FKc3xsmsn6pw140rxpjlr0w67l2
-            references users
+    user_id       varchar(255)
 )
 go
 

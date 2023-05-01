@@ -22,14 +22,17 @@ import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.OrderService;
 
 import javax.validation.ValidationException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private Map<String, OrderGenerator> orderGenerators;
+    private Map<String, OrderGenerator> orderGeneratorMap;
 
     private final ContractorRepository contractorRepository;
 
@@ -44,9 +47,7 @@ public class OrderServiceImpl implements OrderService {
     private final RabbitMQProducerService rabbitMQProducerService;
 
     @Autowired
-    public OrderServiceImpl(ContractorRepository contractorRepository, OrderRepository orderRepository,
-                            ItemRepository itemRepository, UserRepository userRepository,
-                            PartnerRepository partnerRepository, RabbitMQProducerService rabbitMQProducerService) {
+    public OrderServiceImpl(ContractorRepository contractorRepository, OrderRepository orderRepository, ItemRepository itemRepository, UserRepository userRepository, PartnerRepository partnerRepository, RabbitMQProducerService rabbitMQProducerService) {
         this.contractorRepository = contractorRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
@@ -59,24 +60,20 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public String add(OrderAddDto orderAddDto) {
         log.info("Add new order");
-        Contractor contractor = contractorRepository.findById(orderAddDto.getContractorId())
-                .orElseThrow(() -> new NotFoundException("Contractor not found"));
+        Contractor contractor = contractorRepository.findById(orderAddDto.getContractorId()).orElseThrow(() -> new NotFoundException("Contractor not found"));
         log.info("Contractor with id {} found", orderAddDto.getContractorId());
-        Partner partner = partnerRepository.findById(orderAddDto.getPartnerId())
-                .orElseThrow(() -> new NotFoundException("Partner not found"));
+        Partner partner = partnerRepository.findById(orderAddDto.getPartnerId()).orElseThrow(() -> new NotFoundException("Partner not found"));
         log.info("Partner with id {} found", orderAddDto.getPartnerId());
         List<VtOrderStatuses> vtOrderStatusesList = new ArrayList<>();
-        User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId()).orElseThrow(() -> new NotFoundException("User not found"));
         log.info("User with id {} found", orderAddDto.getVtOrderStatuses().get(0).getUserId());
-        VtOrderStatuses vtOrderStatuses = OrderMapper.addVtOrderStatuses(user);
+        VtOrderStatuses vtOrderStatuses = OrderMapper.addVtOrderStatuses(user.getId());
         vtOrderStatusesList.add(vtOrderStatuses);
 
 
-        Order order = OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner,
-                convertToOrderVtList(orderAddDto), vtOrderStatusesList);
+        Order order = OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner, convertToOrderVtList(orderAddDto), vtOrderStatusesList);
 
-        // cохранение заказа после которого будет ясен id
+        // сохранение заказа после которого будет ясен id
         orderRepository.save(order);
 
         Gson gson = OrderMapper.getGson();
@@ -90,41 +87,46 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findById(String orderId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundException("Order not found"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException("Order not found"));
         log.info("Order with id {} found", orderId);
         return order;
     }
 
     @Override
     public List<Order> findAllByPartnerId(String partnerId, PageRequest pageRequest) {
-        Partner partner = partnerRepository.findById(partnerId)
-                .orElseThrow(() -> new NotFoundException("Partner not found"));
+        Partner partner = partnerRepository.findById(partnerId).orElseThrow(() -> new NotFoundException("Partner not found"));
         log.info("Partner with id {} found", partnerId);
         return orderRepository.findAllByPartner(partner, pageRequest);
     }
 
     @Override
-    @Transactional
-    public OrderOutDto setStatusForOrder(String orderId, String status, String userId) {
-        OrderGenerator orderGenerator = orderGenerators.get(status);
-        if (!orderGenerators.containsKey(status)) {
+    public OrderOutDto statusForOrderUser(String orderId, String status, String user) {
+        OrderGenerator orderGenerator = this.orderGeneratorMap.get(status);
+        if (!this.orderGeneratorMap.containsKey(status)) {
             log.error("Unknown state: UNSUPPORTED_STATUS: {}", status);
             throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
         }
-        return orderGenerator.setStatusForOrder(orderId, userId);
+        return orderGenerator.setStatusForOrderUser(orderId, user);
+    }
+
+    @Override
+    public Order statusForOrderManager(String orderId, String status, String user) {
+        OrderGenerator orderGenerator = this.orderGeneratorMap.get(status);
+        if (!orderGeneratorMap.containsKey(status)) {
+            log.error("Unknown state: UNSUPPORTED_STATUS: {}", status);
+            throw new ValidationException("Unknown state: UNSUPPORTED_STATUS");
+        }
+        return orderGenerator.setStatusForOrderManager(orderId, user);
     }
 
     @Override
     @Transactional
     public String update(OrderAddDto orderAddDto, String orderId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundException("Order not found"));
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException("Order not found"));
         List<VtOrderStatuses> vtOrderStatusesList = order.getVtOrderStatuses();
-        User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User user = userRepository.findById(orderAddDto.getVtOrderStatuses().get(0).getUserId()).orElseThrow(() -> new NotFoundException("User not found"));
         log.info("User with id {} found", orderAddDto.getVtOrderStatuses().get(0).getUserId());
-        VtOrderStatuses vtOrderStatuses = OrderMapper.updateVtOrderStatuses(user);
+        VtOrderStatuses vtOrderStatuses = OrderMapper.updateVtOrderStatuses(user.getId());
         vtOrderStatusesList.add(vtOrderStatuses);
 
         order.setOrderVts(convertToOrderVtList(orderAddDto));
@@ -137,25 +139,25 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order).getId();
     }
 
+
     @Override
     @Transactional
     public void rabbitUpdate(String message) throws JsonProcessingException {
         OrderRabbitAddDto orderRabbitAddDto = OrderMapper.fromMessageToOrderRabbitAddDto(message);
-        Order order = orderRepository.findById(orderRabbitAddDto.getOrderId())
-                .orElseThrow(() -> new NotFoundException("Order not found"));
-        List<VtOrderStatuses> vtOrderStatusesList = order.getVtOrderStatuses();
-        User user = userRepository.findById(orderRabbitAddDto.getVtOrderStatuses().get(0).getUserId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
-        log.info("User with id {} found", orderRabbitAddDto.getVtOrderStatuses().get(0).getUserId());
-        VtOrderStatuses vtOrderStatuses = OrderMapper.updateVtOrderStatuses(user);
-        vtOrderStatusesList.add(vtOrderStatuses);
+        Order order = statusForOrderManager(orderRabbitAddDto.getOrderId(), orderRabbitAddDto.getStatus(), orderRabbitAddDto.getUser());
 
-        order.setOrderVts(rabbitConvertToOrderVtList(orderRabbitAddDto));
-        order.setVtOrderStatuses(vtOrderStatusesList);
-        order.setSumWithDiscount(orderRabbitAddDto.getSumWithDiscount());
-        order.setSumOfDiscount(orderRabbitAddDto.getSumOfDiscount());
-        order.setSumWithoutDiscount(orderRabbitAddDto.getSumWithoutDiscount());
-        order.setStatus(OrderStatus.UPDATED);
+        if (orderRabbitAddDto.getOrderVts() != null) {
+            order.setOrderVts(rabbitConvertToOrderVtList(orderRabbitAddDto));
+        }
+        if (orderRabbitAddDto.getSumWithDiscount() != null) {
+            order.setSumWithDiscount(orderRabbitAddDto.getSumWithDiscount());
+        }
+        if (orderRabbitAddDto.getSumOfDiscount() != null) {
+            order.setSumOfDiscount(orderRabbitAddDto.getSumOfDiscount());
+        }
+        if (orderRabbitAddDto.getSumWithoutDiscount() != null) {
+            order.setSumWithoutDiscount(orderRabbitAddDto.getSumWithoutDiscount());
+        }
 
         log.info("Order was updated successfully with orderId = {}", order.getId());
     }
@@ -166,8 +168,7 @@ public class OrderServiceImpl implements OrderService {
             orderVtList = Collections.emptyList();
         } else {
             for (OderVtAddDto oderVtAddDto : orderRabbitAddDto.getOrderVts()) {
-                OrderVt orderVt = OrderMapper.fromRabbitOrderVtAddDtoToOrderVt(oderVtAddDto,
-                        itemRepository.getReferenceById(oderVtAddDto.getItemId()));
+                OrderVt orderVt = OrderMapper.fromRabbitOrderVtAddDtoToOrderVt(oderVtAddDto, itemRepository.getReferenceById(oderVtAddDto.getItemId()));
                 orderVtList.add(orderVt);
             }
         }
@@ -180,8 +181,7 @@ public class OrderServiceImpl implements OrderService {
             orderVtList = Collections.emptyList();
         } else {
             for (OderVtAddDto oderVtAddDto : orderAddDto.getOrderVts()) {
-                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto,
-                        itemRepository.getReferenceById(oderVtAddDto.getItemId()));
+                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto, itemRepository.getReferenceById(oderVtAddDto.getItemId()));
                 orderVtList.add(orderVt);
             }
         }

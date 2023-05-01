@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OderVtOutDto {
 
-    private Long id;
-
+  private Long id;
     private Long nRow;
     private String itemId;
-    private String vendorCode;
     private String name;
+    private String vendorCode;
     private Long amount;
     private Double sale;
     private Integer discount;

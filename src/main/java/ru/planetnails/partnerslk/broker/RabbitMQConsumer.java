@@ -1,9 +1,9 @@
 package ru.planetnails.partnerslk.broker;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import ru.planetnails.partnerslk.service.OrderService;
 
 @Slf4j
 @Service
+@EnableRabbit
 public class RabbitMQConsumer {
 
     private final OrderService orderService;
@@ -25,11 +26,10 @@ public class RabbitMQConsumer {
     @RabbitListener(queues = {"${rabbit.queueName}"})
     public void consume(String message) {
         LOGGER.info(String.format("Received message -> %s", message));
-        System.out.println("Message read from myQueue : " + message);
         try {
             orderService.rabbitUpdate(message);
-        } catch (JsonProcessingException exception) {
-            System.out.println(exception);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
             log.info("The message can not de convert to OrderRabbitAddDto");
         }
     }
