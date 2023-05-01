@@ -108,7 +108,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
     public OrderOutDto statusForOrderUser(String orderId, String status, String user) {
         OrderGenerator orderGenerator = this.orderGeneratorMap.get(status);
         if (!this.orderGeneratorMap.containsKey(status)) {
@@ -119,7 +118,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
     public Order statusForOrderManager(String orderId, String status, String user) {
         OrderGenerator orderGenerator = this.orderGeneratorMap.get(status);
         if (!orderGeneratorMap.containsKey(status)) {
