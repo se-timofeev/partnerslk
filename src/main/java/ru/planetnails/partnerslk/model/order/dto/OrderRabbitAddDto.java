@@ -14,7 +14,7 @@ import java.util.List;
 public class
 OrderRabbitAddDto {
 
-    @NotEmpty(message = "OrderId may not be null or empty")
+  @NotEmpty(message = "OrderId may not be null or empty")
     private String orderId;
     @NotNull(message = "SumWithoutDiscount may not be null")
     private Double sumWithoutDiscount;
