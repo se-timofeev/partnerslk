@@ -107,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByPartner(partner, pageRequest);
     }
 
-    @Override
+@Override
     @Transactional
     public OrderOutDto statusForOrderUser(String orderId, String status, String user) {
         OrderGenerator orderGenerator = this.orderGeneratorMap.get(status);
