@@ -119,16 +119,16 @@ public class OrderRestControllerV1 {
         return new ResponseEntity<>(order.getStatus().toString(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Get the first part of order by ID")
+    @Operation(summary = "Get the header of order by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the first part of order",
+            @ApiResponse(responseCode = "200", description = "Found the order",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = OrderFirstPartOutDto.class))}),
             @ApiResponse(responseCode = "404", description = "The first part of order not found",
                     content = @Content)
     })
-    @GetMapping("/first")
-    public ResponseEntity<OrderFirstPartOutDto> getFirstPartOfOrder(@RequestParam String orderId) {
+    @GetMapping("/header")
+    public ResponseEntity<OrderFirstPartOutDto> getHeaderOfOrder(@RequestParam String orderId) {
         Order order = orderService.findById(orderId);
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -137,7 +137,7 @@ public class OrderRestControllerV1 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @Operation(summary = "Get the second part of order by ID")
+    @Operation(summary = "Get the table of items by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the second part of order",
                     content = {@Content(mediaType = "application/json",
@@ -145,8 +145,8 @@ public class OrderRestControllerV1 {
             @ApiResponse(responseCode = "404", description = "The second part of order not found",
                     content = @Content)
     })
-    @GetMapping("/second")
-    public ResponseEntity<OrderSecondPartOutDto> getSecondPartOfOrder(@RequestParam String orderId) {
+    @GetMapping("/table")
+    public ResponseEntity<OrderSecondPartOutDto> getTableOfOrder(@RequestParam String orderId) {
         Order order = orderService.findById(orderId);
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

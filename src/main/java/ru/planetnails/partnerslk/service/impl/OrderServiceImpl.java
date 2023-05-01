@@ -149,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order).getId();
     }
 
-    @Override
+     @Override
     @Transactional
     public void rabbitUpdate(String message) throws JsonProcessingException {
         OrderRabbitAddDto orderRabbitAddDto = OrderMapper.fromMessageToOrderRabbitAddDto(message);
