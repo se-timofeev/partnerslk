@@ -115,7 +115,7 @@ public class OrderRestControllerV1 {
             @ApiResponse(responseCode = "404", description = "The first part of order not found",
                     content = @Content)
     })
-    @GetMapping("/first")
+    @GetMapping("/head")
     public ResponseEntity<OrderFirstPartOutDto> getFirstPartOfOrder(@RequestParam String orderId) {
         Order order = orderService.findById(orderId);
         if (order == null) {
@@ -133,7 +133,7 @@ public class OrderRestControllerV1 {
             @ApiResponse(responseCode = "404", description = "The second part of order not found",
                     content = @Content)
     })
-    @GetMapping("/second")
+    @GetMapping("/table")
     public ResponseEntity<OrderSecondPartOutDto> getSecondPartOfOrder(@RequestParam String orderId) {
         Order order = orderService.findById(orderId);
         if (order == null) {
