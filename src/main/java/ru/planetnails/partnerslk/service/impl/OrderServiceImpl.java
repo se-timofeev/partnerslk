@@ -70,13 +70,9 @@ public class OrderServiceImpl implements OrderService {
         log.info("User with id {} found", orderAddDto.getUserId());
         VtOrderStatuses vtOrderStatuses = OrderMapper.addVtOrderStatuses(user.getId());
         vtOrderStatusesList.add(vtOrderStatuses);
-
-
         Order order = OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner, convertToOrderVtList(orderAddDto), vtOrderStatusesList);
-
         // сохранение заказа после которого будет ясен id
         orderRepository.save(order);
-
         Gson gson = OrderMapper.getGson();
         String toJson = gson.toJson(OrderMapper.fromOrderToOrderOutDto(order));
         // сохраняем данные в брокере сообщений
