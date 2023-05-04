@@ -6,8 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@SpringBootApplication
+
 @EnableAsync
+@SpringBootApplication
 @OpenAPIDefinition(info = @Info(
         title = "Partners account API",
         version = "0.1",

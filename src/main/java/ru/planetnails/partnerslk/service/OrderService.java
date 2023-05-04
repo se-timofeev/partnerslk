@@ -4,22 +4,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.PageRequest;
 import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.dto.OrderAddDto;
-import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
-
-import java.util.List;
+import ru.planetnails.partnerslk.model.order.dto.OrderAddUpdateDto;
+import ru.planetnails.partnerslk.model.order.dto.OrderOutPartnerDto;
 
 public interface OrderService {
     String add(OrderAddDto orderAddDto);
 
     Order findById(String orderId);
 
-    List<Order> findAllByPartnerId(String partnerId, PageRequest pageRequest);
+    OrderOutPartnerDto findAllByPartnerId(String partnerId, PageRequest pageRequest);
 
-    OrderOutDto statusForOrderUser(String orderId, String status, String userId);
+    Order statusForOrderUser(String orderId, String status, String userId);
 
     Order statusForOrderManager(String orderId, String status, String userId);
 
-    String update(OrderAddDto orderAddDto, String orderId);
+    String update(OrderAddUpdateDto orderAddUpdateDtoDto, String orderId);
 
     void rabbitUpdate(String message) throws JsonProcessingException;
 }

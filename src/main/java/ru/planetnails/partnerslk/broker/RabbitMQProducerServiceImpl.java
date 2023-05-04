@@ -15,8 +15,7 @@ public class RabbitMQProducerServiceImpl implements RabbitMQProducerService {
     }
 
     public void sendMessage(String message) {
-        rabbitTemplate.convertAndSend("main","", message);
+        rabbitTemplate.convertAndSend("main","1C", message);
       //  rabbitTemplate.receive("main");
     }
-
 }

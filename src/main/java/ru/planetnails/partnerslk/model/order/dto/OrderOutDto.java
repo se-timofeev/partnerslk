@@ -23,5 +23,4 @@ public class OrderOutDto {
     private String partnerId;
     private OrderStatus status;
     private List<OderVtOutDto> orderVts;
-    private List<VtOrderStatusesOutDto> vtOrderStatuses;
 }

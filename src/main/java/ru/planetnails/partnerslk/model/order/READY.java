@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.planetnails.partnerslk.exception.NotFoundException;
-import ru.planetnails.partnerslk.model.order.dto.OrderMapper;
-import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
 import ru.planetnails.partnerslk.repository.OrderRepository;
 
 import java.time.LocalDateTime;
@@ -22,7 +20,7 @@ public class READY implements OrderGenerator {
     }
 
     @Override
-    public OrderOutDto setStatusForOrderUser(String orderId, String user) {
+    public Order setStatusForOrderUser(String orderId, String user) {
         Order order = APPROVED.validation(orderId, user, orderRepository, log);
         order.setStatus(OrderStatus.READY);
         VtOrderStatuses vtOrderStatuses = new VtOrderStatuses(
@@ -33,7 +31,7 @@ public class READY implements OrderGenerator {
         vtOrderStatuses.setOrder(order);
         order.getVtOrderStatuses().add(vtOrderStatuses);
 
-        return OrderMapper.fromOrderToOrderOutDto(orderRepository.save(order));
+        return order;
     }
 
     @Override
