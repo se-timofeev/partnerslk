@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class VtOrderStatusesAddDto {
+import java.util.List;
 
-    private String userId;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderOutPartnerDto {
+
+    private List<OrderOutDto> result;
+    private Integer totalOrders;
 }

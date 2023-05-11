@@ -56,14 +56,11 @@ public class OrderMapper {
                 order.getStatus(),
                 order.getOrderVts().stream()
                         .map(OrderMapper::fromOderVtToOrderOutDto)
-                        .collect(Collectors.toList()),
-                order.getVtOrderStatuses().stream()
-                        .map(OrderMapper::fromVtOrderStatusesToOrderStatusesOutDto)
                         .collect(Collectors.toList())
         );
     }
 
-  public static OderVtOutDto fromOderVtToOrderOutDto(OrderVt orderVt) {
+    public static OderVtOutDto fromOderVtToOrderOutDto(OrderVt orderVt) {
         return new OderVtOutDto(
                 orderVt.getId(),
                 orderVt.getRow(),
@@ -112,14 +109,6 @@ public class OrderMapper {
     public static VtOrderStatuses addVtOrderStatuses(String user) {
         return new VtOrderStatuses(
                 OrderStatus.NEW,
-                LocalDateTime.now(),
-                user
-        );
-    }
-
-    public static VtOrderStatuses updateVtOrderStatuses(String user) {
-        return new VtOrderStatuses(
-                OrderStatus.UPDATED,
                 LocalDateTime.now(),
                 user
         );

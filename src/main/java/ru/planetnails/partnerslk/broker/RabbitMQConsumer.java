@@ -23,7 +23,7 @@ public class RabbitMQConsumer {
         this.orderService = orderService;
     }
 
-    @RabbitListener(queues = {"${rabbit.queueName}"})
+    @RabbitListener(queues = "receive")
     public void consume(String message) {
         LOGGER.info(String.format("Received message -> %s", message));
         try {

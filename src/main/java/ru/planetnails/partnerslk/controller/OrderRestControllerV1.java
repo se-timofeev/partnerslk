@@ -18,8 +18,9 @@ import ru.planetnails.partnerslk.model.order.Order;
 import ru.planetnails.partnerslk.model.order.dto.*;
 import ru.planetnails.partnerslk.service.OrderService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Validated
@@ -67,38 +68,25 @@ public class OrderRestControllerV1 {
             @ApiResponse(responseCode = "200", description = "Возвращает список заказов. В случае отсутствия заказов," +
                     " возвращает пустой список",
                     content = {@Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = OrderOutDto.class)))}),
+                            array = @ArraySchema(schema = @Schema(implementation = OrderOutPartnerDto.class)))}),
     })
     @GetMapping("/partner")
-    public ResponseEntity<List<OrderOutDto>> getPartnersOrders(@RequestParam(name = "from", defaultValue = "0") Integer from,
-                                                               @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                               @RequestParam String partnerId) {
+    public ResponseEntity<OrderOutPartnerDto> getPartnersOrders(@RequestParam(name = "from", defaultValue = "0") Integer from,
+                                                                @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                                @RequestParam String partnerId) {
         log.info("Get all orders for Partner with from={}, size={}, partnerId={}", from, size, partnerId);
         int page = from / size;
         final PageRequest pageRequest = PageRequest.of(page, size);
-        List<Order> orders = orderService.findAllByPartnerId(partnerId, pageRequest);
-        if (orders == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        OrderOutPartnerDto orderOutPartnerDto = orderService.findAllByPartnerId(partnerId, pageRequest);
+        if (orderOutPartnerDto == null) {
+            List<OrderOutDto> list = new ArrayList<>();
+            OrderOutPartnerDto orderEmptyOutPartnerDto = new OrderOutPartnerDto(
+                    list = Collections.emptyList(),
+                    0
+            );
+            return new ResponseEntity<>(orderEmptyOutPartnerDto, HttpStatus.NO_CONTENT);
         }
-        List<OrderOutDto> result = orders.stream()
-                .map(OrderMapper::fromOrderToOrderOutDto)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @Operation(summary = "Set a new status for the order")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the order",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OrderOutDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Order not found",
-                    content = @Content)
-    })
-    @PatchMapping("/status")
-    public OrderOutDto setStatusForOrder(@RequestParam String orderId,
-                                         @RequestParam String status,
-                                         @RequestParam String userId) {
-        return orderService.statusForOrderUser(orderId, status, userId);
+        return new ResponseEntity<>(orderOutPartnerDto, HttpStatus.OK);
     }
 
     @Operation(summary = "Get the status for order by ID")
@@ -119,16 +107,16 @@ public class OrderRestControllerV1 {
         return new ResponseEntity<>(order.getStatus().toString(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Get the header of order by ID")
+    @Operation(summary = "Get the first part of order by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the order",
+            @ApiResponse(responseCode = "200", description = "Found the first part of order",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = OrderFirstPartOutDto.class))}),
             @ApiResponse(responseCode = "404", description = "The first part of order not found",
                     content = @Content)
     })
-    @GetMapping("/header")
-    public ResponseEntity<OrderFirstPartOutDto> getHeaderOfOrder(@RequestParam String orderId) {
+    @GetMapping("/head")
+    public ResponseEntity<OrderFirstPartOutDto> getFirstPartOfOrder(@RequestParam String orderId) {
         Order order = orderService.findById(orderId);
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -137,7 +125,7 @@ public class OrderRestControllerV1 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @Operation(summary = "Get the table of items by ID")
+    @Operation(summary = "Get the second part of order by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the second part of order",
                     content = {@Content(mediaType = "application/json",
@@ -146,7 +134,7 @@ public class OrderRestControllerV1 {
                     content = @Content)
     })
     @GetMapping("/table")
-    public ResponseEntity<OrderSecondPartOutDto> getTableOfOrder(@RequestParam String orderId) {
+    public ResponseEntity<OrderSecondPartOutDto> getSecondPartOfOrder(@RequestParam String orderId) {
         Order order = orderService.findById(orderId);
         if (order == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -159,12 +147,12 @@ public class OrderRestControllerV1 {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Order has been updated",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OrderAddDto.class))})
+                            schema = @Schema(implementation = OrderAddUpdateDto.class))})
     })
     @PutMapping("/update")
-    public String update(@RequestBody @Validated OrderAddDto orderAddDto,
+    public String update(@RequestBody @Validated OrderAddUpdateDto orderAddUpdateDto,
                          @RequestParam String orderId) {
         log.info("Received endpoint POST /api/v1/orders/update");
-        return String.format("Order updated successfully; orderId = %s", orderService.update(orderAddDto, orderId));
+        return String.format("Order updated successfully; orderId = %s", orderService.update(orderAddUpdateDto, orderId));
     }
 }

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.planetnails.partnerslk.exception.NotFoundException;
-import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
 import ru.planetnails.partnerslk.repository.OrderRepository;
 
 import java.time.LocalDateTime;
@@ -38,7 +37,7 @@ public class WORKHOUSE implements OrderGenerator {
     }
 
     @Override
-    public OrderOutDto setStatusForOrderUser(String orderId, String user) {
+    public Order setStatusForOrderUser(String orderId, String user) {
         return null;
     }
 }

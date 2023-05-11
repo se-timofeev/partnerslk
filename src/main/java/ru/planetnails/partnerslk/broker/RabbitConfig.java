@@ -27,13 +27,6 @@ public class RabbitConfig {
     @Value("${rabbit.port}")
     private Integer port;
 
-    @Value("${rabbit.exchangeName}")
-    private String exchangeName;
-    @Value("${rabbit.queueName}")
-    private String queueName;
-    @Value("${rabbit.routingKey}")
-    private String routingKey;
-
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory =
@@ -56,17 +49,27 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Queue myQueue() {
-        return new Queue(queueName);
+    public Queue sendQueue() {
+        return new Queue("send");
     }
 
     @Bean
-    DirectExchange exchange() {
-        return new DirectExchange(exchangeName, true, false);
+    public Queue receiveQueue() {
+        return new Queue("receive");
     }
 
     @Bean
-    Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    public DirectExchange exchanger() {
+        return new DirectExchange("main", true, false);
+    }
+
+    @Bean
+    public Binding sendBinding(Queue sendQueue, DirectExchange exchanger) {
+        return BindingBuilder.bind(sendQueue).to(exchanger).with("1C");
+    }
+
+    @Bean
+    public Binding receiveBinding(Queue receiveQueue, DirectExchange exchanger) {
+        return BindingBuilder.bind(receiveQueue).to(exchanger).with("Java");
     }
 }

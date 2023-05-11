@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class
-OrderAddDto {
+OrderAddUpdateDto {
 
     @NotNull(message = "SumWithoutDiscount may not be null")
     private Double sumWithoutDiscount;
@@ -27,4 +27,6 @@ OrderAddDto {
     private List<OderVtAddDto> orderVts;
     @NotEmpty(message = "UserId may not be null or empty")
     private String userId;
+    @NotEmpty(message = "Status may not be null or empty")
+    private String status;
 }
