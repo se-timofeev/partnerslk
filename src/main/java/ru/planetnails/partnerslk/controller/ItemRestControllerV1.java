@@ -11,11 +11,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import ru.planetnails.partnerslk.model.item.queryParams.GetItemsParams;
-import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
+import ru.planetnails.partnerslk.model.item.dto.GroupDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
 import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
-import ru.planetnails.partnerslk.model.item.dto.GroupDtoOut;
+import ru.planetnails.partnerslk.model.item.queryParams.GetItemsParams;
+import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
 import ru.planetnails.partnerslk.service.ItemService;
 
 import java.util.List;

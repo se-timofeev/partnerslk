@@ -1,8 +1,8 @@
 create table groups
 (
-    id       varchar(255) collate SQL_Latin1_General_CP1_CI_AS not null primary key,
-    name     nvarchar(255)                                     not null,
-    group_id varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    id       varchar(50) collate SQL_Latin1_General_CP1_CI_AS not null primary key,
+    name     nvarchar(50)                                     not null,
+    group_id varchar(50) collate SQL_Latin1_General_CP1_CI_AS,
     level    int                                               not null
 )
 go
@@ -10,15 +10,15 @@ go
 create table items
 (
     description      nvarchar(255),
-    name             nvarchar(255),
-    country          nvarchar(255),
+    name             nvarchar(50),
+    country          nvarchar(50),
     description_html nvarchar(max),
     is_out_of_stock  bit,
     level            int,
-    group_id         varchar(255) collate SQL_Latin1_General_CP1_CI_AS
+    group_id         varchar(50) collate SQL_Latin1_General_CP1_CI_AS
         constraint items_groups_fk
             references groups,
-    vendor_code      varchar(255) collate SQL_Latin1_General_CP1_CI_AS,
+    vendor_code      varchar(50) collate SQL_Latin1_General_CP1_CI_AS,
     id               varchar(50) not null
         primary key,
     updated          datetime2,
@@ -61,14 +61,14 @@ create table users
     id         varchar(50)  not null
         constraint PK__users__id
             primary key,
-    full_name  nvarchar(255),
-    first_name nvarchar(200),
-    last_name  nvarchar(200),
+    full_name  nvarchar(50),
+    first_name nvarchar(50),
+    last_name  nvarchar(50),
     mobile     varchar(12),
-    email      varchar(255),
+    email      varchar(25),
     name       varchar(15)  not null
         unique,
-    password   varchar(255) not null,
+    password   varchar(20) not null,
     status     varchar(20)  not null,
     created    datetime2,
     updated    datetime2
@@ -101,12 +101,12 @@ create table dbo.contractors
 (
     id             varchar(50)   not null
         primary key,
-    name           nvarchar(100) not null,
+    name           nvarchar(50) not null,
     description    nvarchar(255) not null,
     inn            varchar(12)   not null,
     kpp            varchar(9)    not null,
-    legal_address  nvarchar(255) not null,
-    actual_address nvarchar(255) not null,
+    legal_address  nvarchar(70) not null,
+    actual_address nvarchar(70) not null,
     partner_id     varchar(50)   not null
         constraint contractors_partners_id_fk
             references dbo.partners,
@@ -118,12 +118,12 @@ create table vt_order_statuses
 (
     id           bigint not null
         primary key,
-    order_status varchar(255),
+    order_status varchar(10),
     updated      datetime2,
-    order_id     varchar(255)
+    order_id     varchar(50)
         constraint FKqermtixnbf4936ayg8jix2ob5
             references orders,
-    user_id       varchar(255)
+    user_id       varchar(50)
 )
 go
 
@@ -137,28 +137,28 @@ create table orders_vt
     price    float,
     sale     float,
     total    float,
-    item_id  varchar(50)
+    item_id  varchar(50) not null
         constraint FKe2vvenpsuht663ti5jauhrx1n
             references items,
-    order_id varchar(255)
+    order_id varchar(50) not null
         constraint FKq93kspsb17sd43yprlki3cs1s
             references orders
 )
 go
 create table orders
 (
-    id                   varchar(255) not null
+    id                   varchar(50) not null
         primary key,
-    status               varchar(255),
+    status               varchar(10),
     num                  bigint,
     order_date           datetime2,
     sum_of_discount      float,
     sum_with_discount    float,
     sum_without_discount float,
-    contractor_id        varchar(50)
+    contractor_id        varchar(50) not null
         constraint FK3xvcmuk6a7ktrx3awo4ye55fs
             references contractors,
-    partner_id           varchar(50)
+    partner_id           varchar(50) not null
         constraint FK3xvcmuk6a7ktrx3awo4ye99fs
             references partners
 )
@@ -180,11 +180,11 @@ create table notifications
         primary key,
     user_id     varchar(50)
         constraint notifications_on_users references users,
-    order_id    varchar(255)
+    order_id    varchar(50)
         constraint notifications_on_orders references orders,
     is_read     bit          not null,
     create_time datetime     not null,
-    status      varchar(255) not null,
+    status      varchar(10) not null,
 )
 go
 
@@ -194,7 +194,7 @@ create table mails_for_notifications
         primary key,
     user_id varchar(50)
         constraint mails_by_notifications_on_users references users,
-    email   varchar(255) not null,
+    email   varchar(25) not null,
 )
 go
 

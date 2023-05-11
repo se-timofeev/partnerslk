@@ -23,15 +23,14 @@ public class RabbitMQConsumer {
         this.orderService = orderService;
     }
 
-    @RabbitListener(queues = {"${rabbit.queueName}"})
+    @RabbitListener(queues = "receive")
     public void consume(String message) {
         LOGGER.info(String.format("Received message -> %s", message));
         try {
             orderService.rabbitUpdate(message);
         } catch (Exception exception) {
-            System.out.println(exception);
+            log.error(exception.getMessage());
             log.info("The message can not de convert to OrderRabbitAddDto");
         }
     }
 }
-

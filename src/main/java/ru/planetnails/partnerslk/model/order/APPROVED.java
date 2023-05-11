@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 import ru.planetnails.partnerslk.exception.NotFoundException;
-import ru.planetnails.partnerslk.model.order.dto.OrderMapper;
-import ru.planetnails.partnerslk.model.order.dto.OrderOutDto;
 import ru.planetnails.partnerslk.repository.OrderRepository;
 
 import javax.validation.ValidationException;
@@ -13,17 +11,17 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Component("APPROVED")
-public class putStatusApprovedForOrder implements OrderGenerator {
+public class APPROVED implements OrderGenerator {
 
     private final OrderRepository orderRepository;
 
-    public putStatusApprovedForOrder(OrderRepository orderRepository) {
+    public APPROVED(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
 
     @Override
-    public OrderOutDto setStatusForOrderUser(String orderId, String user) {
+    public Order setStatusForOrderUser(String orderId, String user) {
         Order order = validation(orderId, user, orderRepository, log);
         order.setStatus(OrderStatus.APPROVED);
         VtOrderStatuses vtOrderStatuses = new VtOrderStatuses(
@@ -34,7 +32,7 @@ public class putStatusApprovedForOrder implements OrderGenerator {
         vtOrderStatuses.setOrder(order);
         order.getVtOrderStatuses().add(vtOrderStatuses);
 
-        return OrderMapper.fromOrderToOrderOutDto(orderRepository.save(order));
+        return order;
     }
 
     @Override

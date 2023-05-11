@@ -55,25 +55,28 @@ public class AuthenticationRestControllerV1 {
     })
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) throws HttpMessageNotReadableException {
-        log.info("login {}", requestDto);
+        log.info("login=", requestDto);
+
         try {
             String username = requestDto.getUsername();
             User user = userService.findByName(username);
+
             if (user == null) {
-                return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_GATEWAY);
             }
+
             if (user == null || user.getStatus() != UserStatus.ACTIVE) {
                 return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
             }
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,
                     requestDto.getPassword()));
             String token = jwtTokenProvider.createToken(username, user.getRoles());
-            log.info("token has been granted to user {}", username);
             Map<Object, Object> response = new HashMap<>();
             response.put("username", username);
             response.put("token", token);
             return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
+        } catch (
+                AuthenticationException e) {
             return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
 
         }

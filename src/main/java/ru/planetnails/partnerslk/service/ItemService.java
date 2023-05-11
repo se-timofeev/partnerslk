@@ -1,11 +1,11 @@
 package ru.planetnails.partnerslk.service;
 
 import org.springframework.data.domain.Page;
-import ru.planetnails.partnerslk.model.item.queryParams.GetItemsParams;
-import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
+import ru.planetnails.partnerslk.model.item.dto.GroupDtoOut;
 import ru.planetnails.partnerslk.model.item.dto.ItemAddDto;
 import ru.planetnails.partnerslk.model.item.dto.ItemDtoOut;
-import ru.planetnails.partnerslk.model.item.dto.GroupDtoOut;
+import ru.planetnails.partnerslk.model.item.queryParams.GetItemsParams;
+import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
 
 import java.util.List;
 
