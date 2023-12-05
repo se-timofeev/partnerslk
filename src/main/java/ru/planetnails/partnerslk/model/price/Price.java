@@ -3,7 +3,7 @@ package ru.planetnails.partnerslk.model.price;
 import lombok.*;
 import ru.planetnails.partnerslk.model.item.Item;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

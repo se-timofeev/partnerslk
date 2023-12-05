@@ -1,11 +1,13 @@
 package ru.planetnails.partnerslk.model.image.dto;
 
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
+@Validated
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -13,7 +15,8 @@ import javax.validation.constraints.Size;
 @Builder
 public class ImageDtoIn {
 
-    @NonNull @NotBlank @Size(max = 36)
+    @NonNull @NotBlank
+    @Size(max = 36)
     private String id;
     @NonNull @NotBlank
     private String base64;

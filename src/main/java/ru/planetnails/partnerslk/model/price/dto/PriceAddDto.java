@@ -1,10 +1,12 @@
 package ru.planetnails.partnerslk.model.price.dto;
 
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
 
+@Validated
 @Getter
 @Setter
 @Builder

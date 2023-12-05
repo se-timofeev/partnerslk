@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableAsync
 @SpringBootApplication
+
 @OpenAPIDefinition(info = @Info(
         title = "Partners account API",
         version = "0.1",

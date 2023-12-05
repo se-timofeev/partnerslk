@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.repository.OrderRepository;
 
-import javax.validation.ValidationException;
+import jakarta.validation.ValidationException;
 import java.time.LocalDateTime;
 
 @Slf4j

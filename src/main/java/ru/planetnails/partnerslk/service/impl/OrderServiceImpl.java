@@ -1,13 +1,13 @@
 package ru.planetnails.partnerslk.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.gson.Gson;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.planetnails.partnerslk.broker.RabbitMQProducerService;
+import org.springframework.validation.annotation.Validated;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.order.*;
@@ -21,13 +21,13 @@ import ru.planetnails.partnerslk.repository.UserRepository;
 import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 import ru.planetnails.partnerslk.service.OrderService;
 
-import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Validated
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -45,16 +45,13 @@ public class OrderServiceImpl implements OrderService {
 
     private final PartnerRepository partnerRepository;
 
-    private final RabbitMQProducerService rabbitMQProducerService;
-
     @Autowired
-    public OrderServiceImpl(ContractorRepository contractorRepository, OrderRepository orderRepository, ItemRepository itemRepository, UserRepository userRepository, PartnerRepository partnerRepository, RabbitMQProducerService rabbitMQProducerService) {
+    public OrderServiceImpl(ContractorRepository contractorRepository, OrderRepository orderRepository, ItemRepository itemRepository, UserRepository userRepository, PartnerRepository partnerRepository) {
         this.contractorRepository = contractorRepository;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.partnerRepository = partnerRepository;
-        this.rabbitMQProducerService = rabbitMQProducerService;
     }
 
     @Override
@@ -73,12 +70,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner, convertToOrderVtList(orderAddDto), vtOrderStatusesList);
         // сохранение заказа после которого будет ясен id
         orderRepository.save(order);
-        Gson gson = OrderMapper.getGson();
-        String toJson = gson.toJson(OrderMapper.fromOrderToOrderOutDto(order));
-        // сохраняем данные в брокере сообщений
-        // обратить внимание, что ID крайне важен, так без него мастер система
-        // не поймет как матчить данные
-        rabbitMQProducerService.sendMessage(toJson);
         return order.getId();
     }
 
@@ -134,9 +125,6 @@ public class OrderServiceImpl implements OrderService {
         order.setSumOfDiscount(orderAddUpdateDto.getSumOfDiscount());
         order.setSumWithoutDiscount(orderAddUpdateDto.getSumWithoutDiscount());
         orderRepository.save(order);
-        Gson gson = OrderMapper.getGson();
-        String toJson = gson.toJson(OrderMapper.fromOrderToOrderOutDto(order));
-        rabbitMQProducerService.sendMessage(toJson);
         log.info("Order was updated successfully with orderId = {}", order.getId());
         return order.getId();
     }

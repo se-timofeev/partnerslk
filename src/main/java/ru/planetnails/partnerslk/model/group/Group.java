@@ -2,7 +2,8 @@ package ru.planetnails.partnerslk.model.group;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 
 @Entity
 @Table(name = "groups")

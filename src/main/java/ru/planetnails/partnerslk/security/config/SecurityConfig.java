@@ -12,6 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -20,31 +22,22 @@ import ru.planetnails.partnerslk.security.jwt.JwtTokenFilter;
 public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
-    private static final String SWAGGER_WHITELIST1 = "/v3/api-docs/**";
-    private static final String SWAGGER_WHITELIST2 = "/swagger-ui/**";
-    private static final String SWAGGER_WHITELIST3 = "/swagger-ui.html";
+    private static final String SWAGGER_WHITELIST1 = "/v3/api-docs/";
+    private static final String SWAGGER_WHITELIST = "/swagger-ui/**";
+
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
-        return http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .antMatchers(SWAGGER_WHITELIST1).permitAll()
-                .antMatchers(SWAGGER_WHITELIST2).permitAll()
-                .antMatchers(SWAGGER_WHITELIST3).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .addFilterAfter(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors()
-                .and()
-                .build();
+        http
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/api/v1/auth/login").permitAll()
+                        .requestMatchers("/swagger-ui/index.html").permitAll()
+                        .anyRequest().authenticated()
+                );
+        return http.build();
+
+
     }
 }

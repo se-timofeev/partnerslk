@@ -16,7 +16,7 @@ import ru.planetnails.partnerslk.model.role.Role;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;

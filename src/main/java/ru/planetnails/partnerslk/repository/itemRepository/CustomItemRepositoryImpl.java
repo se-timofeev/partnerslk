@@ -1,15 +1,13 @@
 package ru.planetnails.partnerslk.repository.itemRepository;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.*;
+import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -6,10 +6,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
 import ru.planetnails.partnerslk.model.contractor.dto.ContractorAddDto;
@@ -17,10 +19,11 @@ import ru.planetnails.partnerslk.model.contractor.dto.ContractorMapper;
 import ru.planetnails.partnerslk.model.contractor.dto.ContractorOutDto;
 import ru.planetnails.partnerslk.service.ContractorService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 
+
+@Validated
 @RestController
 @AllArgsConstructor
 @Slf4j

@@ -3,7 +3,7 @@ package ru.planetnails.partnerslk.model.role;
 import lombok.*;
 import ru.planetnails.partnerslk.model.user.User;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @AllArgsConstructor

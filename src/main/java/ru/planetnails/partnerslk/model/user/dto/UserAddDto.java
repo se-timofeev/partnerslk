@@ -1,10 +1,11 @@
 package ru.planetnails.partnerslk.model.user.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
+@Validated
 @Getter
 @Setter
 @AllArgsConstructor

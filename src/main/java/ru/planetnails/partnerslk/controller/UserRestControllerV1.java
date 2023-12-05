@@ -20,7 +20,7 @@ import ru.planetnails.partnerslk.model.user.dto.UserMapper;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 import ru.planetnails.partnerslk.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @AllArgsConstructor

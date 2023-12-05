@@ -1,18 +1,21 @@
 package ru.planetnails.partnerslk.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.notification.dto.EmailDtoOut;
 import ru.planetnails.partnerslk.model.notification.dto.NotificationDtoOut;
 import ru.planetnails.partnerslk.service.NotificationService;
 
-import javax.validation.constraints.Email;
+
 import java.util.List;
 
 
+@Validated
 @RestController
 @AllArgsConstructor
 @Slf4j

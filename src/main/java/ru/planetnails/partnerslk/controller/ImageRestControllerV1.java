@@ -7,17 +7,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.planetnails.partnerslk.model.image.dto.ImageDtoIn;
 import ru.planetnails.partnerslk.model.image.dto.ImageDtoOut;
 import ru.planetnails.partnerslk.service.ImageService;
 
-import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @AllArgsConstructor
 @CrossOrigin

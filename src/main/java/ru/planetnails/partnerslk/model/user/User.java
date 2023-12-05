@@ -1,15 +1,16 @@
 package ru.planetnails.partnerslk.model.user;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.role.Role;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-
+@Validated
 @Entity
 @Table(name = "users")
 @Getter

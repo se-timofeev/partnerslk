@@ -1,11 +1,13 @@
 package ru.planetnails.partnerslk.model.contractor.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
+@Validated
 @Getter
 @Setter
 @AllArgsConstructor
