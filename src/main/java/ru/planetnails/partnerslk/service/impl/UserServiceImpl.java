@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.service.impl;
 
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,7 +25,6 @@ import ru.planetnails.partnerslk.repository.UserRepository;
 import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
