@@ -13,6 +13,8 @@ import ru.planetnails.partnerslk.repository.PartnerRepository;
 import ru.planetnails.partnerslk.repository.UserRepository;
 import ru.planetnails.partnerslk.service.PartnerService;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -53,5 +55,10 @@ public class PartnerServiceImpl implements PartnerService {
     @Transactional
     public void delete(String id) {
         partnerRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Partner> findAllPartners() {
+        return partnerRepository.findAll();
     }
 }

@@ -9,20 +9,20 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
-import ru.planetnails.partnerslk.model.partner.Partner;
-import ru.planetnails.partnerslk.service.PartnerService;
+import ru.planetnails.partnerslk.model.user.User;
+import ru.planetnails.partnerslk.service.UserService;
 
 @PermitAll
-@Route(value = "partners", layout = MainLayout.class)
-@PageTitle("Партнёры")
-public class PartnersView extends VerticalLayout {
-    Grid<Partner> grid = new Grid<>(Partner.class);
+@Route(value = "contacts",layout = MainLayout.class)
+@PageTitle("Контакты")
+public class ContactsView extends VerticalLayout {
+    Grid<User> grid = new Grid<>(User.class);
     TextField filterText = new TextField();
-    PartnerService partnerService;
+    UserService userService;
 
-    public PartnersView(PartnerService partnerService) {
-        this.partnerService=partnerService;
-        addClassName("partners-list-view");
+    public ContactsView(UserService userService) {
+        this.userService=userService;
+        addClassName("contacts-list-view");
         setSizeFull();
         configureGrid();
         configureForm();
@@ -45,10 +45,13 @@ public class PartnersView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("partner-grid");
         grid.setSizeFull();
-        grid.setColumns("name", "discount", "account" );
-        grid.getColumnByKey("name").setHeader("Наименование");
-        grid.getColumnByKey("account").setHeader("Менеджер");
-        grid.getColumnByKey("discount").setHeader("Скидка, %");
+        grid.setColumns("firstName", "lastName", "mobile","email","name","status" );
+        grid.getColumnByKey("firstName").setHeader("Имя");
+        grid.getColumnByKey("lastName").setHeader("Фамилия");
+        grid.getColumnByKey("mobile").setHeader("Моб.");
+        grid.getColumnByKey("email").setHeader("email");
+        grid.getColumnByKey("name").setHeader("Логин");
+        grid.getColumnByKey("status").setHeader("Статус");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
@@ -63,6 +66,6 @@ public class PartnersView extends VerticalLayout {
         return toolbar;
     }
     private void updateList() {
-        grid.setItems(partnerService.findAllPartners());
+        grid.setItems(userService.findAllUsers());
     }
 }

@@ -14,4 +14,6 @@ public interface ContractorService {
             ;
 
     List<ContractorOutDto> findContractorsByPartnerId(String partnerId);
+
+    List<Contractor> findAllContractors();
 }

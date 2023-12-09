@@ -1,14 +1,10 @@
 package ru.planetnails.partnerslk.service.impl;
 
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.planetnails.partnerslk.exception.BadRequestException;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.exception.PartnerNotFoundException;
 import ru.planetnails.partnerslk.exception.UsersNameIsAlreadyTaken;
@@ -22,7 +18,6 @@ import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 import ru.planetnails.partnerslk.repository.PartnerRepository;
 import ru.planetnails.partnerslk.repository.RoleRepository;
 import ru.planetnails.partnerslk.repository.UserRepository;
-import ru.planetnails.partnerslk.security.jwt.JwtTokenProvider;
 import ru.planetnails.partnerslk.service.UserService;
 
 import java.time.LocalDateTime;
@@ -35,18 +30,15 @@ public class UserServiceImpl implements UserService {
     private final PartnerRepository partnerRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder,
-                           PartnerRepository partnerRepository, JwtTokenProvider jwtTokenProvider) {
+                           PartnerRepository partnerRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
         this.partnerRepository = partnerRepository;
-        this.jwtTokenProvider = jwtTokenProvider;
+
     }
 
     @Override
@@ -70,7 +62,6 @@ public class UserServiceImpl implements UserService {
                     .orElseThrow(() -> new PartnerNotFoundException("Partner id not found"));
             user.setPartner(partner);
         }
-        user.setPassword(passwordEncoder.encode(userAddDto.getPassword()));
         user.setRoles(userRoles);
         user.setStatus(UserStatus.PENDING);
         User registerUser = userRepository.save(user);
@@ -150,36 +141,41 @@ public class UserServiceImpl implements UserService {
         // пользователь не может поменять статус/удалить самого себя
         // также пользователь не может удалять другого пользователя с админскими правами
 
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-        if (token != null && jwtTokenProvider.validateAccessToken(token)) {
-            final Claims claims = jwtTokenProvider.getAccessClaims(token);
-            Authentication auth = jwtTokenProvider.getAuthentication(claims);
-            if (auth == null) {
-                throw new BadRequestException("Bad authentication");
-            }
-            User authUser = userRepository.findByName(auth.getName());
-            User delUser = userRepository.findByUserId(userId);
-            if (delUser == null) {
-                throw new BadRequestException("User not found");
-            }
+//        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+//        if (token != null && jwtTokenProvider.validateAccessToken(token)) {
+//            final Claims claims = jwtTokenProvider.getAccessClaims(token);
+//            Authentication auth = jwtTokenProvider.getAuthentication(claims);
+//            if (auth == null) {
+//                throw new BadRequestException("Bad authentication");
+//            }
+//            User authUser = userRepository.findByName(auth.getName());
+//            User delUser = userRepository.findByUserId(userId);
+//            if (delUser == null) {
+//                throw new BadRequestException("User not found");
+//            }
+//
+//            if (authUser != null) {
+//                if (authUser.getId().equals(userId)) {
+//                    throw new BadRequestException("Пользователь не может удалить сам себя");
+//                }
+//
+//
+//                if (delUser.getRoles().stream().anyMatch(r -> r.getName().equalsIgnoreCase("ADMIN"))) {
+//                    throw new BadRequestException("Нельзя удалить пользователя с уровнем доступа (Role) = ADMIN");
+//                }
+//                delUser.setStatus(UserStatus.DELETED);
+//                userRepository.save(delUser);
+//            }
+//            throw new BadRequestException("User not found");
+//        }
+//        throw new BadRequestException("User not found");
 
-            if (authUser != null) {
-                if (authUser.getId().equals(userId)) {
-                    throw new BadRequestException("Пользователь не может удалить сам себя");
-                }
 
+    }
 
-                if (delUser.getRoles().stream().anyMatch(r -> r.getName().equalsIgnoreCase("ADMIN"))) {
-                    throw new BadRequestException("Нельзя удалить пользователя с уровнем доступа (Role) = ADMIN");
-                }
-                delUser.setStatus(UserStatus.DELETED);
-                userRepository.save(delUser);
-            }
-            throw new BadRequestException("User not found");
-        }
-        throw new BadRequestException("User not found");
-
-
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 }
 

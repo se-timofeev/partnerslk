@@ -7,26 +7,30 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-public class MainLayout extends AppLayout {
-    private final SecurityService securityService;
+import javax.annotation.security.PermitAll;
 
-    public MainLayout(SecurityService securityService) {
-        this.securityService = securityService;
+
+@PermitAll
+@Route("")
+public class MainLayout extends AppLayout {
+
+    public MainLayout() {
         createHeader();
         createDrawer();
     }
 
     private void createHeader() {
-        H1 logo = new H1("Vaadin CRM");
+        H1 logo = new H1("b2b портал Planet Nails");
         logo.addClassNames(
                 LumoUtility.FontSize.LARGE,
                 LumoUtility.Margin.MEDIUM);
 
-        String u = securityService.getAuthenticatedUser().getUsername();
-        Button logout = new Button("Log out " + u, e -> securityService.logout());
+
+        Button logout = new Button("Выход " );
 
         var header = new HorizontalLayout(new DrawerToggle(), logo, logout);
 
@@ -43,8 +47,9 @@ public class MainLayout extends AppLayout {
 
     private void createDrawer() {
         addToDrawer(new VerticalLayout(
-                new RouterLink("List", PartnersView.class)
-
+                new RouterLink("Контакты", ContactsView.class),
+                new RouterLink("Партнёры", PartnersView.class),
+                new RouterLink("Контрагенты", ContractorsView.class)
         ));
     }
 }

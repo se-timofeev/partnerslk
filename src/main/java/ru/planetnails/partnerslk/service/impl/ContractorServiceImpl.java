@@ -49,4 +49,9 @@ public class ContractorServiceImpl implements ContractorService {
                 .collect(Collectors.toList());
         return contractors;
     }
+
+    @Override
+    public List<Contractor> findAllContractors() {
+        return contractorRepository.findAllContractors();
+    }
 }

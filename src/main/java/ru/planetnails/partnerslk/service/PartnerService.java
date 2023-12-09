@@ -3,6 +3,8 @@ package ru.planetnails.partnerslk.service;
 import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.partner.dto.PartnerAddDto;
 
+import java.util.List;
+
 public interface PartnerService {
     void add(PartnerAddDto partnerAddDto);
 
@@ -13,4 +15,6 @@ public interface PartnerService {
     Partner findPartnerByUserId(String id);
 
     void delete(String id);
+
+    List<Partner> findAllPartners();
 }

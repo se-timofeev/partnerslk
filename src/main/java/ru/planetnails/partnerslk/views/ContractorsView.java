@@ -9,20 +9,20 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
-import ru.planetnails.partnerslk.model.partner.Partner;
-import ru.planetnails.partnerslk.service.PartnerService;
+import ru.planetnails.partnerslk.model.contractor.Contractor;
+import ru.planetnails.partnerslk.service.ContractorService;
 
 @PermitAll
-@Route(value = "partners", layout = MainLayout.class)
-@PageTitle("Партнёры")
-public class PartnersView extends VerticalLayout {
-    Grid<Partner> grid = new Grid<>(Partner.class);
+@Route(value = "contractors",layout = MainLayout.class)
+@PageTitle("Контрагенты")
+public class ContractorsView extends VerticalLayout {
+    Grid<Contractor> grid = new Grid<>(Contractor.class);
     TextField filterText = new TextField();
-    PartnerService partnerService;
+    ContractorService contractorService;
 
-    public PartnersView(PartnerService partnerService) {
-        this.partnerService=partnerService;
-        addClassName("partners-list-view");
+    public ContractorsView(ContractorService contractorService) {
+        this.contractorService=contractorService;
+        addClassName("contractors-list-view");
         setSizeFull();
         configureGrid();
         configureForm();
@@ -43,12 +43,16 @@ public class PartnersView extends VerticalLayout {
         return content;
     }
     private void configureGrid() {
-        grid.addClassNames("partner-grid");
+        grid.addClassNames("contractors-grid");
         grid.setSizeFull();
-        grid.setColumns("name", "discount", "account" );
+        grid.setColumns("name", "description", "inn","kpp","legalAddress","actualAddress","partnerName" );
         grid.getColumnByKey("name").setHeader("Наименование");
-        grid.getColumnByKey("account").setHeader("Менеджер");
-        grid.getColumnByKey("discount").setHeader("Скидка, %");
+        grid.getColumnByKey("description").setHeader("Оф.наименование");
+        grid.getColumnByKey("inn").setHeader("ИНН");
+        grid.getColumnByKey("kpp").setHeader("КПП");
+        grid.getColumnByKey("legalAddress").setHeader("Юр.адрес");
+        grid.getColumnByKey("actualAddress").setHeader("Факт.адрес");
+        grid.getColumnByKey("partnerName").setHeader("Партнёр");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
@@ -63,6 +67,6 @@ public class PartnersView extends VerticalLayout {
         return toolbar;
     }
     private void updateList() {
-        grid.setItems(partnerService.findAllPartners());
+        grid.setItems(contractorService.findAllContractors());
     }
 }

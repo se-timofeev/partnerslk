@@ -1,10 +1,11 @@
 package ru.planetnails.partnerslk.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import ru.planetnails.partnerslk.model.user.User;
 import ru.planetnails.partnerslk.model.user.dto.UserAddDto;
 import ru.planetnails.partnerslk.model.user.dto.UserOutDto;
 
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface UserService {
 
@@ -28,4 +29,6 @@ public interface UserService {
     UserOutDto setUserPending(String userId);
 
     void deleteUser(String userId, HttpServletRequest request);
+
+    List<User> findAllUsers();
 }
