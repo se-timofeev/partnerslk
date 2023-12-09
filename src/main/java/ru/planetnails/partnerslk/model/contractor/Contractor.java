@@ -39,8 +39,10 @@ public class Contractor {
     @JoinColumn(name = "partner_id")
     @NotBlank
     private String partnerId;
-    @JoinColumn(name = "partner_name")
-    private String partnerName;
+
+
+    @Column (name = "partnername",insertable = false,updatable = false)
+    private String partnername;
 
     @Column(name = "updated")
     private LocalDateTime updated;

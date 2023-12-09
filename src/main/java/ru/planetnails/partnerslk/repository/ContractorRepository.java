@@ -23,7 +23,7 @@ public interface ContractorRepository extends JpaRepository<Contractor, String> 
                     "isnull(t1.actual_address,'') as actual_address, " +
                     "t1.updated, " +
                     "t2.id as partner_id, " +
-                    "isnull(t2.name,'') as partner_name " +
+                    "isnull(t2.name,'-') as partnername " +
                     "FROM " +
                     "contractors as t1 " +
                     "left join partners as t2 on t1.partner_id=t2.id " +

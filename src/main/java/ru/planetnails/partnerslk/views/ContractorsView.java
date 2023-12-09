@@ -45,14 +45,14 @@ public class ContractorsView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("contractors-grid");
         grid.setSizeFull();
-        grid.setColumns("name", "description", "inn","kpp","legalAddress","actualAddress","partnerName" );
+        grid.setColumns("name", "description", "inn","kpp","legalAddress","actualAddress","partnername" );
         grid.getColumnByKey("name").setHeader("Наименование");
         grid.getColumnByKey("description").setHeader("Оф.наименование");
         grid.getColumnByKey("inn").setHeader("ИНН");
         grid.getColumnByKey("kpp").setHeader("КПП");
         grid.getColumnByKey("legalAddress").setHeader("Юр.адрес");
         grid.getColumnByKey("actualAddress").setHeader("Факт.адрес");
-        grid.getColumnByKey("partnerName").setHeader("Партнёр");
+        grid.getColumnByKey("partnername").setHeader("Партнёр");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
