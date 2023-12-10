@@ -8,8 +8,9 @@ import ru.planetnails.partnerslk.model.group.Group;
 import java.util.List;
 
 @Repository
-public interface GroupRepository extends JpaRepository<Group, String>, CostumeGroupRepository {
+public interface GroupRepository extends JpaRepository<Group, String>, CustomGroupRepository {
 
     @Query("select g.id from Group as g where g.groupId = ?1")
     List<String> findIdListGroupId(String groupId);
+
 }

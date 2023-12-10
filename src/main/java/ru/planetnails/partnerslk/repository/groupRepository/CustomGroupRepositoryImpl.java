@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class CostumeGroupRepositoryImpl implements CostumeGroupRepository {
+public class CustomGroupRepositoryImpl implements CustomGroupRepository {
 
     @PersistenceContext
     private final EntityManager em;
@@ -30,5 +30,33 @@ public class CostumeGroupRepositoryImpl implements CostumeGroupRepository {
         typedQuery.setFirstResult(from);
         typedQuery.setMaxResults(size);
         return typedQuery.getResultList();
+    }
+
+    @Override
+    public List<Group> getRootGroups() {
+        String queryText=
+                "select  * " +
+                        "from Groups  as t1 " +
+                        " where level=1";
+
+        Query query= em.createNativeQuery(queryText,Group.class);
+        @SuppressWarnings("unchecked")
+        List<Group> list= (List<Group>)  query.getResultList();
+        return list;
+
+    }
+
+    @Override
+    public List<Group> getChildGroups(Group group) {
+        String queryText=
+                "select  *" +
+                        "from Groups  as t1 " +
+                        " where group_id=?1";
+
+        Query query = em.createNativeQuery(queryText,Group.class);
+        query.setParameter(1,group.getId());
+        @SuppressWarnings("unchecked")
+        List<Group> list= (List<Group>)  query.getResultList();
+        return list;
     }
 }

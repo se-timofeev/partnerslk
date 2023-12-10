@@ -49,7 +49,8 @@ public class MainLayout extends AppLayout {
         addToDrawer(new VerticalLayout(
                 new RouterLink("Контакты", ContactsView.class),
                 new RouterLink("Партнёры", PartnersView.class),
-                new RouterLink("Контрагенты", ContractorsView.class)
+                new RouterLink("Контрагенты", ContractorsView.class),
+                new RouterLink("Номенклатура", ItemsView.class)
         ));
     }
 }

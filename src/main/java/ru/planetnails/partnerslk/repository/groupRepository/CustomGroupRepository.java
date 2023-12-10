@@ -4,7 +4,11 @@ import ru.planetnails.partnerslk.model.group.Group;
 
 import java.util.List;
 
-public interface CostumeGroupRepository {
+public interface CustomGroupRepository  {
 
     List<Group> getFilteredGroups(Integer level, String groupId, Integer from, Integer size);
+
+     List<Group> getRootGroups();
+
+    List<Group> getChildGroups (Group group);
 }
