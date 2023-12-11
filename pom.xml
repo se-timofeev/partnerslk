@@ -113,12 +113,6 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.vaadin.tatu</groupId>
-			<artifactId>tree</artifactId>
-			<version>2.5.0</version>
-		</dependency>
-
 
 	</dependencies>
 

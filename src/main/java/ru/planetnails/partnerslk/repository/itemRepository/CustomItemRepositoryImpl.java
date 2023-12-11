@@ -1,13 +1,16 @@
 package ru.planetnails.partnerslk.repository.itemRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.model.item.queryParams.ItemQueryParams;
 
-import jakarta.persistence.*;
-import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,4 +50,18 @@ public class CustomItemRepositoryImpl implements CustomItemRepository {
         typedQuery.setMaxResults(size);
         return typedQuery.getResultList();
     }
+
+    @Override
+    public List<Item> findAll() {
+            String queryText=
+                    "select  top 20 * " +
+                            "from items  as t1 " +
+                            " ";
+
+            Query query= em.createNativeQuery(queryText,Item.class);
+            @SuppressWarnings("unchecked")
+            List<Item> list= (List<Item>)  query.getResultList();
+            return list;
+    }
+
 }
