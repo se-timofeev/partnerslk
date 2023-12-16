@@ -10,7 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.planetnails.partnerslk.broker.RabbitMQProducerService;
 import ru.planetnails.partnerslk.exception.NotFoundException;
 import ru.planetnails.partnerslk.model.contractor.Contractor;
-import ru.planetnails.partnerslk.model.order.*;
+import ru.planetnails.partnerslk.model.item.Item;
+import ru.planetnails.partnerslk.model.order.Order;
+import ru.planetnails.partnerslk.model.order.OrderGenerator;
+import ru.planetnails.partnerslk.model.order.OrderVt;
+import ru.planetnails.partnerslk.model.order.VtOrderStatuses;
 import ru.planetnails.partnerslk.model.order.dto.*;
 import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.user.User;
@@ -70,7 +74,12 @@ public class OrderServiceImpl implements OrderService {
         log.info("User with id {} found", orderAddDto.getUserId());
         VtOrderStatuses vtOrderStatuses = OrderMapper.addVtOrderStatuses(user.getId());
         vtOrderStatusesList.add(vtOrderStatuses);
-        Order order = OrderMapper.fromOrderAddDtoOrder(orderAddDto, contractor, partner, convertToOrderVtList(orderAddDto), vtOrderStatusesList);
+        List<OrderVt> vtList = convertToOrderVtList(orderAddDto, partner);
+        Double sumWithoutDiscount = getSumWithoutDiscount(vtList);
+        Double sumOfDiscount = getSumOfDiscount(vtList, partner);
+        Double sumWithDiscount = sumWithoutDiscount - sumOfDiscount;
+
+        Order order = OrderMapper.fromOrderAddDtoOrder(sumWithoutDiscount, sumOfDiscount, sumWithDiscount, contractor, partner, vtList, vtOrderStatusesList);
         // сохранение заказа после которого будет ясен id
         orderRepository.save(order);
         Gson gson = OrderMapper.getGson();
@@ -80,6 +89,22 @@ public class OrderServiceImpl implements OrderService {
         // не поймет как матчить данные
         rabbitMQProducerService.sendMessage(toJson);
         return order.getId();
+    }
+
+    private Double getSumWithoutDiscount(List<OrderVt> vtList) {
+        double sumWithoutDiscount = 0.0;
+        for (OrderVt orderVt : vtList) {
+            sumWithoutDiscount = orderVt.getSale() * orderVt.getAmount() + sumWithoutDiscount;
+        }
+        return sumWithoutDiscount;
+    }
+
+    private Double getSumOfDiscount(List<OrderVt> vtList, Partner partner) {
+        double sumOfDiscount = 0.0;
+        for (OrderVt orderVt : vtList) {
+            sumOfDiscount = (orderVt.getSale() * orderVt.getAmount()) * partner.getDiscount() / 100.0 + sumOfDiscount;
+        }
+        return sumOfDiscount;
     }
 
     @Override
@@ -190,13 +215,20 @@ public class OrderServiceImpl implements OrderService {
         return orderVtList;
     }
 
-    private List<OrderVt> convertToOrderVtList(OrderAddDto orderAddDto) {
+    private List<OrderVt> convertToOrderVtList(OrderAddDto orderAddDto, Partner partner) {
         List<OrderVt> orderVtList = new ArrayList<>();
         if (orderAddDto.getOrderVts() == null) {
             orderVtList = Collections.emptyList();
         } else {
             for (OderVtAddDto oderVtAddDto : orderAddDto.getOrderVts()) {
-                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto, itemRepository.getReferenceById(oderVtAddDto.getItemId()));
+                Item item = itemRepository.getReferenceById(oderVtAddDto.getItemId());
+                if (!item.getPrice().getRetail().equals(oderVtAddDto.getSale()) || item.getPrice().getRetail() == null) {
+                    throw new RuntimeException("Check a sale for the item.");
+                }
+                if (partner.getDiscount() != oderVtAddDto.getDiscount()) {
+                    throw new RuntimeException("Check a discount for the item.");
+                }
+                OrderVt orderVt = OrderMapper.fromOrderVtAddDtoToOrderVt(oderVtAddDto, item);
                 orderVtList.add(orderVt);
             }
         }

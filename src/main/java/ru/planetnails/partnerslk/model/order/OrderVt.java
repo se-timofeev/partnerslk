@@ -1,6 +1,7 @@
 package ru.planetnails.partnerslk.model.order;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.planetnails.partnerslk.model.item.Item;
 
 import javax.persistence.*;

@@ -1,6 +1,9 @@
 package ru.planetnails.partnerslk.model.order.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.planetnails.partnerslk.model.order.OrderStatus;
 
 import java.time.LocalDateTime;

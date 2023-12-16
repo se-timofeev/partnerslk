@@ -17,6 +17,7 @@ import ru.planetnails.partnerslk.model.partner.Partner;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,14 +28,14 @@ public class OrderMapper {
 
     static ObjectMapper objectMapper = new ObjectMapper();
 
-    public static Order fromOrderAddDtoOrder(OrderAddDto orderAddDto, Contractor contractor, Partner partner, List<OrderVt> orderVts,
+    public static Order fromOrderAddDtoOrder(Double sumWithoutDiscount, Double sumOfDiscount, Double sumWithDiscount, Contractor contractor, Partner partner, List<OrderVt> orderVts,
                                              List<VtOrderStatuses> vtOrderStatuses) {
         return new Order(
                 num++,
-                LocalDateTime.now(),
-                orderAddDto.getSumWithoutDiscount(),
-                orderAddDto.getSumOfDiscount(),
-                orderAddDto.getSumWithDiscount(),
+                LocalDateTime.now(ZoneId.of("Europe/Moscow")),
+                sumWithoutDiscount,
+                sumOfDiscount,
+                sumWithDiscount,
                 contractor,
                 partner,
                 OrderStatus.NEW,
@@ -109,7 +110,7 @@ public class OrderMapper {
     public static VtOrderStatuses addVtOrderStatuses(String user) {
         return new VtOrderStatuses(
                 OrderStatus.NEW,
-                LocalDateTime.now(),
+                LocalDateTime.now(ZoneId.of("Europe/Moscow")),
                 user
         );
     }
@@ -136,6 +137,9 @@ public class OrderMapper {
         );
     }
 
+    public static OrderRabbitAddDto fromMessageToOrderRabbitAddDto(String message) throws JsonProcessingException {
+        return objectMapper.readValue(message, OrderRabbitAddDto.class);
+    }
 
     public static Gson getGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -143,12 +147,7 @@ public class OrderMapper {
         return gsonBuilder.create();
     }
 
-    public static OrderRabbitAddDto fromMessageToOrderRabbitAddDto(String message) throws JsonProcessingException {
-        return objectMapper.readValue(message, OrderRabbitAddDto.class);
-    }
-
-    static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
-        DateTimeFormatter fmt = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> { DateTimeFormatter fmt = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.of("Europe/Moscow"));
 
         @Override
         public void write(JsonWriter jsonWriter, LocalDateTime localDateTime) throws IOException {

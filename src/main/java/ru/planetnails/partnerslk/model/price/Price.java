@@ -20,10 +20,10 @@ public class Price {
     private String id;
 
     @Column(name = "retail")
-    private double retail;
+    private Double retail;
 
     @Column(name = "sale")
-    private double sale;
+    private Double sale;
 
     @Column(name = "updated")
     private LocalDateTime updated;
