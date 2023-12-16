@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /src/main/resources/application-prod.properties
-
+!.frontend
 
 
 ### STS ###
@@ -41,3 +41,4 @@ build/
 /src/main/resources/application-prod.properties
 /src/main/resources/application-am.properties
 
+/frontend/
