@@ -37,7 +37,8 @@ public class CustomGroupRepositoryImpl implements CustomGroupRepository {
         String queryText=
                 "select  * " +
                         "from Groups  as t1 " +
-                        " where level=1";
+                        " where level=1 " +
+                        "order by name";
 
         Query query= em.createNativeQuery(queryText,Group.class);
         @SuppressWarnings("unchecked")
@@ -51,7 +52,8 @@ public class CustomGroupRepositoryImpl implements CustomGroupRepository {
         String queryText=
                 "select  *" +
                         "from Groups  as t1 " +
-                        " where group_id=?1";
+                        " where group_id=?1 " +
+                        "order by name";
 
         Query query = em.createNativeQuery(queryText,Group.class);
         query.setParameter(1,group.getId());

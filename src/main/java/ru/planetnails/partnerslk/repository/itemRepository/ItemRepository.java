@@ -24,6 +24,9 @@ public interface ItemRepository extends JpaRepository<Item, String>, CustomItemR
     @Query("select i from Item i where i.groupId = ?1 and i.isOutOfStock = false")
     Page<Item> findItemsBySecondLevelGroup(String groupId, PageRequest pageRequest);
 
+    @Query("select i from Item i where i.groupId = ?1 and i.isOutOfStock = false")
+    List<Item> findItemsBySecondLevelGroupAll(String groupId);
+
     @Modifying
     @Transactional
     @Query(value = "update items set is_out_of_stock = 1 where id in(?1)", nativeQuery = true)

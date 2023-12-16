@@ -1,6 +1,6 @@
 package ru.planetnails.partnerslk.views;
 
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -15,97 +15,88 @@ import ru.planetnails.partnerslk.model.group.Group;
 import ru.planetnails.partnerslk.model.item.Item;
 import ru.planetnails.partnerslk.repository.groupRepository.CustomGroupRepository;
 import ru.planetnails.partnerslk.repository.groupRepository.GroupRepository;
-import ru.planetnails.partnerslk.repository.itemRepository.CustomItemRepository;
+import ru.planetnails.partnerslk.repository.itemRepository.ItemRepository;
 
 
 @PermitAll
-@Route(value = "items",layout = MainLayout.class)
+@Route(value = "items", layout = MainLayout.class)
 @PageTitle("Номенклатура")
 public class ItemsView extends VerticalLayout {
 
 
     TextField filterText = new TextField();
+    TreeGrid<Group> treeGrid = new TreeGrid<>(Group.class);
+    Grid<Item> grid = new Grid<>(Item.class);
     CustomGroupRepository groupRepository;
-    CustomItemRepository itemRepository;
+    ItemRepository itemRepository;
 
-    public ItemsView(GroupRepository groupRepository, CustomItemRepository itemRepository) {
-        this.groupRepository=groupRepository;
-        this.itemRepository=itemRepository;
+    public ItemsView(GroupRepository groupRepository, ItemRepository itemRepository) {
+        this.groupRepository = groupRepository;
+        this.itemRepository = itemRepository;
         addClassName("items-list-view");
         setSizeFull();
-        configureGrid();
-//        configureForm();
-//
-//        add(getToolbar(), getContent());
-//        updateList();
+        configureForm();
+        updateList();
     }
+
 
     private void configureForm() {
 
-    }
-    private Component getContent() {
-//
-        return null;
-    }
-    private void configureGrid() {
+        configureTreeGrid();
+        configureGrid();
 
-        Grid<Item> grid = new Grid<>(Item.class);
-
-        grid.addClassNames("items-grid");
-        grid.setSizeFull();
-        grid.setColumns("vendorCode","name", "description");
-        grid.getColumnByKey("vendorCode").setHeader("Артикул");
-        grid.getColumnByKey("name").setHeader("Наименование");
-        grid.getColumnByKey("description").setHeader("Описание");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        grid.setItems(itemRepository.findAll());
-
-
-        TreeGrid<Group> treeGrid =   new TreeGrid<>();
-        treeGrid.addClassName("tree-grid");
-        treeGrid.setItems(groupRepository.getRootGroups(),groupRepository::getChildGroups);
-        treeGrid.addHierarchyColumn(Group::getName).setHeader(" Name");
-
-
-        HorizontalLayout layout = new HorizontalLayout(treeGrid,grid);
-        layout.setPadding(true);
+        HorizontalLayout layout = new HorizontalLayout(treeGrid, grid);
+        layout.setMargin(true);
+        layout.setPadding(false);
         layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        //layout.setSizeFull();
+        layout.setSizeFull();
 
-//        layout.add(grid);
-//         layout.add(treeGrid);
-
-
+        layout.add(treeGrid);
+        layout.add(grid);
         layout.addClassNames("content");
         layout.setSizeFull();
         add(layout);
-
-
-
-        //treeGrid.addColumn(Group::getManager).setHeader("Manager");
-
-//        treeGrid
-//                .asSingleSelect()
-//                .addValueChangeListener(
-//                        event -> {
-//                            refreshChildItems(event.getOldValue());
-//                            refreshChildItems(event.getValue());
-//                        }
-//                );
-//
-//        treeGrid.setClassNameGenerator(
-//                department -> {
-//                    if (
-//                            treeGrid.asSingleSelect().getValue() != null &&
-//                                    treeGrid.asSingleSelect().getValue().equals(department.getParent())
-//                    ) {
-//                        return "parent-selected";
-//                    } else return null;
-//                }
-//        );
-    //    treeGrid.setAllRowsVisible(true);
-      //  add(treeGrid);
     }
+
+    public void configureTreeGrid() {
+
+        treeGrid.addClassName("tree-grid");
+        treeGrid.setSizeFull();
+        treeGrid.setWidth("420px");
+        treeGrid.setColumns("name");
+        treeGrid.setHierarchyColumn("name").
+                setHeader("Группы").
+                setResizable(true).
+                setWidth("400px");
+
+    }
+
+    public void configureGrid() {
+        grid.addClassNames("items-grid");
+        grid.setSizeFull();
+        grid.setColumns("vendorCode", "description", "countryOfOrigin");
+
+        grid.getColumnByKey("vendorCode")
+                .setHeader("Артикул")
+                .setAutoWidth(false)
+                .setResizable(true)
+                .setWidth("50px");
+
+        grid.getColumnByKey("description")
+                .setHeader("Наименование")
+                .setResizable(true)
+                .setAutoWidth(true);
+
+        grid.getColumnByKey("countryOfOrigin")
+                .setHeader("Страна")
+                .setAutoWidth(false)
+                .setResizable(true)
+                .setWidth("50px");
+
+        grid.addColumn("price.sale").setHeader("Цена опт.").setTextAlign(ColumnTextAlign.END);
+        grid.addColumn("price.retail").setHeader("Цена розн.").setTextAlign(ColumnTextAlign.END);
+    }
+
 
     private HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Поиск");
@@ -117,7 +108,25 @@ public class ItemsView extends VerticalLayout {
         toolbar.addClassName("toolbar");
         return toolbar;
     }
+
     private void updateList() {
-       // treeGrid.setItems(groupRepository.findAll());
+        treeGrid.setItems(groupRepository.getRootGroups(), groupRepository::getChildGroups);
+
+        treeGrid
+                .asSingleSelect()
+                .addValueChangeListener(
+                        event -> {
+                            refreshChildItems(event.getOldValue());
+                            refreshChildItems(event.getValue());
+                        }
+                );
+
+        treeGrid.setAllRowsVisible(true);
+    }
+
+    private void refreshChildItems(Group group) {
+        if (group != null) {
+            grid.setItems(itemRepository.findItemsBySecondLevelGroupAll(group.getId()));
+        }
     }
 }
