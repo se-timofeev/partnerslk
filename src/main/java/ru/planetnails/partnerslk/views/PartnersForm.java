@@ -1,5 +1,6 @@
 package ru.planetnails.partnerslk.views;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -12,6 +13,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
+import jakarta.validation.ValidationException;
 import ru.planetnails.partnerslk.model.partner.Partner;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class PartnersForm extends FormLayout {
                 createButtonsLayout());
     }
 
-    private HorizontalLayout createButtonsLayout() {
+    private Component createButtonsLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
@@ -47,7 +49,23 @@ public class PartnersForm extends FormLayout {
         save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
 
-        return new HorizontalLayout( delete, close);
+        save.addClickListener(event -> validateAndSave());
+        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, partner)));
+        close.addClickListener(event -> fireEvent(new CloseEvent(this)));
+
+        binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
+        return new HorizontalLayout(save, delete, close);
+    }
+
+    private void validateAndSave() {
+        try {
+            binder.writeBean(partner);
+            fireEvent(new SaveEvent(this, partner));
+        } catch (ValidationException e) {
+            e.printStackTrace();
+        } catch (com.vaadin.flow.data.binder.ValidationException e) {
+            throw new RuntimeException(e);
+        }
     }
     public void setPartner(Partner partner) {
         this.partner = partner;
@@ -89,5 +107,7 @@ public class PartnersForm extends FormLayout {
                                                                   ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
     }
+
+
 }
 

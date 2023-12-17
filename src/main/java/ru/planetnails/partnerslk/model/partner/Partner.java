@@ -1,8 +1,12 @@
 package ru.planetnails.partnerslk.model.partner;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
-
-import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "partners")
@@ -12,6 +16,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @ToString
 @Builder
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class Partner {
     @Id
     private String id;
