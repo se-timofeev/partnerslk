@@ -7,18 +7,17 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import ru.planetnails.partnerslk.security.config.SecurityService;
 
-import javax.annotation.security.PermitAll;
-
-
-@PermitAll
-@Route("")
 public class MainLayout extends AppLayout {
-
-    public MainLayout() {
+    private final transient AuthenticationContext authContext;
+    private final SecurityService securityService;
+    public MainLayout(AuthenticationContext authContext, SecurityService securityService) {
+        this.authContext = authContext;
+        this.securityService=securityService;
         createHeader();
         createDrawer();
     }
@@ -30,7 +29,7 @@ public class MainLayout extends AppLayout {
                 LumoUtility.Margin.MEDIUM);
 
 
-        Button logout = new Button("Выход " );
+        Button logout = new Button("Выход ", e -> securityService.logout());
 
         var header = new HorizontalLayout(new DrawerToggle(), logo, logout);
 
