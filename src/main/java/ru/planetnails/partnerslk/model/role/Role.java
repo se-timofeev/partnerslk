@@ -1,10 +1,12 @@
 package ru.planetnails.partnerslk.model.role;
 
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.planetnails.partnerslk.model.user.User;
 
-import jakarta.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,5 +27,7 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<User> users;
+
+
 
 }

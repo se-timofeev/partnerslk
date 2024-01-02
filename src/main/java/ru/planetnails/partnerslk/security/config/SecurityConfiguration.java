@@ -1,30 +1,33 @@
 package ru.planetnails.partnerslk.security.config;
 
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.planetnails.partnerslk.views.LoginView;
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfiguration
-        extends VaadinWebSecurity {
+public class SecurityConfiguration extends VaadinWebSecurity {
+    private final UserDetailsService userDetailsService;
+
+    @Autowired
+    public SecurityConfiguration(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.requestMatchers(new AntPathRequestMatcher("/public/**"))
-                .permitAll());
-
+        http.authenticationProvider(daoAuthenticationProvider());
         super.configure(http);
-
         setLoginView(http, LoginView.class);
     }
 
@@ -35,17 +38,15 @@ public class SecurityConfiguration
 
 
     @Bean
-    public UserDetailsManager userDetailsService() {
-        UserDetails user =
-                User.withUsername("user")
-                        .password("{noop}user")
-                        .roles("USER")
-                        .build();
-        UserDetails admin =
-                User.withUsername("admin")
-                        .password("{noop}admin")
-                        .roles("ADMIN")
-                        .build();
-        return new InMemoryUserDetailsManager(user, admin);
+    protected PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    protected DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
     }
 }

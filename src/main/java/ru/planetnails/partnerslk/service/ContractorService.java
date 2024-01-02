@@ -9,9 +9,9 @@ import java.util.List;
 public interface ContractorService {
 
     void add(List<ContractorAddDto> contractors);
+    void delete (String id);
 
-    Contractor findById(String id)
-            ;
+    Contractor findById(String id) ;
 
     List<ContractorOutDto> findContractorsByPartnerId(String partnerId);
 

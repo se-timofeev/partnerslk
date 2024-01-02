@@ -1,15 +1,19 @@
 package ru.planetnails.partnerslk.model.user;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.validation.annotation.Validated;
 import ru.planetnails.partnerslk.model.partner.Partner;
 import ru.planetnails.partnerslk.model.role.Role;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
 @Validated
 @Entity
 @Table(name = "users")
@@ -83,5 +87,12 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getFullName(), getFirstName(), getLastName(), getMobile(), getEmail(), getName(), getPassword());
+    }
+
+    public Set<SimpleGrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority simpleGrantedAuthority=new SimpleGrantedAuthority("Admin");
+        Set <SimpleGrantedAuthority> set=new HashSet<SimpleGrantedAuthority>();
+        set.add(simpleGrantedAuthority);
+        return set;
     }
 }

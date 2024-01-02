@@ -36,6 +36,11 @@ public class ContractorServiceImpl implements ContractorService {
     }
 
     @Override
+    public void delete(String id) {
+        contractorRepository.deleteById(id);
+    }
+
+    @Override
     public Contractor findById(String id) {
         Contractor contractor = contractorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Contrator_id not found"));
